@@ -7,6 +7,8 @@
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
+#include "shv_runner.h"
+#include "ASI Loader/ASILoader.h"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -50,10 +52,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
+				g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
 				LOG(INFO) << "Scripts registered.";
 
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
+
+				ASILoader::Initialize();
 
 				while (g_running)
 				{
@@ -79,6 +84,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				pointers_instance.reset();
 				LOG(INFO) << "Pointers uninitialized.";
+
+				shv_runner::shutdown();
+				LOG(INFO) << "ASI plugins unloaded.";
 			}
 			catch (std::exception const &ex)
 			{
