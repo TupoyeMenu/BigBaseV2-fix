@@ -34,15 +34,19 @@ namespace big
 	}
 
 	hooking::hooking() :
-		m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs),
-		m_set_cursor_pos_hook("SetCursorPos", memory::module("user32.dll").get_export("SetCursorPos").as<void*>(), (void*)&hooks::set_cursor_pos),
-
-		m_run_script_threads_hook("Script hook", (void*)g_pointers->m_run_script_threads, (void*)&hooks::run_script_threads),
-		m_convert_thread_to_fiber_hook("ConvertThreadToFiber", memory::module("kernel32.dll").get_export("ConvertThreadToFiber").as<void*>(), (void*)&hooks::convert_thread_to_fiber)
-
+		m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, (void*)&hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, (void*)&hooks::swapchain_resizebuffers);
+
+		// The only instances in that vector at this point should only be the "lazy" hooks
+		// aka the ones that still don't have their m_target assigned
+		for (auto& detour_hook_helper : m_detour_hook_helpers)
+		{
+			detour_hook_helper->m_detour_hook->set_target_and_create_hook(detour_hook_helper->m_on_hooking_available());
+		}
+
+		detour_hook_helper::add<hooks::run_script_threads>("Script hook", (void*)g_pointers->m_run_script_threads);
 
 		g_hooking = this;
 	}
@@ -59,10 +63,13 @@ namespace big
 	{
 		m_swapchain_hook.enable();
 		m_og_wndproc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&hooks::wndproc)));
-		m_set_cursor_pos_hook.enable();
 
-		m_run_script_threads_hook.enable();
-		m_convert_thread_to_fiber_hook.enable();
+		for (const auto& detour_hook_helper : m_detour_hook_helpers)
+		{
+			detour_hook_helper->m_detour_hook->enable();
+		}
+
+		MH_ApplyQueued();
 
 		m_enabled = true;
 	}
@@ -71,22 +78,40 @@ namespace big
 	{
 		m_enabled = false;
 
-		m_convert_thread_to_fiber_hook.disable();
-		m_run_script_threads_hook.disable();
+		for (const auto& detour_hook_helper : m_detour_hook_helpers)
+		{
+			detour_hook_helper->m_detour_hook->disable();
+		}
 
-		m_set_cursor_pos_hook.disable();
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
+
+		MH_ApplyQueued();
+
+		for (const auto& detour_hook_helper : m_detour_hook_helpers)
+		{
+			delete detour_hook_helper;
+		}
+		m_detour_hook_helpers.clear();
 	}
 
-	minhook_keepalive::minhook_keepalive()
+	hooking::detour_hook_helper::~detour_hook_helper()
 	{
-		MH_Initialize();
+		delete m_detour_hook;
 	}
 
-	minhook_keepalive::~minhook_keepalive()
+	void hooking::detour_hook_helper::enable_hook_if_hooking_is_already_running()
 	{
-		MH_Uninitialize();
+		if (g_hooking && g_hooking->m_enabled)
+		{
+			if (m_on_hooking_available)
+			{
+				m_detour_hook->set_target_and_create_hook(m_on_hooking_available());
+			}
+
+			m_detour_hook->enable();
+			MH_ApplyQueued();
+		}
 	}
 
 	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
@@ -96,17 +121,7 @@ namespace big
 			g_script_mgr.tick();
 		}
 
-		return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads_t>()(ops_to_execute);
-	}
-
-	void *hooks::convert_thread_to_fiber(void *param)
-	{
-		if (IsThreadAFiber())
-		{
-			return GetCurrentFiber();
-		}
-
-		return g_hooking->m_convert_thread_to_fiber_hook.get_original<decltype(&convert_thread_to_fiber)>()(param);
+		return g_hooking->get_original<run_script_threads>()(ops_to_execute);
 	}
 
 	HRESULT hooks::swapchain_present(IDXGISwapChain *this_, UINT sync_interval, UINT flags)
@@ -148,13 +163,5 @@ namespace big
 		}
 
 		return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);
-	}
-
-	BOOL hooks::set_cursor_pos(int x, int y)
-	{
-		if (g_gui.m_opened)
-			return true;
-
-		return g_hooking->m_set_cursor_pos_hook.get_original<decltype(&set_cursor_pos)>()(x, y);
 	}
 }
