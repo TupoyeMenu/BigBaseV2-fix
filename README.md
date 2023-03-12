@@ -10,16 +10,50 @@ Strictly for educational purposes.
 * Fiber pool
 * Access to YSC script globals
 * scrProgram–based native hook
+* MinGW compilation support
+
 
 ## Building
+
+### Windows
 To build BigBaseV2 you need:
-* Visual Studio 2019
-* [Premake 5.0](https://premake.github.io/download.html) in your PATH
+
+* Visual Studio 2019 or higher
+* [CMake](https://cmake.org/download)
 
 To set up the build environment, run the following commands in a terminal:
-```dos
-git clone https://gir489@bitbucket.org/gir489/bigbasev2-fix.git --recurse-submodules
+```bash
+git clone https://github.com/TupoyeMenu/BigBaseV2-fix.git
 cd BigBaseV2-fix
-GenerateProjects.bat
+mkdir build
+cd build
+cmake ..
 ```
 Now, you will be able to open the solution, and simply build it in Visual Studio.
+
+### GNU/Linux
+To build BigBaseV2 you need:
+
+* MinGW 12 or higher
+* CMake
+* Ninja? Didn't test make.
+
+To set up the build environment, run the following commands in a terminal:
+```bash
+git clone https://github.com/TupoyeMenu/BigBaseV2-fix.git
+cd BigBaseV2-fix
+mkdir build && cd build
+cmake .. -DCROSSCOMPILE:BOOL=TRUE -DUSE_GCC:BOOL=TRUE -G Ninja
+ninja
+```
+
+## Credits
+| Credits |         |
+| ------- | ------- |
+| Pocakking         | [BigBaseV2](https://github.com/Pocakking/BigBaseV2)         |
+| spankerincrease   | [BigBaseV2-fix](https://bitbucket.org/gir489/bigbasev2-fix) |
+| [YimMenu](https://github.com/YimMenu/YimMenu) contributors | Updates for newer GTA versions, most of the code is stolen from them |
+| tupoy-ya          | Being stupid |
+
+## License
+This project is licensed under GNU GENERAL PUBLIC LICENSE Version 2 because i stole a lot of code from YimMenu.
