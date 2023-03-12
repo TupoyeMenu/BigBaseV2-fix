@@ -1,5 +1,5 @@
-#include "../common.hpp"
-#include "../logger.hpp"
+#include "common.hpp"
+#include "logger.hpp"
 #include "pattern_batch.hpp"
 #include "range.hpp"
 

@@ -1,8 +1,9 @@
-#pragma once
+#ifndef COMMON_INC
+#define COMMON_INC
 
-#include <SDKDDKVer.h>
-#include <Windows.h>
-#include <D3D11.h>
+#include <sdkddkver.h>
+#include <windows.h>
+#include <d3d11.h>
 #include <wrl/client.h>
 
 #include <cinttypes>
@@ -64,3 +65,5 @@ namespace big
 	inline DWORD g_main_thread_id{};
 	inline std::atomic_bool g_running{ true };
 }
+
+#endif

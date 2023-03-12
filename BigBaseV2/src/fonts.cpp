@@ -1,4 +1,3 @@
-#pragma once
 #include "fonts.hpp"
 
 const std::uint8_t font_rubik[140732]

@@ -97,17 +97,13 @@ namespace big
 
 	void gui::dx_on_tick()
 	{
-		TRY_CLAUSE
+		if (ImGui::Begin("BigBaseV2"))
 		{
-			if (ImGui::Begin("BigBaseV2"))
-			{
-				ImGui::BeginTabBar("tabbar");
-				base_tab::render_base_tab();
-				ImGui::EndTabBar();
-			}
-			ImGui::End();
+			ImGui::BeginTabBar("tabbar");
+			base_tab::render_base_tab();
+			ImGui::EndTabBar();
 		}
-		EXCEPT_CLAUSE
+		ImGui::End();
 	}
 
 	void gui::script_init()
@@ -116,14 +112,10 @@ namespace big
 
 	void gui::script_on_tick()
 	{
-		TRY_CLAUSE
+		if (g_gui.m_opened)
 		{
-			if (g_gui.m_opened)
-			{
-				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-			}
+			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 		}
-		EXCEPT_CLAUSE
 	}
 
 	void gui::script_func()

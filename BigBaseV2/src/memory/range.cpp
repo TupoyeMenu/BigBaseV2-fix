@@ -1,4 +1,4 @@
-#include "../common.hpp"
+#include "common.hpp"
 #include "range.hpp"
 #include "pattern.hpp"
 

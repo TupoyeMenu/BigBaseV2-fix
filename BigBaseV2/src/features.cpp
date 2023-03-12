@@ -14,11 +14,7 @@ namespace big
 	{
 		while (true)
 		{
-			TRY_CLAUSE
-			{
-				run_tick();
-			}
-			EXCEPT_CLAUSE
+			run_tick();
 			script::get_current()->yield();
 		}
 	}

@@ -5,7 +5,7 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "gta_util.hpp"
-#include "ImGuiBitfield.h"
+#include "imguibitfield.h"
 
 namespace big
 {
@@ -35,7 +35,7 @@ namespace big
 			
 			if (ImGui::Button("Spawn an Adder"))
 			{
-				QUEUE_JOB_BEGIN_CLAUSE()
+				g_fiber_pool->queue_job([]
 				{
 					constexpr auto hash = RAGE_JOAAT("adder");
 					while (!STREAMING::HAS_MODEL_LOADED(hash))
@@ -60,8 +60,7 @@ namespace big
 							NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);
 						VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
 					}
-				}
-				QUEUE_JOB_END_CLAUSE
+				});
 			}
 
 			if (ImGui::Button("Test g3log crash within ImGui"))
@@ -71,12 +70,11 @@ namespace big
 			ImGui::SameLine();
 			if (ImGui::Button("Test g3log crash within GTA V Script"))
 			{
-				QUEUE_JOB_BEGIN_CLAUSE()
+				g_fiber_pool->queue_job([]
 				{
 					//PED::_0xB782F8238512BAD5(PLAYER::PLAYER_PED_ID(), nullptr); //This causes a crash at GTA5.exe+5845356 and nothing of value was in the log in the stack dump because of the context switch to GTA 5's memory. If you encounter something similar, you will have to figure out where the crash occured in the GTA 5 exe, and trace back that native, and figure out which function is calling the native that is crashing.
 					*((PINT)nullptr) = 0xDEADBEEF;
-				}
-				QUEUE_JOB_END_CLAUSE
+				});
 			}
 
 			ImGui::Separator();

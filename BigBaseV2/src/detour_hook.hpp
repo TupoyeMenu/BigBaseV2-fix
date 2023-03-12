@@ -5,7 +5,7 @@ namespace big
 	class detour_hook
 	{
 	public:
-		explicit detour_hook(std::string name, void *target, void *detour);
+		explicit detour_hook(std::string name, void* target, void *detour);
 		~detour_hook() noexcept;
 
 		detour_hook(detour_hook&& that) = delete;
@@ -30,6 +30,6 @@ namespace big
 	template <typename T>
 	inline T detour_hook::get_original()
 	{
-		return static_cast<T>(m_original);
+		return reinterpret_cast<T>(m_original);
 	}
 }
