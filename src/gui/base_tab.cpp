@@ -54,7 +54,7 @@ namespace big
 					if (*g_pointers->m_is_session_started)
 					{
 						DECORATOR::DECOR_SET_INT(vehicle, "MPBitset", 0);
-						ENTITY::_SET_ENTITY_SOMETHING(vehicle, TRUE); //True means it can be deleted by the engine when switching lobbies/missions/etc, false means the script is expected to clean it up.
+						ENTITY::SET_ENTITY_SHOULD_FREEZE_WAITING_ON_COLLISION(vehicle, TRUE); //True means it can be deleted by the engine when switching lobbies/missions/etc, false means the script is expected to clean it up.
 						auto networkId = NETWORK::VEH_TO_NET(vehicle);
 						if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(vehicle))
 							NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);

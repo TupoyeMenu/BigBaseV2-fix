@@ -5,7 +5,7 @@ include(cmake/crosscompile.cmake)
 
 project(BigBaseV2 CXX)
 
-set(SRC_DIR "${PROJECT_SOURCE_DIR}/BigBaseV2/src")
+set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
 # Fetch modules
 message("\nFetching modules")

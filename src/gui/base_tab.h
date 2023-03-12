@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common.hpp"
-#include "natives.hpp"
 
 namespace big
 {

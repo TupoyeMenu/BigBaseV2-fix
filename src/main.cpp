@@ -1,4 +1,4 @@
-﻿#include "common.hpp"
+#include "common.hpp"
 #include "features.hpp"
 #include "fiber_pool.hpp"
 #include "gui.hpp"

@@ -1,5 +1,4 @@
-#ifndef COMMON_INC
-#define COMMON_INC
+#pragma once
 
 #include <sdkddkver.h>
 #include <windows.h>
@@ -66,4 +65,3 @@ namespace big
 	inline std::atomic_bool g_running{ true };
 }
 
-#endif
