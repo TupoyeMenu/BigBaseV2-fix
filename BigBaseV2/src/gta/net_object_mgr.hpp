@@ -1,6 +1,6 @@
 #include "node_list.hpp"
 #include "enums.hpp"
-#include "..\pointers.hpp"
+#include "pointers.hpp"
 #include "replay.hpp"
 
 #pragma once

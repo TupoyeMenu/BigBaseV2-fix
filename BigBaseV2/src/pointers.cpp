@@ -46,9 +46,9 @@ namespace big
 			m_run_script_threads = ptr.sub(0x1F).as<functions::run_script_threads_t>();
 		});
 
-		main_batch.add("Script programs", "44 8B 0D ? ? ? ? 4C 8B 1D ? ? ? ? 48 8B 1D ? ? ? ? 41 83 F8 FF 74 3F 49 63 C0 42 0F B6 0C 18 81 E1", [this](memory::handle ptr)
+		main_batch.add("Script programs", "48 8B 1D ? ? ? ? 41 83 F8 FF", [this](memory::handle ptr)
 		{
-			m_script_program_table = ptr.add(17).rip().as<decltype(m_script_program_table)>();
+			m_script_program_table = ptr.add(3).rip().as<decltype(m_script_program_table)>();
 		});
 
 		main_batch.add("Script globals", "48 8D 15 ? ? ? ? 4C 8B C0 E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)

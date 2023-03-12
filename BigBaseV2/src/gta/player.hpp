@@ -3,7 +3,7 @@
 #include "fwddec.hpp"
 #include "extensible.hpp"
 #include "vector.hpp"
-#include "gta\natives.hpp"
+#include "gta/natives.hpp"
 
 #pragma pack(push, 1)
 namespace rage
