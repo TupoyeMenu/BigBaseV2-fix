@@ -71,6 +71,11 @@ namespace big
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
 
+		main_batch.add("Native Return Spoofer", "FF E3", [this](memory::handle ptr)
+		{
+			m_native_return = ptr.add(0).as<PVOID>();
+		});
+
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

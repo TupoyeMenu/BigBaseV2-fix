@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.20)
 # Crosscompiling
 include(cmake/crosscompile.cmake)
 
-project(BigBaseV2 CXX)
+project(BigBaseV2 CXX ASM_MASM)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
