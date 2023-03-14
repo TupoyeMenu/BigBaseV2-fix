@@ -3,11 +3,11 @@
 
 namespace rage
 {
-	template <typename T>
+	template<typename T>
 	class fwRefAwareBaseImpl : public T
 	{
 	private:
-		void *m_ref; // 0x08
+		void* m_ref; // 0x08
 	};
 
 	class fwRefAwareBase : public fwRefAwareBaseImpl<datBase>

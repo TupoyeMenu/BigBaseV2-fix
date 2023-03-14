@@ -1,10 +1,11 @@
 #pragma once
-#include <cstdint>
-#include <list>
-#include "fwddec.hpp"
 #include "base.hpp"
+#include "fwddec.hpp"
 #include "joaat.hpp"
 #include "script_id.hpp"
+
+#include <cstdint>
+#include <list>
 
 #pragma pack(push, 1)
 namespace rage
@@ -19,9 +20,9 @@ namespace rage
 		std::uint32_t m_local_count;   // 0x24
 		std::uint32_t m_global_count;  // 0x28
 		std::uint32_t m_native_count;  // 0x2C
-		void *m_local_data;            // 0x30
-		std::int64_t **m_global_data;  // 0x38
-		void **m_native_entrypoints;   // 0x40
+		void* m_local_data;            // 0x30
+		std::int64_t** m_global_data;  // 0x38
+		void** m_native_entrypoints;   // 0x40
 		char m_padding6[0x10];         // 0x48
 		std::uint32_t m_name_hash;     // 0x58
 		char m_padding7[0x04];         // 0x5C
@@ -102,17 +103,17 @@ namespace rage
 	class scrProgramTableEntry
 	{
 	public:
-		scrProgram* m_program;     // 0x00
-		char m_Pad1[0x04];         // 0x08
-		joaat_t m_hash;            // 0x0C
+		scrProgram* m_program; // 0x00
+		char m_Pad1[0x04];     // 0x08
+		joaat_t m_hash;        // 0x0C
 	};
 
 	class scrProgramTable
 	{
 	public:
-		scrProgramTableEntry* m_data;    // 0x00
-		char m_padding[0x10];            // 0x08
-		std::uint32_t m_size;            // 0x18
+		scrProgramTableEntry* m_data; // 0x00
+		char m_padding[0x10];         // 0x08
+		std::uint32_t m_size;         // 0x18
 
 		scrProgram* find_script(joaat_t hash)
 		{
@@ -143,4 +144,3 @@ namespace rage
 	static_assert(sizeof(scrProgramTable) == 0x1C);
 }
 #pragma pack(pop)
-

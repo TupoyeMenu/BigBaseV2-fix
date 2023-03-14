@@ -1,5 +1,6 @@
-#include "common.hpp"
 #include "features.hpp"
+
+#include "common.hpp"
 #include "logger.hpp"
 #include "natives.hpp"
 #include "script.hpp"

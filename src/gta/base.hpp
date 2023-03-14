@@ -12,7 +12,8 @@ namespace rage
 	{
 	public:
 		virtual ~pgBase() = default;
+
 	private:
-		void *m_pgunk;
+		void* m_pgunk;
 	};
 }

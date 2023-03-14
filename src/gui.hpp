@@ -12,6 +12,7 @@ namespace big
 		void script_init();
 		void script_on_tick();
 		static void script_func();
+
 	public:
 		bool m_opened{};
 	};

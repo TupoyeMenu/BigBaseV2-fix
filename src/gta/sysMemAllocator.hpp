@@ -8,7 +8,7 @@ namespace rage
 	public:
 		virtual ~sysMemAllocator() = 0;
 
-		virtual void SetQuitOnFail(bool) = 0;
+		virtual void SetQuitOnFail(bool)                                    = 0;
 		virtual void* Allocate(size_t size, size_t align, int subAllocator) = 0;
 
 		inline void* allocate(size_t size, size_t align, int subAllocator)
@@ -42,7 +42,6 @@ namespace rage
 		virtual size_t GetMemoryAvailable() = 0;
 
 	public:
-
 		static sysMemAllocator* UpdateAllocatorValue()
 		{
 			//B9 ? ? ? ? 48 8B 0C 01 45 33 C9 49 8B D2 48
@@ -51,7 +50,7 @@ namespace rage
 			if (g_gtaTlsEntry == nullptr)
 				LOG(FATAL) << "Failed to find tlsEntry within GTA5.exe via __readgsqword";
 
-			*(sysMemAllocator**)(*(uintptr_t*)(__readgsqword(88)) + 0xC8) = g_gtaTlsEntry;
+			*(sysMemAllocator**)(*(uintptr_t*)(__readgsqword(88)) + 0xC8)     = g_gtaTlsEntry;
 			*(sysMemAllocator**)(*(uintptr_t*)(__readgsqword(88)) + 0xC8 - 8) = g_gtaTlsEntry;
 
 			return g_gtaTlsEntry;

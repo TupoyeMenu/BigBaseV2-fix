@@ -1,11 +1,12 @@
+#include "hooking.hpp"
+
 #include "common.hpp"
 #include "function_types.hpp"
-#include "logger.hpp"
 #include "gta/array.hpp"
 #include "gta/player.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
-#include "hooking.hpp"
+#include "logger.hpp"
 #include "memory/module.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
@@ -17,14 +18,11 @@
 
 namespace big
 {
-	static GtaThread *find_script_thread(rage::joaat_t hash)
+	static GtaThread* find_script_thread(rage::joaat_t hash)
 	{
 		for (auto thread : *g_pointers->m_script_threads)
 		{
-			if (thread
-				&& thread->m_context.m_thread_id
-				&& thread->m_handler
-				&& thread->m_script_hash == hash)
+			if (thread && thread->m_context.m_thread_id && thread->m_handler && thread->m_script_hash == hash)
 			{
 				return thread;
 			}
@@ -34,7 +32,7 @@ namespace big
 	}
 
 	hooking::hooking() :
-		m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
+	    m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, (void*)&hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, (void*)&hooks::swapchain_resizebuffers);
@@ -124,7 +122,7 @@ namespace big
 		return g_hooking->get_original<run_script_threads>()(ops_to_execute);
 	}
 
-	HRESULT hooks::swapchain_present(IDXGISwapChain *this_, UINT sync_interval, UINT flags)
+	HRESULT hooks::swapchain_present(IDXGISwapChain* this_, UINT sync_interval, UINT flags)
 	{
 		if (g_running)
 		{
@@ -134,14 +132,13 @@ namespace big
 		return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_present)>(swapchain_present_index)(this_, sync_interval, flags);
 	}
 
-	HRESULT hooks::swapchain_resizebuffers(IDXGISwapChain * this_, UINT buffer_count, UINT width, UINT height, DXGI_FORMAT new_format, UINT swapchain_flags)
+	HRESULT hooks::swapchain_resizebuffers(IDXGISwapChain* this_, UINT buffer_count, UINT width, UINT height, DXGI_FORMAT new_format, UINT swapchain_flags)
 	{
 		if (g_running)
 		{
 			g_renderer->pre_reset();
 
-			auto result = g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)
-				(this_, buffer_count, width, height, new_format, swapchain_flags);
+			auto result = g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)(this_, buffer_count, width, height, new_format, swapchain_flags);
 
 			if (SUCCEEDED(result))
 			{
@@ -151,8 +148,7 @@ namespace big
 			return result;
 		}
 
-		return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)
-			(this_, buffer_count, width, height, new_format, swapchain_flags);
+		return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)(this_, buffer_count, width, height, new_format, swapchain_flags);
 	}
 
 	LRESULT hooks::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)

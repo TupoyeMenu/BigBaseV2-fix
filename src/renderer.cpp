@@ -1,12 +1,14 @@
+#include "renderer.hpp"
+
 #include "common.hpp"
 #include "fonts.hpp"
-#include "logger.hpp"
 #include "gui.hpp"
+#include "logger.hpp"
 #include "pointers.hpp"
-#include "renderer.hpp"
-#include <imgui.h>
+
 #include <backends/imgui_impl_dx11.h>
 #include <backends/imgui_impl_win32.h>
+#include <imgui.h>
 #include <imgui_internal.h>
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -14,9 +16,9 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARA
 namespace big
 {
 	renderer::renderer() :
-		m_dxgi_swapchain(*g_pointers->m_swapchain)
+	    m_dxgi_swapchain(*g_pointers->m_swapchain)
 	{
-		void *d3d_device{};
+		void* d3d_device{};
 		if (SUCCEEDED(m_dxgi_swapchain->GetDevice(__uuidof(ID3D11Device), &d3d_device)))
 		{
 			m_d3d_device.Attach(static_cast<ID3D11Device*>(d3d_device));
@@ -40,11 +42,11 @@ namespace big
 			std::filesystem::create_directory(file_path);
 		}
 		file_path /= "imgui.ini";
-		
+
 		ImGuiContext* ctx = ImGui::CreateContext();
 
 		static std::string path = file_path.make_preferred().string();
-		ctx->IO.IniFilename = path.c_str();
+		ctx->IO.IniFilename     = path.c_str();
 
 		ImGui_ImplDX11_Init(m_d3d_device.Get(), m_d3d_device_context.Get());
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
@@ -122,7 +124,7 @@ namespace big
 
 			g_gui.m_opened ^= true;
 		}
-			
+
 
 		if (g_gui.m_opened)
 		{

@@ -13,14 +13,14 @@ namespace rage
 		return (c >= 'A' && c <= 'Z') ? c + ('a' - 'A') : c;
 	}
 
-	template <std::size_t CharCount>
+	template<std::size_t CharCount>
 	struct constexpr_joaat
 	{
 		char data[CharCount];
 
-		template <std::size_t... Indices>
-		constexpr constexpr_joaat(const char *str, std::index_sequence<Indices...>) :
-			data{ (str[Indices])... }
+		template<std::size_t... Indices>
+		constexpr constexpr_joaat(const char* str, std::index_sequence<Indices...>) :
+		    data{(str[Indices])...}
 		{
 		}
 
@@ -61,7 +61,7 @@ namespace rage
 		return hash;
 	}
 
-	inline joaat_t joaat(const char *str)
+	inline joaat_t joaat(const char* str)
 	{
 		joaat_t hash = 0;
 
@@ -80,5 +80,6 @@ namespace rage
 	}
 }
 
-#define RAGE_JOAAT_IMPL(str) (::rage::constexpr_joaat<sizeof(str) - 1>((str), std::make_index_sequence<sizeof(str) - 1>())())
+#define RAGE_JOAAT_IMPL(str) \
+	(::rage::constexpr_joaat<sizeof(str) - 1>((str), std::make_index_sequence<sizeof(str) - 1>())())
 #define RAGE_JOAAT(str) (std::integral_constant<rage::joaat_t, RAGE_JOAAT_IMPL(str)>::value)

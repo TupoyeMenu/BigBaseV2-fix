@@ -1,22 +1,23 @@
-#include "common.hpp"
 #include "detour_hook.hpp"
+
+#include "common.hpp"
 #include "logger.hpp"
 #include "memory/handle.hpp"
+
 #include <MinHook.h>
 
 namespace big
 {
 	detour_hook::detour_hook(std::string name, void* detour) :
-		m_name(std::move(name)),
-		m_detour(detour)
+	    m_name(std::move(name)),
+	    m_detour(detour)
 	{
-
 	}
 
 	detour_hook::detour_hook(std::string name, void* target, void* detour) :
-		m_name(std::move(name)),
-		m_target(target),
-		m_detour(detour)
+	    m_name(std::move(name)),
+	    m_target(target),
+	    m_detour(detour)
 	{
 		create_hook();
 	}
@@ -65,9 +66,7 @@ namespace big
 
 	DWORD exp_handler(PEXCEPTION_POINTERS exp, std::string const& name)
 	{
-		return exp->ExceptionRecord->ExceptionCode == STATUS_ACCESS_VIOLATION
-			? EXCEPTION_EXECUTE_HANDLER
-			: EXCEPTION_CONTINUE_SEARCH;
+		return exp->ExceptionRecord->ExceptionCode == STATUS_ACCESS_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH;
 	}
 
 	void detour_hook::fix_hook_address()
