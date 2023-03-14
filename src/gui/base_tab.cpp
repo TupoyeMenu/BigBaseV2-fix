@@ -1,11 +1,12 @@
-#include "common.hpp"
 #include "base_tab.h"
-#include "imgui.h"
-#include "script.hpp"
+
+#include "common.hpp"
 #include "fiber_pool.hpp"
-#include "natives.hpp"
 #include "gta_util.hpp"
+#include "imgui.h"
 #include "imguibitfield.h"
+#include "natives.hpp"
+#include "script.hpp"
 
 namespace big
 {
@@ -13,12 +14,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Test"))
 		{
-			const char* const demo_combo[]
-			{
-				"One",
-				"Two",
-				"Three"
-			};
+			const char* const demo_combo[]{"One", "Two", "Three"};
 			const double min = 0., max = 10.;
 
 			//If you want to add a new option, you have to first declare it in settings.h's default_options, otherwise, this code will crash when trying to access an option that does not exist in memory.
@@ -32,11 +28,10 @@ namespace big
 				g_settings.save();
 			if (ImGui::Bitfield("Bitfield", g_settings.options["demo bitset"].get<int64_t*>()))
 				g_settings.save();
-			
+
 			if (ImGui::Button("Spawn an Adder"))
 			{
-				g_fiber_pool->queue_job([]
-				{
+				g_fiber_pool->queue_job([] {
 					constexpr auto hash = RAGE_JOAAT("adder");
 					while (!STREAMING::HAS_MODEL_LOADED(hash))
 					{
@@ -65,15 +60,14 @@ namespace big
 
 			if (ImGui::Button("Test g3log crash within ImGui"))
 			{
-				*((PINT)nullptr) = 0xDEADBEEF;
+				*((PINT) nullptr) = 0xDEADBEEF;
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Test g3log crash within GTA V Script"))
 			{
-				g_fiber_pool->queue_job([]
-				{
+				g_fiber_pool->queue_job([] {
 					//PED::_0xB782F8238512BAD5(PLAYER::PLAYER_PED_ID(), nullptr); //This causes a crash at GTA5.exe+5845356 and nothing of value was in the log in the stack dump because of the context switch to GTA 5's memory. If you encounter something similar, you will have to figure out where the crash occured in the GTA 5 exe, and trace back that native, and figure out which function is calling the native that is crashing.
-					*((PINT)nullptr) = 0xDEADBEEF;
+					*((PINT) nullptr) = 0xDEADBEEF;
 				});
 			}
 

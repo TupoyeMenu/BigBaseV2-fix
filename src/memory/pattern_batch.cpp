@@ -1,6 +1,7 @@
+#include "pattern_batch.hpp"
+
 #include "common.hpp"
 #include "logger.hpp"
-#include "pattern_batch.hpp"
 #include "range.hpp"
 
 namespace memory
@@ -20,7 +21,8 @@ namespace memory
 				if (entry.m_callback)
 				{
 					std::invoke(std::move(entry.m_callback), result);
-					LOG(big::INFO_TO_FILE) << "Found '" << entry.m_name << "' GTA5.exe+" << HEX_TO_UPPER(result.as<DWORD64>() - region.begin().as<DWORD64>());
+					LOG(big::INFO_TO_FILE) << "Found '" << entry.m_name << "' GTA5.exe+"
+					                       << HEX_TO_UPPER(result.as<DWORD64>() - region.begin().as<DWORD64>());
 				}
 				else
 				{

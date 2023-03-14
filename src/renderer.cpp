@@ -1,22 +1,25 @@
+#include "renderer.hpp"
+
 #include "common.hpp"
 #include "fonts.hpp"
-#include "logger.hpp"
 #include "gui.hpp"
+#include "logger.hpp"
 #include "pointers.hpp"
-#include "renderer.hpp"
-#include <imgui.h>
+
 #include <backends/imgui_impl_dx11.h>
 #include <backends/imgui_impl_win32.h>
+#include <imgui.h>
 #include <imgui_internal.h>
+
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace big
 {
 	renderer::renderer() :
-		m_dxgi_swapchain(*g_pointers->m_swapchain)
+	    m_dxgi_swapchain(*g_pointers->m_swapchain)
 	{
-		void *d3d_device{};
+		void* d3d_device{};
 		if (SUCCEEDED(m_dxgi_swapchain->GetDevice(__uuidof(ID3D11Device), &d3d_device)))
 		{
 			m_d3d_device.Attach(static_cast<ID3D11Device*>(d3d_device));
@@ -40,11 +43,11 @@ namespace big
 			std::filesystem::create_directory(file_path);
 		}
 		file_path /= "imgui.ini";
-		
+
 		ImGuiContext* ctx = ImGui::CreateContext();
 
 		static std::string path = file_path.make_preferred().string();
-		ctx->IO.IniFilename = path.c_str();
+		ctx->IO.IniFilename     = path.c_str();
 
 		ImGui_ImplDX11_Init(m_d3d_device.Get(), m_d3d_device_context.Get());
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
@@ -130,7 +133,7 @@ namespace big
 
 			g_gui.m_opened ^= true;
 		}
-			
+
 
 		if (g_gui.m_opened)
 		{
@@ -144,37 +147,37 @@ namespace big
 
 // Construct
 StateSaver::StateSaver() :
-	m_savedState(false),
-	m_featureLevel(D3D_FEATURE_LEVEL_11_0),
-	m_pContext(NULL),
-	m_primitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED),
-	m_pInputLayout(NULL),
-	m_pBlendState(NULL),
-	m_sampleMask(0xffffffff),
-	m_pDepthStencilState(NULL),
-	m_stencilRef(0),
-	m_pRasterizerState(NULL),
-	m_pPSSRV(NULL),
-	m_pSamplerState(NULL),
-	m_pVS(NULL),
-	m_numVSClassInstances(0),
-	m_pVSConstantBuffer(NULL),
-	m_pGS(NULL),
-	m_numGSClassInstances(0),
-	m_pGSConstantBuffer(NULL),
-	m_pGSSRV(NULL),
-	m_pPS(NULL),
-	m_numPSClassInstances(0),
-	m_pHS(NULL),
-	m_numHSClassInstances(0),
-	m_pDS(NULL),
-	m_numDSClassInstances(0),
-	m_pVB(NULL),
-	m_vertexStride(0),
-	m_vertexOffset(0),
-	m_pIndexBuffer(NULL),
-	m_indexFormat(DXGI_FORMAT_UNKNOWN),
-	m_indexOffset(0)
+    m_savedState(false),
+    m_featureLevel(D3D_FEATURE_LEVEL_11_0),
+    m_pContext(NULL),
+    m_primitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED),
+    m_pInputLayout(NULL),
+    m_pBlendState(NULL),
+    m_sampleMask(0xffffffff),
+    m_pDepthStencilState(NULL),
+    m_stencilRef(0),
+    m_pRasterizerState(NULL),
+    m_pPSSRV(NULL),
+    m_pSamplerState(NULL),
+    m_pVS(NULL),
+    m_numVSClassInstances(0),
+    m_pVSConstantBuffer(NULL),
+    m_pGS(NULL),
+    m_numGSClassInstances(0),
+    m_pGSConstantBuffer(NULL),
+    m_pGSSRV(NULL),
+    m_pPS(NULL),
+    m_numPSClassInstances(0),
+    m_pHS(NULL),
+    m_numHSClassInstances(0),
+    m_pDS(NULL),
+    m_numDSClassInstances(0),
+    m_pVB(NULL),
+    m_vertexStride(0),
+    m_vertexOffset(0),
+    m_pIndexBuffer(NULL),
+    m_indexFormat(DXGI_FORMAT_UNKNOWN),
+    m_indexOffset(0)
 {
 	for (int i = 0; i < 4; ++i)
 	{
@@ -199,8 +202,10 @@ StateSaver::~StateSaver()
 // Save all states that are changed by the font-wrapper when drawing a string
 bool StateSaver::saveCurrentState(ID3D11DeviceContext* pContext)
 {
-	if (m_savedState) releaseSavedState();
-	if (pContext == NULL) return false;
+	if (m_savedState)
+		releaseSavedState();
+	if (pContext == NULL)
+		return false;
 
 	ID3D11Device* pDevice;
 	pContext->GetDevice(&pDevice);
@@ -261,7 +266,8 @@ bool StateSaver::saveCurrentState(ID3D11DeviceContext* pContext)
 // Restore state
 bool StateSaver::restoreSavedState()
 {
-	if (!m_savedState) return false;
+	if (!m_savedState)
+		return false;
 
 	m_pContext->IASetPrimitiveTopology(m_primitiveTopology);
 	m_pContext->IASetInputLayout(m_pInputLayout);
@@ -301,7 +307,7 @@ bool StateSaver::restoreSavedState()
 }
 
 /* General Misc */
-template <typename T>
+template<typename T>
 inline void SafeRelease(T*& p)
 {
 	if (nullptr != p)

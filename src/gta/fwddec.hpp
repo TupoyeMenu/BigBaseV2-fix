@@ -2,7 +2,7 @@
 
 namespace rage
 {
-	template <typename T>
+	template<typename T>
 	class atArray;
 
 	class datBitBuffer;
@@ -32,7 +32,7 @@ namespace rage
 	class netEventMgr;
 
 	class netSyncTree;
-	
+
 	class netObject;
 	class netObjectMgrBase;
 

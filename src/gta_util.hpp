@@ -9,7 +9,7 @@
 
 namespace big::gta_util
 {
-	inline CPed *get_local_ped()
+	inline CPed* get_local_ped()
 	{
 		if (auto ped_factory = *g_pointers->m_ped_factory)
 		{
@@ -19,7 +19,7 @@ namespace big::gta_util
 		return nullptr;
 	}
 
-	inline CPlayerInfo *get_local_playerinfo()
+	inline CPlayerInfo* get_local_playerinfo()
 	{
 		if (auto ped_factory = *g_pointers->m_ped_factory)
 		{
@@ -32,8 +32,8 @@ namespace big::gta_util
 		return nullptr;
 	}
 
-	template <typename F, typename ...Args>
-	void execute_as_script(rage::joaat_t script_hash, F &&callback, Args &&...args)
+	template<typename F, typename... Args>
+	void execute_as_script(rage::joaat_t script_hash, F&& callback, Args&&... args)
 	{
 		auto tls_ctx = rage::tlsContext::get();
 		for (auto thread : *g_pointers->m_script_threads)
@@ -43,12 +43,12 @@ namespace big::gta_util
 
 			auto og_thread = tls_ctx->m_script_thread;
 
-			tls_ctx->m_script_thread = thread;
+			tls_ctx->m_script_thread           = thread;
 			tls_ctx->m_is_script_thread_active = true;
 
 			std::invoke(std::forward<F>(callback), std::forward<Args>(args)...);
 
-			tls_ctx->m_script_thread = og_thread;
+			tls_ctx->m_script_thread           = og_thread;
 			tls_ctx->m_is_script_thread_active = og_thread != nullptr;
 
 			return;

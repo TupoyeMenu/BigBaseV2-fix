@@ -1,5 +1,6 @@
 #pragma once
 #include "common.hpp"
+
 #include <imgui.h>
 #include <set>
 
@@ -76,9 +77,11 @@ namespace big
 		bool remove_callback(PresentCallback callback) { return m_present_callbacks.erase(callback) != 0; }
 
 		void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+
 	public:
-		ImFont *m_font;
-		ImFont *m_monospace_font;
+		ImFont* m_font;
+		ImFont* m_monospace_font;
+
 	private:
 		comptr<IDXGISwapChain> m_dxgi_swapchain;
 		comptr<ID3D11Device> m_d3d_device;
@@ -88,5 +91,5 @@ namespace big
 		bool m_restoreState = false;
 	};
 
-	inline renderer *g_renderer{};
+	inline renderer* g_renderer{};
 }

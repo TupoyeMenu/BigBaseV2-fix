@@ -1,11 +1,13 @@
-#include "common.hpp"
 #include "range.hpp"
+
+#include "common.hpp"
 #include "pattern.hpp"
 
 namespace memory
 {
 	range::range(handle base, std::size_t size) :
-		m_base(base), m_size(size)
+	    m_base(base),
+	    m_size(size)
 	{
 	}
 
@@ -40,9 +42,9 @@ namespace memory
 		return true;
 	};
 
-	handle range::scan(pattern const &sig)
+	handle range::scan(pattern const& sig)
 	{
-		auto data = sig.m_bytes.data();
+		auto data   = sig.m_bytes.data();
 		auto length = sig.m_bytes.size();
 		for (std::uintptr_t i = 0; i < m_size - length; ++i)
 		{
@@ -55,11 +57,11 @@ namespace memory
 		return nullptr;
 	}
 
-	std::vector<handle> range::scan_all(pattern const &sig)
+	std::vector<handle> range::scan_all(pattern const& sig)
 	{
 		std::vector<handle> result;
 
-		auto data = sig.m_bytes.data();
+		auto data   = sig.m_bytes.data();
 		auto length = sig.m_bytes.size();
 		for (std::uintptr_t i = 0; i < m_size - length; ++i)
 		{

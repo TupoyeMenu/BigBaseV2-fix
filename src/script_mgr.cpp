@@ -1,3 +1,5 @@
+#include "script_mgr.hpp"
+
 #include "common.hpp"
 #include "gta/array.hpp"
 #include "gta/script_thread.hpp"
@@ -5,7 +7,6 @@
 #include "gta_util.hpp"
 #include "invoker.hpp"
 #include "pointers.hpp"
-#include "script_mgr.hpp"
 
 namespace big
 {
@@ -28,11 +29,11 @@ namespace big
 
 	void script_mgr::tick_internal()
 	{
-		static bool ensure_main_fiber = (ConvertThreadToFiber(nullptr), true);
+		static bool ensure_main_fiber      = (ConvertThreadToFiber(nullptr), true);
 		static bool ensure_native_handlers = (g_native_invoker.cache_handlers(), true);
 
 		std::lock_guard lock(m_mutex);
-		for (auto const &script : m_scripts)
+		for (auto const& script : m_scripts)
 		{
 			script->tick();
 		}

@@ -8,11 +8,11 @@ namespace big
 	{
 	public:
 		explicit settings() = default;
-		~settings() = default;
+		~settings()         = default;
 
 		nlohmann::json options;
 		nlohmann::json default_options =
-		R"({
+		    R"({
 			"demo bool": false,
 			"demo int": 1,
 			"demo double": 1.0,
@@ -51,10 +51,9 @@ namespace big
 			{
 				if (options.count(e.key()) == 0)
 				{
-					should_save = true;
+					should_save      = true;
 					options[e.key()] = e.value();
 				}
-					
 			}
 
 			if (should_save)

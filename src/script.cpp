@@ -1,6 +1,7 @@
+#include "script.hpp"
+
 #include "common.hpp"
 #include "logger.hpp"
-#include "script.hpp"
 
 namespace big
 {
@@ -18,15 +19,17 @@ namespace big
 	}
 
 	script::script(func_t func, std::optional<std::size_t> stack_size) :
-		m_func(func),
-		m_script_fiber(nullptr),
-		m_main_fiber(nullptr)
+	    m_func(func),
+	    m_script_fiber(nullptr),
+	    m_main_fiber(nullptr)
 	{
-		m_script_fiber = CreateFiber(stack_size.has_value() ? stack_size.value() : 0, [](void* param)
-		{
-			auto this_script = static_cast<script*>(param);
-			this_script->fiber_func();
-		}, this);
+		m_script_fiber = CreateFiber(
+		    stack_size.has_value() ? stack_size.value() : 0,
+		    [](void* param) {
+			    auto this_script = static_cast<script*>(param);
+			    this_script->fiber_func();
+		    },
+		    this);
 	}
 
 	script::~script()

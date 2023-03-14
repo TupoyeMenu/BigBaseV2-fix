@@ -14,10 +14,11 @@ namespace big
 		~script_hook();
 
 		void ensure();
-	private:
-		void hook_instance(rage::scrProgram *program);
 
-		static void scrprogram_dtor(rage::scrProgram *this_, bool free_memory);
+	private:
+		void hook_instance(rage::scrProgram* program);
+
+		static void scrprogram_dtor(rage::scrProgram* this_, bool free_memory);
 		static std::unordered_map<rage::scrProgram*, script_hook*> s_map;
 
 		rage::joaat_t m_script_hash;

@@ -1,9 +1,10 @@
+#include "script_hook.hpp"
+
 #include "common.hpp"
 #include "crossmap.hpp"
 #include "gta/script_program.hpp"
 #include "logger.hpp"
 #include "pointers.hpp"
-#include "script_hook.hpp"
 
 namespace big
 {
@@ -24,8 +25,8 @@ namespace big
 	}
 
 	script_hook::script_hook(rage::joaat_t script_hash, std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> native_replacements) :
-		m_script_hash(script_hash),
-		m_native_replacements(std::move(native_replacements))
+	    m_script_hash(script_hash),
+	    m_native_replacements(std::move(native_replacements))
 	{
 		ensure();
 	}
@@ -37,7 +38,7 @@ namespace big
 			for (auto [hash, handler_ptr] : m_native_handler_ptrs)
 			{
 				auto og_handler = g_pointers->m_get_native_handler(g_pointers->m_native_registration_table, hash);
-				*handler_ptr = og_handler;
+				*handler_ptr    = og_handler;
 			}
 		}
 
