@@ -101,6 +101,7 @@ namespace big
 		{
 			ImGui::BeginTabBar("tabbar");
 			base_tab::render_base_tab();
+			base_tab::render_open_hook_tab();
 
 			ImGui::ShowDemoWindow();
 
