@@ -1,0 +1,51 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  ci_mingw:
+      runs-on: ubuntu-latest
+      container: ghcr.io/yimmenu/yimmenu:latest
+      name: CI MinGW
+      steps:
+        - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+        - uses: actions/checkout@v3
+
+        - name: Cache build/
+          id: cache-build
+          uses: actions/cache@v3
+          with:
+            path: build
+            key: ${{ runner.os }}-build
+
+        - name: Generate CMake project
+          run: cmake -DCMAKE_BUILD_TYPE:STRING=Release -S. -Bbuild -DCROSSCOMPILE:BOOL=TRUE -DUSE_GCC:BOOL=TRUE -G Ninja
+
+        - name: Build 64bit release DLL
+          run: cmake --build build --config Release
+
+  ci_msvc:
+    runs-on: windows-latest
+    name: CI MSVC
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check CMake version
+        run: cmake --version
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Cache build/
+        id: cache-build
+        uses: actions/cache@v3
+        with:
+          path: build
+          key: ${{ runner.os }}-build
+
+      - name: Generate CMake project
+        run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release
+
+      - name: Build 64bit release DLL
+        run: cmake --build build --config Release --target ALL_BUILD
