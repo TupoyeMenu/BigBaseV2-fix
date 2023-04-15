@@ -20,8 +20,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		    nullptr,
 		    0,
 		    [](PVOID) -> DWORD {
+#ifdef _MSC_VER // L
+			    while (!FindWindow("grcWindow", "Grand Theft Auto V"))
+				    std::this_thread::sleep_for(1s);
+#else
 			    while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
 				    std::this_thread::sleep_for(1s);
+#endif // _MSC_VER
 
 			    auto logger_instance = std::make_unique<logger>();
 			    try
