@@ -22,20 +22,21 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		    nullptr,
 		    0,
 		    [](PVOID) -> DWORD {
+				bool cant_find_window;
 #ifdef _MSC_VER // L
 			    while (!FindWindow("grcWindow", "Grand Theft Auto V"))
-				{
-					cant_find_window = true;
+			    {
+				    cant_find_window = true;
 				    std::this_thread::sleep_for(1s);
-				}
+			    }
 #else
 			    while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
-				{
-					cant_find_window = true;
+			    {
+				    cant_find_window = true;
 				    std::this_thread::sleep_for(1s);
-				}
+			    }
 #endif // _MSC_VER
-					if (cant_find_window)
+			    if (cant_find_window)
 				    std::this_thread::sleep_for(20s);
 
 			    auto logger_instance = std::make_unique<logger>();
