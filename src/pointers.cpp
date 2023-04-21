@@ -69,6 +69,14 @@ namespace big
 			m_native_return = ptr.add(0).as<PVOID>();
 		});
 
+		main_batch.add("Ptr To Handle", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr) {
+			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
+		});
+
+		main_batch.add("Handle To Ptr", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr) {
+			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
+		});
+
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

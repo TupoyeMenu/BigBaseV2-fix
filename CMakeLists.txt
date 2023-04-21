@@ -16,7 +16,7 @@ include(cmake/fmt.cmake)
 
 message("\nFetching custom modules")
 include(cmake/imgui.cmake)
-# include(cmake/gtav-classes.cmake)
+include(cmake/gtav-classes.cmake)
 
 
 # BigBaseV2
@@ -40,7 +40,7 @@ source_group(TREE ${SRC_DIR} PREFIX "src" FILES ${SRC_MAIN} )
 target_include_directories(BigBaseV2 PRIVATE 
     "${SRC_DIR}"
     "${json_SOURCE_DIR}/single_include"
-#     "${gtav_classes_SOURCE_DIR}"
+    "${gtav_classes_SOURCE_DIR}"
     "${imgui_SOURCE_DIR}"
 )
 

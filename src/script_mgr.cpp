@@ -1,8 +1,6 @@
 #include "script_mgr.hpp"
 
 #include "common.hpp"
-#include "gta/array.hpp"
-#include "gta/script_thread.hpp"
 #include "gta/tls_context.hpp"
 #include "gta_util.hpp"
 #include "invoker.hpp"

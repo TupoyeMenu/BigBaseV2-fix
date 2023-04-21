@@ -13,6 +13,7 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 
+
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
 	using namespace big;

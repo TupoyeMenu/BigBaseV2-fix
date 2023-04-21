@@ -2,7 +2,6 @@
 
 #include "common.hpp"
 #include "fiber_pool.hpp"
-#include "gta/player.hpp"
 #include "gta_util.hpp"
 #include "gui/base_tab.h"
 #include "logger.hpp"

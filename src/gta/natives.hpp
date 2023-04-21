@@ -1,8 +1,8 @@
 #pragma once
 #include "fwddec.hpp"
-#include "vector.hpp"
 
 #include <cstdint>
+#include <script/types.hpp>
 #include <utility>
 
 namespace rage
@@ -49,6 +49,17 @@ namespace rage
 			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(m_return_value) = std::forward<T>(value);
 		}
 
+		template<typename T>
+		void set_return_value(T& value)
+		{
+			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(m_return_value) = std::forward<T>(value);
+		}
+
+		PVOID get_return_pointer()
+		{
+			return m_return_value;
+		}
+
 	protected:
 		void* m_return_value;
 		std::uint32_t m_arg_count;
@@ -56,12 +67,51 @@ namespace rage
 		std::int32_t m_data_count;
 		std::uint32_t m_data[48];
 	};
-
+	static_assert(sizeof(scrNativeCallContext) == 0xE0);
 	using scrNativeHash    = std::uint64_t;
 	using scrNativeMapping = std::pair<scrNativeHash, scrNativeHash>;
 	using scrNativeHandler = void (*)(scrNativeCallContext*);
 
-	class scrNativeRegistration;
+	class scrNativeRegistration
+	{
+	public:
+		uint64_t m_nextRegistration1;
+		uint64_t m_nextRegistration2;
+		void* m_handlers[7];
+		uint32_t m_numEntries1;
+		uint32_t m_numEntries2;
+		uint64_t m_hashes;
+		scrNativeRegistration* get_next_registration()
+		{
+			std::uintptr_t result;
+			auto nextReg         = uintptr_t(&m_nextRegistration1);
+			auto newReg          = nextReg ^ m_nextRegistration2;
+			auto charTableOfRegs = (char*)&result - nextReg;
+			for (auto i = 0; i < 3; i++)
+			{
+				*(DWORD*)&charTableOfRegs[nextReg] = static_cast<DWORD>(newReg) ^ *(DWORD*)nextReg;
+				nextReg += 4;
+			}
+			return reinterpret_cast<scrNativeRegistration*>(result);
+		}
+		std::uint32_t get_num_entries()
+		{
+			return static_cast<std::uint32_t>(((std::uintptr_t)&m_numEntries1) ^ m_numEntries1 ^ m_numEntries2);
+		}
+		std::uint64_t get_hash(std::uint32_t index)
+		{
+			auto nativeAddress = 16 * index + std::uintptr_t(&m_nextRegistration1) + 0x54;
+			std::uint64_t result;
+			auto charTableOfRegs = (char*)&result - nativeAddress;
+			auto addressIndex    = nativeAddress ^ *(DWORD*)(nativeAddress + 8);
+			for (auto i = 0; i < 3; i++)
+			{
+				*(DWORD*)&charTableOfRegs[nativeAddress] = static_cast<DWORD>(addressIndex ^ *(DWORD*)(nativeAddress));
+				nativeAddress += 4;
+			}
+			return result;
+		}
+	};
 
 #pragma pack(push, 1)
 	class scrNativeRegistrationTable
@@ -71,23 +121,4 @@ namespace rage
 		bool m_initialized;
 	};
 #pragma pack(pop)
-
-	static_assert(sizeof(scrNativeCallContext) == 0xE0);
 }
-
-using Void      = void;
-using Any       = std::uint32_t;
-using Hash      = std::uint32_t;
-using Entity    = std::int32_t;
-using Player    = std::int32_t;
-using FireId    = std::int32_t;
-using Interior  = std::int32_t;
-using Ped       = Entity;
-using Vehicle   = Entity;
-using Cam       = std::int32_t;
-using Object    = Entity;
-using Pickup    = Object;
-using Blip      = std::int32_t;
-using Camera    = Entity;
-using ScrHandle = Entity;
-using Vector3   = rage::scrVector;
