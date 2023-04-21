@@ -1,3 +1,10 @@
+/**
+ * @file natives.hpp
+ * @brief Native definitions file.
+ * To update this file generate natives.hpp file from [natives.json](https://github.com/alloc8or/gta5-nativedb-data).
+ * For better documentation and generation of natives.hpp go to a website like https://nativedb.spyral.dev.
+ */
+
 #pragma once
 #include "common.hpp"
 #include "gta/natives.hpp"

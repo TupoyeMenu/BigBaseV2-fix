@@ -1,3 +1,8 @@
+/**
+ * @file pointers.cpp
+ * @brief All the signature scans are here.
+ */
+
 #include "pointers.hpp"
 
 #include "common.hpp"

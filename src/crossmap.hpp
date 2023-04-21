@@ -1,3 +1,8 @@
+/**
+ * @file crossmap.hpp
+ * @brief Native hash crossmap.
+ */
+
 #pragma once
 #include "gta/natives.hpp"
 

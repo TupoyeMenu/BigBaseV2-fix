@@ -1,3 +1,8 @@
+/**
+ * @file main.cpp
+ * @brief File with the DllMain function, used for initialization.
+ */
+
 #include "common.hpp"
 #include "features.hpp"
 #include "fiber_pool.hpp"
@@ -62,9 +67,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    LOG(INFO) << "Hooking enabled.";
 
 				    while (g_running)
-				    {
 					    std::this_thread::sleep_for(500ms);
-				    }
 
 				    g_hooking->disable();
 				    LOG(INFO) << "Hooking disabled.";

@@ -1,7 +1,12 @@
+/**
+ * @file renderer.cpp
+ * @brief General rendering and ImGui initialization.
+ */
+
 #include "renderer.hpp"
 
 #include "common.hpp"
-#include "fonts.hpp"
+#include "fonts/fonts.hpp"
 #include "gui.hpp"
 #include "logger.hpp"
 #include "pointers.hpp"
