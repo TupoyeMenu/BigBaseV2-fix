@@ -3,6 +3,8 @@
 #include "common.hpp"
 #include "function_types.hpp"
 #include "gta/enums.hpp"
+#include "gta/fwddec.hpp"
+#include <player/CPlayerInfo.hpp>
 
 namespace big
 {
@@ -29,7 +31,6 @@ namespace big
 		rage::scrProgramTable* m_script_program_table{};
 		functions::run_script_threads_t m_run_script_threads{};
 		functions::register_file_t m_register_file{};
-		functions::get_script_handle_t m_get_script_handle{};
 		std::int64_t** m_script_globals{};
 
 		rage::GenericPool* m_ped_pool{};
@@ -44,6 +45,9 @@ namespace big
 
 		PVOID m_model_spawn_bypass;
 		PVOID m_native_return;
+
+		functions::ptr_to_handle m_ptr_to_handle{};
+		functions::handle_to_ptr m_handle_to_ptr{};
 	};
 
 	inline pointers* g_pointers{};

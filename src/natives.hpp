@@ -1,7 +1,13 @@
+/**
+ * @file natives.hpp
+ * @brief Native definitions file.
+ * To update this file generate natives.hpp file from [natives.json](https://github.com/alloc8or/gta5-nativedb-data).
+ * For better documentation and generation of natives.hpp go to a website like https://nativedb.spyral.dev.
+ */
+
 #pragma once
 #include "common.hpp"
 #include "gta/natives.hpp"
-#include "gta/vector.hpp"
 #include "invoker.hpp"
 
 template <typename Ret, typename ...Args>
@@ -19,7 +25,7 @@ FORCEINLINE Ret invoke(rage::scrNativeHash hash, Args&& ...args)
 	}
 }
 
-// Generated on 3/12/2023, 3:23:18 PM
+// Generated on 4/22/2023, 6:56:51 AM
 // https://nativedb.spyral.dev
 
 namespace SYSTEM
@@ -3317,10 +3323,10 @@ namespace NETWORK
 	static BOOL IS_NETWORK_ID_OWNED_BY_PARTICIPANT(int netId) { return invoke<BOOL>(0xA1607996431332DF, netId); } // 0xA1607996431332DF 0xEA5176C0 b323
 	static void SET_REMOTE_PLAYER_VISIBLE_IN_CUTSCENE(Player player, BOOL locallyVisible) { invoke<void>(0x96320E6549DAE7B4, player, locallyVisible); } // 0x96320E6549DAE7B4  b2802
 	static void SET_LOCAL_PLAYER_VISIBLE_IN_CUTSCENE(BOOL p0, BOOL p1) { invoke<void>(0xD1065D68947E7B6E, p0, p1); } // 0xD1065D68947E7B6E 0x59F3479B b323
-	static void SET_LOCAL_PLAYER_INVISIBLE_LOCALLY(BOOL p0) { invoke<void>(0xE5F773C1A1D9D168, p0); } // 0xE5F773C1A1D9D168 0x764F6222 b323
-	static void SET_LOCAL_PLAYER_VISIBLE_LOCALLY(BOOL p0) { invoke<void>(0x7619364C82D3BF14, p0); } // 0x7619364C82D3BF14 0x324B56DB b323
-	static void SET_PLAYER_INVISIBLE_LOCALLY(Player player, BOOL toggle) { invoke<void>(0x12B37D54667DB0B8, player, toggle); } // 0x12B37D54667DB0B8 0x18227209 b323
-	static void SET_PLAYER_VISIBLE_LOCALLY(Player player, BOOL toggle) { invoke<void>(0xFAA10F1FAFB11AF2, player, toggle); } // 0xFAA10F1FAFB11AF2 0xBA2BB4B4 b323
+	static void SET_LOCAL_PLAYER_INVISIBLE_LOCALLY(BOOL bIncludePlayersVehicle) { invoke<void>(0xE5F773C1A1D9D168, bIncludePlayersVehicle); } // 0xE5F773C1A1D9D168 0x764F6222 b323
+	static void SET_LOCAL_PLAYER_VISIBLE_LOCALLY(BOOL bIncludePlayersVehicle) { invoke<void>(0x7619364C82D3BF14, bIncludePlayersVehicle); } // 0x7619364C82D3BF14 0x324B56DB b323
+	static void SET_PLAYER_INVISIBLE_LOCALLY(Player player, BOOL bIncludePlayersVehicle) { invoke<void>(0x12B37D54667DB0B8, player, bIncludePlayersVehicle); } // 0x12B37D54667DB0B8 0x18227209 b323
+	static void SET_PLAYER_VISIBLE_LOCALLY(Player player, BOOL bIncludePlayersVehicle) { invoke<void>(0xFAA10F1FAFB11AF2, player, bIncludePlayersVehicle); } // 0xFAA10F1FAFB11AF2 0xBA2BB4B4 b323
 	static void FADE_OUT_LOCAL_PLAYER(BOOL p0) { invoke<void>(0x416DBD4CD6ED8DD2, p0); } // 0x416DBD4CD6ED8DD2 0x8FA7CEBD b323
 	static void NETWORK_FADE_OUT_ENTITY(Entity entity, BOOL normal, BOOL slow) { invoke<void>(0xDE564951F95E09ED, entity, normal, slow); } // 0xDE564951F95E09ED 0x47EDEE56 b323
 	static void NETWORK_FADE_IN_ENTITY(Entity entity, BOOL state, Any p2) { invoke<void>(0x1F4ED342ACEFE62D, entity, state, p2); } // 0x1F4ED342ACEFE62D 0x9B9FCD02 b323
@@ -3987,7 +3993,7 @@ namespace PED
 	static void SET_PED_ALLOW_HURT_COMBAT_FOR_ALL_MISSION_PEDS(BOOL toggle) { invoke<void>(0xF2BEBCDFAFDAA19E, toggle); } // 0xF2BEBCDFAFDAA19E 0x6CD58238 b323
 	static BOOL IS_PED_MALE(Ped ped) { return invoke<BOOL>(0x6D9F5FAA7488BA46, ped); } // 0x6D9F5FAA7488BA46 0x90950455 b323
 	static BOOL IS_PED_HUMAN(Ped ped) { return invoke<BOOL>(0xB980061DA992779D, ped); } // 0xB980061DA992779D 0x194BB7B0 b323
-	static Vehicle GET_VEHICLE_PED_IS_IN(Ped ped, BOOL includeLastVehicle) { return invoke<Vehicle>(0x9A9112A0FE9A4713, ped, includeLastVehicle); } // 0x9A9112A0FE9A4713 0xAFE92319 b323
+	static Vehicle GET_VEHICLE_PED_IS_IN(Ped ped, BOOL includeEntering) { return invoke<Vehicle>(0x9A9112A0FE9A4713, ped, includeEntering); } // 0x9A9112A0FE9A4713 0xAFE92319 b323
 	static void RESET_PED_LAST_VEHICLE(Ped ped) { invoke<void>(0xBB8DE8CF6A8DD8BB, ped); } // 0xBB8DE8CF6A8DD8BB 0x5E3B5942 b323
 	static void SET_PED_DENSITY_MULTIPLIER_THIS_FRAME(float multiplier) { invoke<void>(0x95E3D6257B166CF2, multiplier); } // 0x95E3D6257B166CF2 0x039C82BB b323
 	static void SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(float p0, float p1) { invoke<void>(0x7A556143A1C03898, p0, p1); } // 0x7A556143A1C03898 0x2909ABF0 b323
@@ -5885,7 +5891,7 @@ namespace VEHICLE
 	static BOOL GET_SUBMARINE_IS_UNDER_DESIGN_DEPTH(Vehicle submarine) { return invoke<BOOL>(0x3E71D0B300B7AA79, submarine); } // 0x3E71D0B300B7AA79  b2189
 	static int GET_SUBMARINE_NUMBER_OF_AIR_LEAKS(Vehicle submarine) { return invoke<int>(0x093D6DDCA5B8FBAE, submarine); } // 0x093D6DDCA5B8FBAE  b2189
 	static void SET_BOAT_IGNORE_LAND_PROBES(Any p0, Any p1) { invoke<void>(0xED5EDE9E676643C9, p0, p1); } // 0xED5EDE9E676643C9  b944
-	static void N0x85FC953F6C6CBDE1(Vehicle vehicle, BOOL p1) { invoke<void>(0x85FC953F6C6CBDE1, vehicle, p1); } // 0x85FC953F6C6CBDE1  b2802
+	static void SET_BOUNDS_AFFECT_WATER_PROBES_(Vehicle vehicle, BOOL toggle) { invoke<void>(0x85FC953F6C6CBDE1, vehicle, toggle); } // 0x85FC953F6C6CBDE1  b2802
 	static void SET_BOAT_ANCHOR(Vehicle vehicle, BOOL toggle) { invoke<void>(0x75DBEC174AEEAD10, vehicle, toggle); } // 0x75DBEC174AEEAD10 0xA3906284 b323
 	static BOOL CAN_ANCHOR_BOAT_HERE(Vehicle vehicle) { return invoke<BOOL>(0x26C10ECBDA5D043B, vehicle); } // 0x26C10ECBDA5D043B 0xE97A4F5E b323
 	static BOOL CAN_ANCHOR_BOAT_HERE_IGNORE_PLAYERS(Vehicle vehicle) { return invoke<BOOL>(0x24F4121D07579880, vehicle); } // 0x24F4121D07579880  b678

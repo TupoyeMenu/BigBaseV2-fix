@@ -4,7 +4,7 @@
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "imgui.h"
-#include "imguibitfield.h"
+#include "widgets/imgui_bitfield.h"
 #include "natives.hpp"
 #include "script.hpp"
 

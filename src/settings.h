@@ -1,6 +1,5 @@
 #pragma once
 #include "common.hpp"
-#include "gta/player.hpp"
 
 namespace big
 {

@@ -1,3 +1,8 @@
+/**
+ * @file features.cpp
+ * @brief Put looped features here.
+ */
+
 #include "features.hpp"
 
 #include "common.hpp"
@@ -7,6 +12,9 @@
 
 namespace big
 {
+	/**
+	 * @brief This function will run every game tick.
+	 */
 	void features::run_tick()
 	{
 	}

@@ -52,6 +52,9 @@
 
 #include "settings.h"
 
+#include <gta/natives.hpp>
+#include <ped/CPed.hpp>
+
 namespace big
 {
 	using namespace std::chrono_literals;

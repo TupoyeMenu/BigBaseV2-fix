@@ -1,9 +1,12 @@
+/**
+ * @file hooking.cpp
+ * @brief Hooking initialization.
+ */
+
 #include "hooking.hpp"
 
 #include "common.hpp"
 #include "function_types.hpp"
-#include "gta/array.hpp"
-#include "gta/player.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
 #include "logger.hpp"
@@ -13,24 +16,8 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 
-#include "asi_loader/script_manager.hpp"
-#include <MinHook.h>
-
 namespace big
 {
-	static GtaThread* find_script_thread(rage::joaat_t hash)
-	{
-		for (auto thread : *g_pointers->m_script_threads)
-		{
-			if (thread && thread->m_context.m_thread_id && thread->m_handler && thread->m_script_hash == hash)
-			{
-				return thread;
-			}
-		}
-
-		return nullptr;
-	}
-
 	hooking::hooking() :
 	    m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
 	{
@@ -120,45 +107,5 @@ namespace big
 		}
 
 		return g_hooking->get_original<run_script_threads>()(ops_to_execute);
-	}
-
-	HRESULT hooks::swapchain_present(IDXGISwapChain* this_, UINT sync_interval, UINT flags)
-	{
-		if (g_running)
-		{
-			g_renderer->on_present();
-		}
-
-		return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_present)>(swapchain_present_index)(this_, sync_interval, flags);
-	}
-
-	HRESULT hooks::swapchain_resizebuffers(IDXGISwapChain* this_, UINT buffer_count, UINT width, UINT height, DXGI_FORMAT new_format, UINT swapchain_flags)
-	{
-		if (g_running)
-		{
-			g_renderer->pre_reset();
-
-			auto result = g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)(this_, buffer_count, width, height, new_format, swapchain_flags);
-
-			if (SUCCEEDED(result))
-			{
-				g_renderer->post_reset();
-			}
-
-			return result;
-		}
-
-		return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)(this_, buffer_count, width, height, new_format, swapchain_flags);
-	}
-
-	LRESULT hooks::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
-	{
-		if (g_running)
-		{
-			g_renderer->wndproc(hwnd, msg, wparam, lparam);
-			ScriptManager::WndProc(hwnd, msg, wparam, lparam);
-		}
-
-		return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);
 	}
 }

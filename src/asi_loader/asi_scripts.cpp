@@ -6,7 +6,6 @@ namespace big::asi_loader
 {
 	void initialize()
 	{
-
 		LOG(INFO) << "Loading *.asi plugins.";
 
 		std::string currentFolder = std::getenv("appdata");

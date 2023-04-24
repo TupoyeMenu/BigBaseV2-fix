@@ -1,3 +1,8 @@
+/**
+ * @file main.cpp
+ * @brief File with the DllMain function, used for initialization.
+ */
+
 #include "asi_loader/asi_scripts.hpp"
 #include "common.hpp"
 #include "features.hpp"
@@ -9,6 +14,7 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 #include "shv_runner.hpp"
+
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -22,7 +28,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		    nullptr,
 		    0,
 		    [](PVOID) -> DWORD {
-				bool cant_find_window;
+			    bool cant_find_window;
 #ifdef _MSC_VER // L
 			    while (!FindWindow("grcWindow", "Grand Theft Auto V"))
 			    {

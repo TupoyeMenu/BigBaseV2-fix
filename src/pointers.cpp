@@ -1,3 +1,8 @@
+/**
+ * @file pointers.cpp
+ * @brief All the signature scans are here.
+ */
+
 #include "pointers.hpp"
 
 #include "asi_loader/pools.hpp"
@@ -65,10 +70,6 @@ namespace big
 			m_register_file = ptr.add(5).as<functions::register_file_t>();
 		});
 
-		main_batch.add("Get Script Handle", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr) {
-			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
-		});
-
 		main_batch.add("Ped Pool", "48 8B 05 ? ? ? ? 41 0F BF C8", [this](memory::handle ptr) {
 			m_ped_pool = ptr.add(3).as<rage::GenericPool*>();
 		});
@@ -91,6 +92,14 @@ namespace big
 
 		main_batch.add("Native Return Spoofer", "FF E3", [this](memory::handle ptr) {
 			m_native_return = ptr.add(0).as<PVOID>();
+		});
+
+		main_batch.add("Ptr To Handle", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr) {
+			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
+		});
+
+		main_batch.add("Handle To Ptr", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr) {
+			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
 		});
 
 		main_batch.run(memory::module(nullptr));

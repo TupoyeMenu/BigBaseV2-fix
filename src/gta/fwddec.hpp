@@ -5,6 +5,8 @@ namespace rage
 	template<typename T>
 	class atArray;
 
+	class CEntity;
+
 	class datBitBuffer;
 	class sysMemAllocator;
 
@@ -42,11 +44,13 @@ namespace rage
 
 	class fwRefAwareBase;
 	class fwExtensibleBase;
-	class fwEntity;
 	class fwArchetype;
 
-	class CVehicle;
-	class CPed;
+	class fiDevice;
+	class fiPackfile;
+
+	class rlSessionInfo;
+	class rlSessionByGamerTaskResult;
 }
 
 class GtaThread;
@@ -56,8 +60,6 @@ class CGameScriptHandler;
 class CGameScriptHandlerNetwork;
 class CGameScriptHandlerMgr;
 
-class CEntity;
-class CDynamicEntity;
 class CPhysical;
 
 class CObject;
@@ -66,7 +68,9 @@ class CPickup;
 class CPedFactory;
 class CVehicleFactory;
 
+class Network;
 class CNetGamePlayer;
 class CNetworkPlayerMgr;
 class CPlayerInfo;
 class CNetworkObjectMgr;
+class CNetComplaintMgr;

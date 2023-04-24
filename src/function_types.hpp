@@ -9,5 +9,7 @@ namespace big::functions
 	using get_native_handler_t = rage::scrNativeHandler (*)(rage::scrNativeRegistrationTable*, rage::scrNativeHash);
 	using fix_vectors_t        = void (*)(rage::scrNativeCallContext*);
 	using register_file_t      = uint32_t* (*)(int*, const char*, bool, const char*, bool);
-	using get_script_handle_t  = int64_t (*)(int64_t);
+
+	using ptr_to_handle = Entity (*)(void*);
+	using handle_to_ptr = rage::CDynamicEntity* (*)(Entity);
 }
