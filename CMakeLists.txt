@@ -33,7 +33,7 @@ add_library(BigBaseV2 MODULE "${SRC_MAIN}")
 
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(TARGET BigBaseV2 PROPERTY CXX_STANDARD 17)
+set_property(TARGET BigBaseV2 PROPERTY CXX_STANDARD 20)
 
 source_group(TREE ${SRC_DIR} PREFIX "src" FILES ${SRC_MAIN} )
 

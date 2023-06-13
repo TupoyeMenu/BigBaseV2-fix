@@ -57,6 +57,8 @@ namespace big
 			detour_hook_helper->m_detour_hook->enable();
 		}
 
+		detour_hook_helper::add<hooks::queue_dependency>("QD", g_pointers->m_queue_dependency);
+
 		MH_ApplyQueued();
 
 		m_enabled = true;
