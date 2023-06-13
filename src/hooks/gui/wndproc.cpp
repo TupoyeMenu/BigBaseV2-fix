@@ -9,7 +9,7 @@ namespace big
 		if (g_running)
 		{
 			g_renderer->wndproc(hwnd, msg, wparam, lparam);
-			ScriptManager::WndProc(hwnd, msg, wparam, lparam);
+			script_manager::WndProc(hwnd, msg, wparam, lparam);
 		}
 
 		return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);

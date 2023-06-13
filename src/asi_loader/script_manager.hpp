@@ -1,3 +1,8 @@
+/**
+ * @file script_manager.hpp
+ * @brief Contains game version enum.
+ */
+
 #pragma once
 
 enum eGameVersion : int
@@ -76,38 +81,38 @@ enum eGameVersion : int
 
 	VER_1_0_1604_1_STEAM,
 	VER_1_0_1604_1_NOSTEAM,
-	
-    	VER_1_0_1737_0_STEAM,
-    	VER_1_0_1737_0_NOSTEAM,
-	
+
+	VER_1_0_1737_0_STEAM,
+	VER_1_0_1737_0_NOSTEAM,
+
 	VER_1_0_1737_6_STEAM,
-    	VER_1_0_1737_6_NOSTEAM,
-	
+	VER_1_0_1737_6_NOSTEAM,
+
 	VER_1_0_1868_0_STEAM,
-    	VER_1_0_1868_0_NOSTEAM,
-	
+	VER_1_0_1868_0_NOSTEAM,
+
 	VER_1_0_1868_1_STEAM,
-  	VER_1_0_1868_1_NOSTEAM,
+	VER_1_0_1868_1_NOSTEAM,
 	VER_1_0_1868_4_EGS,
-    
-    	VER_1_0_2060_0_STEAM,
+
+	VER_1_0_2060_0_STEAM,
 	VER_1_0_2060_0_NOSTEAM,
-	
+
 	VER_1_0_2060_1_STEAM,
 	VER_1_0_2060_1_NOSTEAM,
-    
-   	VER_1_0_2189_0_STEAM,
+
+	VER_1_0_2189_0_STEAM,
 	VER_1_0_2189_0_NOSTEAM,
-	
+
 	VER_1_0_2215_0_STEAM,
 	VER_1_0_2215_0_NOSTEAM,
-	
+
 	VER_1_0_2245_0_STEAM,
 	VER_1_0_2245_0_NOSTEAM,
 
 	VER_1_0_2372_0_STEAM,
 	VER_1_0_2372_0_NOSTEAM,
-	
+
 	VER_1_0_2545_0_STEAM,
 	VER_1_0_2545_0_NOSTEAM,
 
@@ -121,7 +126,7 @@ enum eGameVersion : int
 	VER_1_0_2699_0_NOSTEAM,
 
 	VER_1_0_2699_16,
-	
+
 	VER_1_0_2802_0,
 
 	VER_1_0_2824_0,
@@ -132,7 +137,7 @@ enum eGameVersion : int
 	VER_UNK = -1
 };
 
-namespace ScriptManager {
-
-	void					WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+namespace script_manager
+{
+	void wndproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 }

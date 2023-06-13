@@ -2,16 +2,16 @@
 
 namespace big::pe_utils
 {
-	pe_image::pe_image() {
-
+	pe_image::pe_image()
+	{
 	}
 
-	pe_image::~pe_image() {
-
+	pe_image::~pe_image() 
+	{
 	}
 
-	bool pe_image::load(const std::string& path) {
-
+	bool pe_image::load(const std::string& path) 
+	{
 		filePath = path;
 
 		std::ifstream inputFile(path, std::ios::binary);
@@ -29,8 +29,8 @@ namespace big::pe_utils
 		return true;
 	}
 
-	bool pe_image::image_pe() {
-
+	bool pe_image::image_pe() 
+	{
 		// Get DOS header
 		const IMAGE_DOS_HEADER* dosHeader = reinterpret_cast<const IMAGE_DOS_HEADER*>(fileBuffer.data());
 
@@ -45,15 +45,15 @@ namespace big::pe_utils
 		return true;
 	}
 
-	uint64_t pe_image::get_directory_address(int index) {
-
+	uint64_t pe_image::get_directory_address(int index) 
+	{
 		const IMAGE_DATA_DIRECTORY* dataDirectory = ntHeader->OptionalHeader.DataDirectory;
 
 		return rva_to_va(dataDirectory[index].VirtualAddress);
 	}
 
-	uint64_t pe_image::rva_to_va(uint32_t rva) const {
-
+	uint64_t pe_image::rva_to_va(uint32_t rva) const 
+	{
 		const IMAGE_SECTION_HEADER* sectionHeader = reinterpret_cast<const IMAGE_SECTION_HEADER*>(ntHeader + 1);
 		for (int i = 0; i < ntHeader->FileHeader.NumberOfSections; ++i, ++sectionHeader) {
 
@@ -66,8 +66,8 @@ namespace big::pe_utils
 		return 0;
 	}
 
-	bool pe_image::is_openvhook_compatible() {
-
+	bool pe_image::is_openvhook_compatible() 
+	{
 		auto* importTable = reinterpret_cast<PIMAGE_IMPORT_DESCRIPTOR>(get_directory_address(IMAGE_DIRECTORY_ENTRY_IMPORT));
 		for (; importTable->Name; ++importTable) {
 
@@ -81,8 +81,8 @@ namespace big::pe_utils
 		return true;
 	}
 
-	bool pe_image::patch_compatibility() {
-
+	bool pe_image::patch_compatibility()
+	{
 		// Find ScriptHooKV import descriptor
 		auto* importTable = reinterpret_cast<PIMAGE_IMPORT_DESCRIPTOR>(get_directory_address(IMAGE_DIRECTORY_ENTRY_IMPORT));
 		for (; importTable->Name; ++importTable) {

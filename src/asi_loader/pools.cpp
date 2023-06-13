@@ -1,3 +1,9 @@
+/**
+ * @file pools.cpp
+ * @brief Getting entitys from game pools.
+ * @todo Backport YimMenu pools.
+ */
+
 #include "pools.hpp"
 #include "pointers.hpp"
 

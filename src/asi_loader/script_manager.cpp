@@ -1,3 +1,8 @@
+/**
+ * @file script_manager.cpp
+ * @brief OpenVHook Dll exports.
+ */
+
 #include <set>
 #include "script.hpp"
 #include "invoker.hpp"
@@ -91,7 +96,7 @@ void DLL_EXPORT WndProcHandlerUnregister(TWndProcFn handler)
 	g_WndProcFunctions.erase(handler);
 }
 
-void ScriptManager::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
+void script_manager::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 {
 	for (auto& wndproc : g_WndProcFunctions) wndproc(uMsg, wParam, lParam );
 
