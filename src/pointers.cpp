@@ -81,14 +81,6 @@ namespace big
 			m_queue_dependency = ptr.as<PVOID>();
 		});
 
-		main_batch.add("Interval Check Function", "48 8D 0D ? ? ? ? 88 05 ? ? ? ? 48 8D 05", [this](memory::handle ptr) {
-			m_interval_check_func = ptr.add(3).rip().as<PVOID>();
-		});
-
-		main_batch.add("NTQVM Caller", "48 8D 0D ? ? ? ? 88 05 ? ? ? ? 48 8D 05", [this](memory::handle ptr) {
-			m_ntqvm_caller = ptr;
-		});
-
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

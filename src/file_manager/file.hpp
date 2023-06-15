@@ -1,5 +1,5 @@
 /**
- * @file byte_patch_manager.cpp
+ * @file file.hpp
  * 
  * @copyright GNU General Public License Version 2.
  * This file is part of YimMenu.
@@ -8,32 +8,29 @@
  * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "byte_patch_manager.hpp"
-
-#include "hooking.hpp"
-#include "memory/byte_patch.hpp"
-#include "pointers.hpp"
+#pragma once
 
 namespace big
 {
-	static void init()
+	class file_manager;
+
+	class file
 	{
-		/**
-		 * @todo Add some example patches 
-		 */
-	}
+	public:
+		file(std::filesystem::path file_path);
 
-	byte_patch_manager::byte_patch_manager()
-	{
-		init();
+		file copy(std::filesystem::path new_path);
+		bool exists() const;
+		const std::filesystem::path get_path() const;
+		file move(std::filesystem::path new_path);
 
-		g_byte_patch_manager = this;
-	}
+	protected:
+		file(file_manager* file_manager, std::filesystem::path file_path);
 
-	byte_patch_manager::~byte_patch_manager()
-	{
-		memory::byte_patch::restore_all();
+	private:
+		friend class file_manager;
 
-		g_byte_patch_manager = nullptr;
-	}
+		bool m_is_project_file;
+		std::filesystem::path m_file_path;
+	};
 }

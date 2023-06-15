@@ -1,5 +1,5 @@
 /**
- * @file nt_query_virtual_memory.cpp
+ * @file folder.hpp
  * 
  * @copyright GNU General Public License Version 2.
  * This file is part of YimMenu.
@@ -8,13 +8,30 @@
  * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "hooking.hpp"
+#pragma once
 
 namespace big
 {
-	int hooks::nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len)
+	class file;
+	class file_manager;
+
+	class folder
 	{
-		LOG(G3LOG_DEBUG) << "Reached here, base addr: " << base_addr;
-		return 1;
-	}
+	public:
+		folder(std::filesystem::path folder_path);
+
+		file get_file(std::filesystem::path file_path) const;
+		const std::filesystem::path get_path() const;
+
+	protected:
+		folder(file_manager* file_manager, std::filesystem::path file_path);
+
+	private:
+		friend class file_manager;
+		file_manager* m_file_manager;
+
+		bool m_is_project_file;
+
+		std::filesystem::path m_folder_path;
+	};
 }

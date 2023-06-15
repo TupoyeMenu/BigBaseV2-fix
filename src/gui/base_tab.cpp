@@ -1,6 +1,5 @@
 #include "base_tab.h"
 
-#include "common.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "imgui.h"
@@ -18,16 +17,11 @@ namespace big
 			const double min = 0., max = 10.;
 
 			//If you want to add a new option, you have to first declare it in settings.h's default_options, otherwise, this code will crash when trying to access an option that does not exist in memory.
-			if (ImGui::Checkbox("Bool", g_settings.options["demo bool"].get<bool*>()))
-				g_settings.save();
-			if (ImGui::SliderInt("Int", (PINT)g_settings.options["demo int"].get<int64_t*>(), 0, 10))
-				g_settings.save();
-			if (ImGui::SliderScalar("Double", ImGuiDataType_Double, g_settings.options["demo double"].get<double*>(), &min, &max)) //JSON does not describe rational numbers as integer/float/double/etc types, it is just "number". See: https://nlohmann.github.io/json/features/types/
-				g_settings.save();
-			if (ImGui::Combo("Combo", (PINT)g_settings.options["demo combo"].get<int64_t*>(), demo_combo, sizeof(demo_combo) / sizeof(*demo_combo)))
-				g_settings.save();
-			if (ImGui::Bitfield("Bitfield", g_settings.options["demo bitset"].get<int64_t*>()))
-				g_settings.save();
+			ImGui::Checkbox("Bool", &g.demo.demo_bool);
+			ImGui::SliderInt("Int", &g.demo.demo_int, 0, 10);
+			ImGui::SliderScalar("Double", ImGuiDataType_Double, &g.demo.demo_double, &min, &max); //JSON does not describe rational numbers as integer/float/double/etc types, it is just "number". See: https://nlohmann.github.io/json/features/types/
+			ImGui::Combo("Combo", &g.demo.demo_combo, demo_combo, sizeof(demo_combo) / sizeof(*demo_combo));
+			ImGui::Bitfield("Bitfield", &g.demo.demo_bitset);
 
 			if (ImGui::Button("Spawn an Adder"))
 			{

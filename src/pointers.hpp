@@ -18,8 +18,6 @@ namespace big
 	public:
 		HWND m_hwnd{};
 
-		memory::handle m_ntqvm_caller;
-
 		eGameState* m_game_state{};
 		bool* m_is_session_started{};
 
@@ -46,7 +44,6 @@ namespace big
 		functions::handle_to_ptr m_handle_to_ptr{};
 
 		PVOID m_queue_dependency;
-		PVOID m_interval_check_func;
 	};
 
 	inline pointers* g_pointers{};

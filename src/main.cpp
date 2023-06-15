@@ -6,12 +6,14 @@
 #include "common.hpp"
 #include "features.hpp"
 #include "fiber_pool.hpp"
+#include "file_manager.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
 #include "logger.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
+#include "thread_pool.hpp"
 
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
@@ -34,7 +36,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    std::this_thread::sleep_for(1s);
 #endif // _MSC_VER
 
-			    auto logger_instance = std::make_unique<logger>();
+				std::filesystem::path base_dir = std::getenv("appdata");
+				base_dir /= "BigBaseV2";
+				auto file_manager_instance = std::make_unique<file_manager>(base_dir);
+				auto logger_instance = std::make_unique<logger>("BigBaseV2", file_manager_instance->get_project_file("./cout.log"));
 			    try
 			    {
 				    LOG(RAW_GREEN_TO_CONSOLE) << R"kek(
@@ -45,6 +50,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 | |__)  ) ( ( | | |__)  | ( | |___ ( (/ / \ V /_______ 
 |______/|_|\_|| |______/ \_||_(___/ \____) \_/(_______)
           (_____|)kek";
+
+				    auto thread_pool_instance = std::make_unique<thread_pool>();
+				    LOG(INFO) << "Thread pool initialized.";
+
+				    g.init(file_manager_instance->get_project_file("./settings.json"));
+				    LOG(INFO) << "Settings Loaded.";
+
 				    auto pointers_instance = std::make_unique<pointers>();
 				    LOG(INFO) << "Pointers initialized.";
 
@@ -56,9 +68,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    auto hooking_instance = std::make_unique<hooking>();
 				    LOG(INFO) << "Hooking initialized.";
-
-				    g_settings.load();
-				    LOG(INFO) << "Settings Loaded.";
 
 				    g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
@@ -77,6 +86,14 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    g_script_mgr.remove_all_scripts();
 				    LOG(INFO) << "Scripts unregistered.";
+
+					// cleans up the thread responsible for saving settings
+				    g.destroy();
+
+				    // Make sure that all threads created don't have any blocking loops
+				    // otherwise make sure that they have stopped executing
+				    thread_pool_instance->destroy();
+				    LOG(INFO) << "Destroyed thread pool.";
 
 				    hooking_instance.reset();
 				    LOG(INFO) << "Hooking uninitialized.";
@@ -98,6 +115,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    LOG(INFO) << "Farewell!";
 			    logger_instance.reset();
+
+				file_manager_instance.reset();
 
 			    CloseHandle(g_main_thread);
 			    FreeLibraryAndExitThread(g_hmodule, 0);

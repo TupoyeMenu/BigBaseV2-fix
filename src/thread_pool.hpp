@@ -1,5 +1,5 @@
 /**
- * @file byte_patch_manager.cpp
+ * @file thread_pool.hpp
  * 
  * @copyright GNU General Public License Version 2.
  * This file is part of YimMenu.
@@ -8,32 +8,42 @@
  * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "byte_patch_manager.hpp"
-
-#include "hooking.hpp"
-#include "memory/byte_patch.hpp"
-#include "pointers.hpp"
+#pragma once
+#include <source_location>
 
 namespace big
 {
-	static void init()
+	struct thread_pool_job
 	{
-		/**
-		 * @todo Add some example patches 
-		 */
-	}
+		std::function<void()> m_func;
+		std::source_location m_source_location;
+	};
 
-	byte_patch_manager::byte_patch_manager()
+	class thread_pool
 	{
-		init();
+		std::atomic<bool> m_accept_jobs;
+		std::condition_variable m_data_condition;
 
-		g_byte_patch_manager = this;
-	}
+		std::stack<thread_pool_job> m_job_stack;
+		std::mutex m_lock;
+		std::vector<std::thread> m_thread_pool;
 
-	byte_patch_manager::~byte_patch_manager()
-	{
-		memory::byte_patch::restore_all();
+		std::thread m_managing_thread;
 
-		g_byte_patch_manager = nullptr;
-	}
+		std::atomic<size_t> m_available_thread_count;
+
+	public:
+		thread_pool();
+		~thread_pool();
+
+		void destroy();
+		void push(std::function<void()> func, std::source_location location = std::source_location::current());
+
+	private:
+		void create();
+		void done();
+		void run();
+	};
+
+	inline thread_pool* g_thread_pool{};
 }

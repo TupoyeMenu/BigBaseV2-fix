@@ -1,5 +1,5 @@
 /**
- * @file byte_patch_manager.cpp
+ * @file folder.cpp
  * 
  * @copyright GNU General Public License Version 2.
  * This file is part of YimMenu.
@@ -8,32 +8,34 @@
  * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "byte_patch_manager.hpp"
+#include "folder.hpp"
 
-#include "hooking.hpp"
-#include "memory/byte_patch.hpp"
-#include "pointers.hpp"
+#include "file_manager.hpp"
 
 namespace big
 {
-	static void init()
+	folder::folder(file_manager* file_manager, std::filesystem::path file_path) :
+	    folder(file_manager->get_base_dir() / file_path)
 	{
-		/**
-		 * @todo Add some example patches 
-		 */
+		m_file_manager    = file_manager;
+		m_is_project_file = true;
 	}
 
-	byte_patch_manager::byte_patch_manager()
+	folder::folder(std::filesystem::path folder_path) :
+	    m_folder_path(file_manager::ensure_folder_exists(folder_path))
 	{
-		init();
-
-		g_byte_patch_manager = this;
 	}
 
-	byte_patch_manager::~byte_patch_manager()
+	file folder::get_file(std::filesystem::path file_path) const
 	{
-		memory::byte_patch::restore_all();
+		if (file_path.is_absolute())
+			throw std::runtime_error("folder#get_file requires a relative path.");
 
-		g_byte_patch_manager = nullptr;
+		return file(m_folder_path / file_path);
+	}
+
+	const std::filesystem::path folder::get_path() const
+	{
+		return m_folder_path;
 	}
 }

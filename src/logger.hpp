@@ -1,8 +1,10 @@
 #pragma once
 #include "common.hpp"
+#include "file_manager.hpp"
 
 #include <g3log/g3log.hpp>
 #include <g3log/logworker.hpp>
+#include <string>
 
 namespace big
 {
@@ -46,84 +48,53 @@ namespace big
 	class logger
 	{
 	public:
-		explicit logger() :
-		    m_file_path(std::getenv("appdata")),
-		    m_worker(g3::LogWorker::createLogWorker())
+		explicit logger(std::string_view console_title, file log_file, bool attach_console = true) :
+		    m_worker(g3::LogWorker::createLogWorker()),
+		    m_attach_console(attach_console),
+		    m_console_title(console_title),
+		    m_file(log_file)
 		{
-			if ((m_did_console_exist = AttachConsole(GetCurrentProcessId())) == false)
-				AllocConsole();
-
-			if ((m_console_handle = GetStdHandle(STD_OUTPUT_HANDLE)) != nullptr)
+			if (m_attach_console)
 			{
-				SetConsoleTitleA("BigBaseV2");
-				SetConsoleOutputCP(CP_UTF8);
+				if ((m_did_console_exist = AttachConsole(GetCurrentProcessId())) == false)
+					AllocConsole();
 
-				m_console_out.open("CONOUT$", std::ios_base::out | std::ios_base::app);
+				if ((m_console_handle = GetStdHandle(STD_OUTPUT_HANDLE)) != nullptr)
+				{
+					SetConsoleTitleA(m_console_title.data());
+					SetConsoleOutputCP(CP_UTF8);
+
+					m_console_out.open("CONOUT$", std::ios_base::out | std::ios_base::app);
+				}
 			}
 
-			m_file_path /= "BigBaseV2";
-			std::filesystem::path m_backup_path = m_file_path;
-			m_backup_path /= "Backup";
+			auto m_backup_path = g_file_manager->get_project_folder("./backup");
 			try
 			{
-				if (!std::filesystem::exists(m_file_path))
+				if (m_file.exists())
 				{
-					std::filesystem::create_directory(m_file_path);
-				}
-				else if (!std::filesystem::is_directory(m_file_path))
-				{
-					std::filesystem::remove(m_file_path);
-					std::filesystem::create_directory(m_file_path);
-				}
-				if (!std::filesystem::exists(m_backup_path))
-				{
-					std::filesystem::create_directory(m_backup_path);
-				}
-				else if (!std::filesystem::is_directory(m_backup_path))
-				{
-					std::filesystem::remove(m_backup_path);
-					std::filesystem::create_directory(m_backup_path);
-				}
-
-				m_event_file_path = m_file_path;
-				m_file_path /= "BigBaseV2.log";
-				m_event_file_path /= "GTAEvents.log";
-
-				if (std::filesystem::exists(m_file_path))
-				{
-					auto file_time  = std::filesystem::last_write_time(m_file_path);
+					auto file_time  = std::filesystem::last_write_time(m_file.get_path());
 					auto timet      = to_time_t(file_time);
 					auto local_time = std::localtime(&timet);
 
-					auto bigbase_timestamp    = fmt::format("{:0>2}-{:0>2}-{}-{:0>2}-{:0>2}-{:0>2} BigBaseV2.log",
-                        local_time->tm_mon + 1,
-                        local_time->tm_mday,
-                        local_time->tm_year + 1900,
-                        local_time->tm_hour,
-                        local_time->tm_min,
-                        local_time->tm_sec);
-					auto gta_events_timestamp = fmt::format("{:0>2}-{:0>2}-{}-{:0>2}-{:0>2}-{:0>2} GTAEvents.log",
+					m_file.move(fmt::format("./backup/{:0>2}-{:0>2}-{}-{:0>2}-{:0>2}-{:0>2}_{}",
 					    local_time->tm_mon + 1,
 					    local_time->tm_mday,
 					    local_time->tm_year + 1900,
 					    local_time->tm_hour,
 					    local_time->tm_min,
-					    local_time->tm_sec);
-
-					std::filesystem::copy_file(m_file_path, m_backup_path / bigbase_timestamp);
-					if (std::filesystem::exists(m_event_file_path) && !std::filesystem::is_empty(m_event_file_path))
-						std::filesystem::copy_file(m_event_file_path, m_backup_path / gta_events_timestamp);
+					    local_time->tm_sec,
+					    m_file.get_path().filename().string()));
 				}
-
-				m_file_out.open(m_file_path, std::ios_base::out | std::ios_base::trunc);
-				m_gta_event_file_out.open(m_event_file_path, std::ios_base::out | std::ios_base::trunc);
+				m_file_out.open(m_file.get_path(), std::ios_base::out | std::ios_base::trunc);
 
 				m_worker->addSink(std::make_unique<log_sink>(), &log_sink::callback);
 				g3::initializeLogging(m_worker.get());
 			}
 			catch (std::filesystem::filesystem_error const& error)
 			{
-				m_console_out << error.what();
+				if (m_attach_console)
+					m_console_out << error.what();
 			}
 
 			g_logger = this;
@@ -131,8 +102,9 @@ namespace big
 
 		~logger()
 		{
+			m_worker->removeAllSinks();
 			m_worker.reset();
-			if (!m_did_console_exist)
+			if (!m_did_console_exist && m_attach_console)
 				FreeConsole();
 
 			g_logger = nullptr;
@@ -155,7 +127,7 @@ namespace big
 
 				bool is_raw = level_value == RAW_RED.value || level_value == RAW_GREEN_TO_CONSOLE.value;
 
-				if (!(level_value & FLAG_NO_CONSOLE))
+				if (!(level_value & FLAG_NO_CONSOLE) && g_logger->m_attach_console)
 				{
 					SetConsoleTextAttribute(g_logger->m_console_handle,
 					    static_cast<std::uint16_t>(log_colors[log_message._level.text]));
@@ -164,10 +136,7 @@ namespace big
 
 				if (!(level_value & FLAG_NO_DISK))
 				{
-					if (level_value == EVENT.value)
-						g_logger->m_gta_event_file_out << log_message.toString(format_file) << std::flush;
-					else
-						g_logger->m_file_out << log_message.toString(is_raw ? format_raw : format_file) << std::flush;
+					g_logger->m_file_out << log_message.toString(is_raw ? format_raw : format_file) << std::flush;
 				}
 			}
 
@@ -202,13 +171,14 @@ namespace big
 		}
 
 	private:
-		bool m_did_console_exist{};
-		HANDLE m_console_handle{};
+		bool m_attach_console;
+		bool m_did_console_exist;
+
+		std::string_view m_console_title;
+		HANDLE m_console_handle;
 		std::ofstream m_console_out;
-		std::filesystem::path m_file_path;
-		std::filesystem::path m_event_file_path;
+		file m_file;
 		std::ofstream m_file_out;
-		std::ofstream m_gta_event_file_out;
 		std::unique_ptr<g3::LogWorker> m_worker;
 	};
 
