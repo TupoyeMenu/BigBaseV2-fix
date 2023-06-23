@@ -5,7 +5,6 @@
 #include "logger.hpp"
 #include "pointers.hpp"
 
-extern "C" void _call_asm(void* context, void* function, void* ret);
 
 namespace big
 {
@@ -37,8 +36,8 @@ namespace big
 		{
 			rage::scrNativeHandler handler = it->second;
 
-			_call_asm(&m_call_context, reinterpret_cast<void*>(handler), g_pointers->m_native_return);
-			//handler(&m_call_context);
+			// return address checks are no longer a thing
+			handler(&m_call_context);
 			g_pointers->m_fix_vectors(&m_call_context);
 		}
 		else
