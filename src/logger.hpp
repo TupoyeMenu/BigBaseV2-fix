@@ -68,7 +68,7 @@ namespace big
 				}
 			}
 
-			auto m_backup_path = g_file_manager->get_project_folder("./backup");
+			auto m_backup_path = g_file_manager.get_project_folder("./backup");
 			try
 			{
 				if (m_file.exists())

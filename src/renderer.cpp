@@ -35,7 +35,7 @@ namespace big
 
 		m_d3d_device->GetImmediateContext(m_d3d_device_context.GetAddressOf());
 
-		auto file_path = g_file_manager->get_project_file("./imgui.ini").get_path();
+		auto file_path = g_file_manager.get_project_file("./imgui.ini").get_path();
 
 		ImGuiContext* ctx = ImGui::CreateContext();
 

@@ -38,8 +38,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				std::filesystem::path base_dir = std::getenv("appdata");
 				base_dir /= "BigBaseV2";
-				auto file_manager_instance = std::make_unique<file_manager>(base_dir);
-				auto logger_instance = std::make_unique<logger>("BigBaseV2", file_manager_instance->get_project_file("./cout.log"));
+				g_file_manager.init(base_dir);
+				auto logger_instance = std::make_unique<logger>("BigBaseV2", g_file_manager.get_project_file("./cout.log"));
 			    try
 			    {
 				    LOG(RAW_GREEN_TO_CONSOLE) << R"kek(
@@ -54,7 +54,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto thread_pool_instance = std::make_unique<thread_pool>();
 				    LOG(INFO) << "Thread pool initialized.";
 
-				    g.init(file_manager_instance->get_project_file("./settings.json"));
+				    g.init(g_file_manager.get_project_file("./settings.json"));
 				    LOG(INFO) << "Settings Loaded.";
 
 				    auto pointers_instance = std::make_unique<pointers>();
@@ -115,8 +115,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    LOG(INFO) << "Farewell!";
 			    logger_instance.reset();
-
-				file_manager_instance.reset();
 
 			    CloseHandle(g_main_thread);
 			    FreeLibraryAndExitThread(g_hmodule, 0);

@@ -52,8 +52,8 @@ ninja
 | ------- | ------- |
 | Pocakking         | [BigBaseV2](https://github.com/Pocakking/BigBaseV2)         |
 | spankerincrease   | [BigBaseV2-fix](https://bitbucket.org/gir489/bigbasev2-fix) |
-| [YimMenu](https://github.com/YimMenu/YimMenu) contributors | Updates for newer GTA versions, most of the code is stolen from them |
+| [YimMenu](https://github.com/YimMenu/YimMenu) contributors | Updates for newer GTA V versions, most of the code is stolen from them |
 | tupoy-ya          | Being stupid |
 
 ## License
-This project is licensed under GNU GENERAL PUBLIC LICENSE Version 2 because i stole a lot of code from YimMenu.
+This project is licensed under [GNU GENERAL PUBLIC LICENSE Version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt) because i stole a lot of code from YimMenu.
