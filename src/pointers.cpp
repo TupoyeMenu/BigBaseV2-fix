@@ -102,6 +102,10 @@ namespace big
 			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
 		});
 
+		main_batch.add("Queue Dependency", "48 89 5C 24 ? 57 48 83 EC ? 0F B6 99", [this](memory::handle ptr) {
+			m_queue_dependency = ptr.as<PVOID>();
+		});
+
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

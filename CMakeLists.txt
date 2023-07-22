@@ -33,7 +33,7 @@ add_library(BigBaseV2 MODULE "${SRC_MAIN}")
 
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(TARGET BigBaseV2 PROPERTY CXX_STANDARD 17)
+set_property(TARGET BigBaseV2 PROPERTY CXX_STANDARD 20)
 
 source_group(TREE ${SRC_DIR} PREFIX "src" FILES ${SRC_MAIN} )
 
@@ -45,7 +45,7 @@ target_include_directories(BigBaseV2 PRIVATE
 )
 
 target_precompile_headers(BigBaseV2 PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(BigBaseV2 PRIVATE minhook g3log imgui fmt d3dcompiler dwmapi winmm)
+target_link_libraries(BigBaseV2 PRIVATE minhook g3log imgui fmt d3dcompiler dwmapi winmm psapi)
 
 add_compile_definitions(BigBaseV2 
     "_CRT_SECURE_NO_WARNINGS"

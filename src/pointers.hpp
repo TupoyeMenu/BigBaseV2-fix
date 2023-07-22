@@ -4,6 +4,8 @@
 #include "function_types.hpp"
 #include "gta/enums.hpp"
 #include "gta/fwddec.hpp"
+
+#include <memory/handle.hpp>
 #include <player/CPlayerInfo.hpp>
 
 namespace big
@@ -48,6 +50,8 @@ namespace big
 
 		functions::ptr_to_handle m_ptr_to_handle{};
 		functions::handle_to_ptr m_handle_to_ptr{};
+
+		PVOID m_queue_dependency;
 	};
 
 	inline pointers* g_pointers{};

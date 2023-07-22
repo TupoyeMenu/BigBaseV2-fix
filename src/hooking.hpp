@@ -21,6 +21,8 @@ namespace big
 
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 		static BOOL set_cursor_pos(int x, int y);
+
+		static void queue_dependency(void* dependency);
 	};
 
 	class minhook_keepalive

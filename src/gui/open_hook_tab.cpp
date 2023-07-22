@@ -15,7 +15,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("OpenVHook"))
 		{
-			if (ImGui::ListBoxHeader("##scripts", ImVec2(250, -ImGui::GetFrameHeight())))
+			if (ImGui::BeginListBox("##scripts", ImVec2(250, -ImGui::GetFrameHeight())))
 			{
 				for (auto& iter : big::shv_runner::scripts)
 				{
@@ -30,7 +30,7 @@ namespace big
 						}
 					}
 				}
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 
 			if (selected_script.second)

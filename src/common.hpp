@@ -50,7 +50,7 @@
 
 #include "logger.hpp"
 
-#include "settings.h"
+#include "core/settings.hpp"
 
 #include <gta/natives.hpp>
 #include <ped/CPed.hpp>

@@ -96,7 +96,7 @@ void DLL_EXPORT WndProcHandlerUnregister(TWndProcFn handler)
 	g_WndProcFunctions.erase(handler);
 }
 
-void script_manager::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
+void script_manager::wndproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 {
 	for (auto& wndproc : g_WndProcFunctions) wndproc(uMsg, wParam, lParam );
 
