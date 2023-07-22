@@ -1,6 +1,4 @@
 #pragma once
-#include "asi_loader/pools.hpp"
-#include "common.hpp"
 #include "function_types.hpp"
 #include "gta/enums.hpp"
 #include "gta/fwddec.hpp"
@@ -35,18 +33,17 @@ namespace big
 		functions::register_file_t m_register_file{};
 		std::int64_t** m_script_globals{};
 
-		rage::GenericPool* m_ped_pool{};
-		rage::VehiclePool* m_vehicle_pool{};
-		rage::GenericPool* m_prop_pool{};
-		rage::GenericPool* m_pickup_pool{};
-		rage::GenericPool* m_camera_pool{};
+		GenericPool** m_ped_pool{};
+		GenericPool** m_prop_pool{};
+		VehiclePool*** m_vehicle_pool{};
+		GenericPool** m_pickup_pool{};
+		GenericPool** m_camera_pool{};
 
 		CGameScriptHandlerMgr** m_script_handler_mgr{};
 
 		IDXGISwapChain** m_swapchain{};
 
 		PVOID m_model_spawn_bypass;
-		PVOID m_native_return;
 
 		functions::ptr_to_handle m_ptr_to_handle{};
 		functions::handle_to_ptr m_handle_to_ptr{};

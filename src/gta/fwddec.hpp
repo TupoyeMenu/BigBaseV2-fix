@@ -68,6 +68,9 @@ class CPickup;
 class CPedFactory;
 class CVehicleFactory;
 
+class GenericPool;
+class VehiclePool;
+
 class Network;
 class CNetGamePlayer;
 class CNetworkPlayerMgr;

@@ -1,11 +1,19 @@
+/**
+ * @file pools.hpp
+ * @brief Pool Interator class to iterate over pools. Has just enough operators defined to be able to be used in a for loop, not suitable for any other iterating.
+ * @note everything pasted from https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Util/EntityIterator.h
+ * Thanks to menyoo for most of these!!
+ *
+ * @copyright GNU General Public License Version 3.
+ * This file is part of YimMenu.
+ * YimMenu is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * YimMenu is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>. 
+ */
+
 #pragma once
 #include "natives.hpp"
 #include "pointers.hpp"
-
-// everything pasted from https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Util/EntityIterator.h
-// Thanks to menyoo for most of these!!
-
-// Pool Interator class to iterate over pools. Has just enough operators defined to be able to be used in a for loop, not suitable for any other iterating.
 
 template<typename T>
 class pool_iterator
@@ -46,8 +54,10 @@ public:
 	}
 };
 
-// Common functions for VehiclePool and GenericPool
 template<typename T>
+/**
+ * @brief Common functions for VehiclePool and GenericPool
+ */
 class PoolUtils
 {
 public:
@@ -56,10 +66,26 @@ public:
 		std::vector<Entity> arr;
 		for (auto entity : *static_cast<T*>(this))
 		{
-			arr.push_back(big::g_pointers->m_ptr_to_handle(entity));
+			if (entity)
+				arr.push_back(big::g_pointers->m_ptr_to_handle(entity));
 		}
 
 		return arr;
+	}
+
+	inline auto to_int_array(int* arr, int max)
+	{
+		auto entities = to_array();
+
+		if (entities.size() > max)
+			entities.resize(max);
+
+		for (int i = 0; i < entities.size(); ++i)
+		{
+			arr[i] = entities[i];
+		}
+
+		return entities.size();
 	}
 
 	auto begin()
@@ -97,10 +123,12 @@ public:
 class GenericPool : public PoolUtils<GenericPool>
 {
 public:
-	UINT64 m_pool_address;
-	BYTE* m_bit_array;
-	UINT32 m_size;
-	UINT32 m_item_size;
+	UINT64 m_pool_address; // 0x0
+	BYTE* m_bit_array;     // 0x8
+	UINT32 m_size;         // 0x10
+	UINT32 m_item_size;    // 0x14
+	UINT32 m_pad[2];       // 0x18
+	UINT32 m_item_count;   // 0x20
 
 	inline bool is_valid(UINT32 i)
 	{
@@ -112,6 +140,11 @@ public:
 		return mask(i) & (m_pool_address + i * m_item_size);
 	}
 
+	inline int get_item_count()
+	{
+		return (4 * m_item_count) >> 2;
+	}
+
 private:
 	inline long long mask(UINT32 i)
 	{
@@ -119,3 +152,4 @@ private:
 		return ~((num1 | -num1) >> 63);
 	}
 };
+static_assert(offsetof(GenericPool, m_item_count) == 0x20);

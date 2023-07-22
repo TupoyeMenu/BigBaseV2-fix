@@ -47,10 +47,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    if (cant_find_window)
 				    std::this_thread::sleep_for(20s);
 
-				std::filesystem::path base_dir = std::getenv("appdata");
-				base_dir /= "BigBaseV2";
-				g_file_manager.init(base_dir);
-				auto logger_instance = std::make_unique<logger>("BigBaseV2", g_file_manager.get_project_file("./cout.log"));
+			    std::filesystem::path base_dir = std::getenv("appdata");
+			    base_dir /= "BigBaseV2";
+			    g_file_manager.init(base_dir);
+			    auto logger_instance = std::make_unique<logger>("BigBaseV2", g_file_manager.get_project_file("./cout.log"));
 			    try
 			    {
 				    LOG(RAW_GREEN_TO_CONSOLE) << R"kek(
@@ -105,7 +105,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_script_mgr.remove_all_scripts();
 				    LOG(INFO) << "Scripts unregistered.";
 
-					// cleans up the thread responsible for saving settings
+				    // cleans up the thread responsible for saving settings
 				    g.destroy();
 
 				    // Make sure that all threads created don't have any blocking loops

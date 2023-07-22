@@ -5,7 +5,6 @@
 
 #include "pointers.hpp"
 
-#include "asi_loader/pools.hpp"
 #include "common.hpp"
 #include "logger.hpp"
 #include "memory/all.hpp"
@@ -70,28 +69,24 @@ namespace big
 			m_register_file = ptr.add(5).as<functions::register_file_t>();
 		});
 
-		main_batch.add("Ped Pool", "48 8B 05 ? ? ? ? 41 0F BF C8", [this](memory::handle ptr) {
-			m_ped_pool = ptr.add(3).as<rage::GenericPool*>();
+		main_batch.add("Ped Pool", "4C 8B 35 ? ? ? ? B8 ? ? ? ? 0F 57 F6 89 05 ? ? ? ? 49 63 76 10 4C 8B FE 85 F6 0F 84 ? ? ? ? 49 8B 46 08 49 FF CF FF CE 42 0F B6 0C 38", [this](memory::handle ptr) {
+			m_ped_pool = ptr.add(3).rip().as<GenericPool**>();
 		});
 
-		main_batch.add("Vehicle Pool", "48 8B 05 ? ? ? ? F3 0F 59 F6 48 8B 08", [this](memory::handle ptr) {
-			m_vehicle_pool = *(rage::VehiclePool**)(*(uintptr_t*)ptr.add(3).rip().as<uintptr_t>());
+		main_batch.add("Vehicle Pool", "4C 8B 25 ? ? ? ? 8B 29 33 F6 49 8B 04 24 33 DB 4C 8D 71 08 44 8B 78 08 45 85 FF 0F 8E ? ? ? ? 4D 8B 0C 24 41 3B 59 08 7D 29 49 8B 51 30 44 8B C3 8B CB 49 C1 E8 05 83 E1 1F 44 8B D3 42 8B 04 82", [this](memory::handle ptr) {
+			m_vehicle_pool = ptr.add(3).rip().as<VehiclePool***>();
 		});
 
-		main_batch.add("Prop Pool", "48 8B 05 ? ? ? ? 8B 78 10 85 FF", [this](memory::handle ptr) {
-			m_prop_pool = ptr.add(3).rip().as<rage::GenericPool*>();
+		main_batch.add("Prop Pool", "48 8B 0D ? ? ? ? 49 8B D0 E8 ? ? ? ? 39 03 EB 19 41 80 78 ? ? 75 15 48 8B 0D ? ? ? ? 49 8B D0 E8 ? ? ? ? 39 43 04", [this](memory::handle ptr) {
+			m_prop_pool = ptr.add(3).rip().as<GenericPool**>();
 		});
 
 		main_batch.add("Pickup Pool", "4C 8B 05 ? ? ? ? 40 8A F2 8B E9", [this](memory::handle ptr) {
-			m_pickup_pool = ptr.add(3).rip().as<rage::GenericPool*>();
+			m_pickup_pool = ptr.add(3).rip().as<GenericPool**>();
 		});
 
 		main_batch.add("Camera Pool", "48 8B C8 EB 02 33 C9 48 85 C9 74 26", [this](memory::handle ptr) {
-			m_camera_pool = ptr.add(-9).rip().as<rage::GenericPool*>();
-		});
-
-		main_batch.add("Native Return Spoofer", "FF E3", [this](memory::handle ptr) {
-			m_native_return = ptr.add(0).as<PVOID>();
+			m_camera_pool = ptr.sub(9).rip().as<GenericPool**>();
 		});
 
 		main_batch.add("Ptr To Handle", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr) {
