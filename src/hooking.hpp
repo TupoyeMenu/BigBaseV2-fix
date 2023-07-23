@@ -2,7 +2,6 @@
 #include "common.hpp"
 #include "detour_hook.hpp"
 #include "gta/fwddec.hpp"
-#include "script_hook.hpp"
 #include "vmt_hook.hpp"
 
 #include <MinHook.h>

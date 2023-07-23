@@ -10,6 +10,7 @@
 #include "gui.hpp"
 #include "hooking.hpp"
 #include "logger.hpp"
+#include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
@@ -80,13 +81,14 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_hooking->enable();
 				    LOG(INFO) << "Hooking enabled.";
 
+				    auto native_hooks_instance = std::make_unique<native_hooks>();
+				    LOG(INFO) << "Dynamic native hooker initialized.";
+
 				    while (g_running)
 					    std::this_thread::sleep_for(500ms);
 
 				    g_hooking->disable();
 				    LOG(INFO) << "Hooking disabled.";
-
-				    std::this_thread::sleep_for(1000ms);
 
 				    g_script_mgr.remove_all_scripts();
 				    LOG(INFO) << "Scripts unregistered.";
@@ -101,6 +103,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    hooking_instance.reset();
 				    LOG(INFO) << "Hooking uninitialized.";
+
+				    native_hooks_instance.reset();
+				    LOG(INFO) << "Dynamic native hooker uninitialized.";
 
 				    fiber_pool_instance.reset();
 				    LOG(INFO) << "Fiber pool uninitialized.";
