@@ -65,10 +65,6 @@ namespace big
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
 
-		main_batch.add("Native Return Spoofer", "FF E3", [this](memory::handle ptr) {
-			m_native_return = ptr.add(0).as<PVOID>();
-		});
-
 		main_batch.add("Ptr To Handle", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr) {
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});

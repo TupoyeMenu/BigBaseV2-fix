@@ -38,7 +38,6 @@ namespace big
 		IDXGISwapChain** m_swapchain{};
 
 		PVOID m_model_spawn_bypass;
-		PVOID m_native_return;
 
 		functions::ptr_to_handle m_ptr_to_handle{};
 		functions::handle_to_ptr m_handle_to_ptr{};
