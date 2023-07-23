@@ -59,7 +59,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    auto renderer_instance = std::make_unique<renderer>();
 				    LOG(INFO) << "Renderer initialized.";
-					auto gui_instance = std::make_unique<gui>();
+				    auto gui_instance = std::make_unique<gui>();
 
 				    auto fiber_pool_instance = std::make_unique<fiber_pool>(10);
 				    LOG(INFO) << "Fiber pool initialized.";
@@ -96,6 +96,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    // otherwise make sure that they have stopped executing
 				    thread_pool_instance->destroy();
 				    LOG(INFO) << "Destroyed thread pool.";
+
+				    script_patcher_service_instance.reset();
+				    LOG(INFO) << "Script Patcher Service reset.";
 
 				    hooking_instance.reset();
 				    LOG(INFO) << "Hooking uninitialized.";

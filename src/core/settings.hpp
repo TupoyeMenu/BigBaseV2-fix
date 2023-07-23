@@ -71,7 +71,7 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, main, demo)
 		} window{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, demo, window)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, demo, window, settings)
 	};
 
 	inline auto g = menu_settings();
