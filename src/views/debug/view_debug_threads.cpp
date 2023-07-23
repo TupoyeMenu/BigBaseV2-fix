@@ -133,9 +133,9 @@ namespace big
 		{
 			for (auto& p : stack_sizes)
 			{
-				if (ImGui::Selectable(std::format("{} ({})", p.first, p.second).data(), selected_stack_size == p.second))
+				if (ImGui::Selectable(fmt::format("{} ({})", p.first, p.second).data(), selected_stack_size == p.second))
 				{
-					selected_stack_size_str = std::format("{} ({})", p.first, p.second).data();
+					selected_stack_size_str = fmt::format("{} ({})", p.first, p.second).data();
 					selected_stack_size     = p.second;
 
 					g_fiber_pool->queue_job([] {

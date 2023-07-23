@@ -1,13 +1,16 @@
+/**
+ * @file gui.cpp
+ * 
+ * @copyright GNU General Public License Version 2.
+ * This file is part of YimMenu.
+ * YimMenu is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.
+ * YimMenu is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #include "gui.hpp"
 
-#include "common.hpp"
-#include "fiber_pool.hpp"
-#include "gta_util.hpp"
-#include "logger.hpp"
-#include "memory/module.hpp"
-#include "memory/pattern.hpp"
 #include "natives.hpp"
-#include "pointers.hpp"
 #include "renderer.hpp"
 #include "script.hpp"
 #include "views/view.hpp"
@@ -16,6 +19,49 @@
 
 namespace big
 {
+	gui::gui() :
+	    m_is_open(false),
+	    m_override_mouse(false)
+	{
+		g_renderer->add_dx_callback(
+		    [this] {
+			    dx_on_tick();
+		    },
+		    -1);
+
+		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+			wndproc(hwnd, msg, wparam, lparam);
+		});
+
+		dx_init();
+
+		g_gui = this;
+	}
+
+	gui::~gui()
+	{
+		g_gui = nullptr;
+	}
+
+	bool gui::is_open()
+	{
+		return m_is_open;
+	}
+
+	void gui::toggle(bool toggle)
+	{
+		m_is_open = toggle;
+
+		toggle_mouse();
+	}
+
+	void gui::override_mouse(bool override)
+	{
+		m_override_mouse = override;
+
+		toggle_mouse();
+	}
+
 	void gui::dx_init()
 	{
 		auto& style                  = ImGui::GetStyle();
@@ -96,16 +142,16 @@ namespace big
 
 	void gui::dx_on_tick()
 	{
-		view::root();
-	}
-
-	void gui::script_init()
-	{
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
+		if (m_is_open)
+		{
+			view::root(); // frame bg
+		}
 	}
 
 	void gui::script_on_tick()
 	{
-		if (g_gui.m_opened)
+		if (g_gui->m_is_open || g_gui->m_override_mouse)
 		{
 			for (uint8_t i = 0; i <= 6; i++)
 				PAD::DISABLE_CONTROL_ACTION(2, i, true);
@@ -139,11 +185,45 @@ namespace big
 
 	void gui::script_func()
 	{
-		g_gui.script_init();
 		while (true)
 		{
-			g_gui.script_on_tick();
+			g_gui->script_on_tick();
 			script::get_current()->yield();
+		}
+	}
+
+	void gui::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+	{
+		if (msg == WM_KEYUP && wparam == g.settings.hotkeys.menu_toggle)
+		{
+			//Persist and restore the cursor position between menu instances.
+			static POINT cursor_coords{};
+			if (g_gui->m_is_open)
+			{
+				GetCursorPos(&cursor_coords);
+			}
+			else if (cursor_coords.x + cursor_coords.y != 0)
+			{
+				SetCursorPos(cursor_coords.x, cursor_coords.y);
+			}
+
+			toggle(g.settings.hotkeys.editing_menu_toggle || !m_is_open);
+			if (g.settings.hotkeys.editing_menu_toggle)
+				g.settings.hotkeys.editing_menu_toggle = false;
+		}
+	}
+
+	void gui::toggle_mouse()
+	{
+		if (g_gui->m_is_open || g_gui->m_override_mouse)
+		{
+			ImGui::GetIO().MouseDrawCursor = true;
+			ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+		}
+		else
+		{
+			ImGui::GetIO().MouseDrawCursor = false;
+			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
 		}
 	}
 }

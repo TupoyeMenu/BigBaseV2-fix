@@ -22,7 +22,7 @@ if(CROSSCOMPILE)
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
     add_compile_options(
-        "$<$<COMPILE_LANGUAGE:CXX>:-municode;-fpermissive;${CXX_FLAGS}>"
+        "$<$<COMPILE_LANGUAGE:CXX>:-fpermissive;${CXX_FLAGS}>"
         "$<$<COMPILE_LANGUAGE:ASM_MASM>:-win64${ASM_MASM_FLAGS}>"
     )
     add_link_options(-static -s)
