@@ -42,7 +42,15 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(demo, demo_bool, demo_int, demo_double, demo_combo, demo_bitset)
 		} demo;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, demo)
+		struct window
+		{
+			bool main = true;
+			bool demo = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, main, demo)
+		} window{};
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, demo, window)
 	};
 
 	inline auto g = menu_settings();

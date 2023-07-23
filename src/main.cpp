@@ -4,7 +4,7 @@
  */
 
 #include "common.hpp"
-#include "features.hpp"
+#include "backend/backend.hpp"
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
 #include "gui.hpp"
@@ -69,7 +69,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto hooking_instance = std::make_unique<hooking>();
 				    LOG(INFO) << "Hooking initialized.";
 
-				    g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::loop));
 				    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
 				    LOG(INFO) << "Scripts registered.";
 

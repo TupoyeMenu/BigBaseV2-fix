@@ -3,7 +3,6 @@
 #include "common.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
-#include "gui/base_tab.h"
 #include "logger.hpp"
 #include "memory/module.hpp"
 #include "memory/pattern.hpp"
@@ -11,6 +10,7 @@
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script.hpp"
+#include "views/view.hpp"
 
 #include <imgui.h>
 
@@ -96,16 +96,7 @@ namespace big
 
 	void gui::dx_on_tick()
 	{
-		if (ImGui::Begin("BigBaseV2"))
-		{
-			ImGui::BeginTabBar("tabbar");
-			base_tab::render_base_tab();
-
-			ImGui::ShowDemoWindow();
-
-			ImGui::EndTabBar();
-		}
-		ImGui::End();
+		view::root();
 	}
 
 	void gui::script_init()
