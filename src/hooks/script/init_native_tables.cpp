@@ -1,6 +1,5 @@
 /**
- * @file view.hpp
- * @brief GUI window function declarations.
+ * @file init_native_tables.cpp
  * 
  * @copyright GNU General Public License Version 2.
  * This file is part of YimMenu.
@@ -9,20 +8,16 @@
  * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
-#include <imgui.h>
+#include "hooking.hpp"
+#include "services/script_patcher/script_patcher_service.hpp"
 
 namespace big
 {
-	class view
+	bool hooks::init_native_tables(rage::scrProgram* program)
 	{
-	public:
-		static void root();
-		static void menu_bar();
-		static void main_view();
+		bool ret = g_hooking->get_original<hooks::init_native_tables>()(program);
+		g_script_patcher_service->on_script_load(program);
 
-		static void debug_tabs();
-		static void debug_demo();
-		static void debug_threads();
-	};
+		return ret;
+	}
 }

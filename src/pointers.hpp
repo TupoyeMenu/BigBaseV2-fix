@@ -32,6 +32,8 @@ namespace big
 		rage::scrProgramTable* m_script_program_table{};
 		functions::run_script_threads_t m_run_script_threads{};
 		std::int64_t** m_script_globals{};
+		PVOID m_init_native_tables{};
+		functions::script_vm m_script_vm{};
 
 		CGameScriptHandlerMgr** m_script_handler_mgr{};
 

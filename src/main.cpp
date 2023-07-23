@@ -3,8 +3,8 @@
  * @brief File with the DllMain function, used for initialization.
  */
 
-#include "common.hpp"
 #include "backend/backend.hpp"
+#include "common.hpp"
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
 #include "gui.hpp"
@@ -13,6 +13,7 @@
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
+#include "services/script_patcher/script_patcher_service.hpp"
 #include "thread_pool.hpp"
 
 
@@ -36,10 +37,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    std::this_thread::sleep_for(1s);
 #endif // _MSC_VER
 
-				std::filesystem::path base_dir = std::getenv("appdata");
-				base_dir /= "BigBaseV2";
-				g_file_manager.init(base_dir);
-				auto logger_instance = std::make_unique<logger>("BigBaseV2", g_file_manager.get_project_file("./cout.log"));
+			    std::filesystem::path base_dir = std::getenv("appdata");
+			    base_dir /= "BigBaseV2";
+			    g_file_manager.init(base_dir);
+			    auto logger_instance = std::make_unique<logger>("BigBaseV2", g_file_manager.get_project_file("./cout.log"));
 			    try
 			    {
 				    LOG(RAW_GREEN_TO_CONSOLE) << R"kek(
@@ -69,6 +70,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto hooking_instance = std::make_unique<hooking>();
 				    LOG(INFO) << "Hooking initialized.";
 
+				    auto script_patcher_service_instance = std::make_unique<script_patcher_service>();
+				    LOG(INFO) << "Script Patcher initialized.";
+
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::loop));
 				    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
 				    LOG(INFO) << "Scripts registered.";
@@ -87,7 +91,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_script_mgr.remove_all_scripts();
 				    LOG(INFO) << "Scripts unregistered.";
 
-					// cleans up the thread responsible for saving settings
+				    // cleans up the thread responsible for saving settings
 				    g.destroy();
 
 				    // Make sure that all threads created don't have any blocking loops

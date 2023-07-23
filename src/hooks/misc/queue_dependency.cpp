@@ -61,7 +61,7 @@ namespace big
 	{
 		if (is_unwanted_dependency((__int64)dependency))
 		{
-			LOG(INFO) << "Prevent attempt to queue a report to R*.";
+			//LOG(INFO) << "Prevent attempt to queue a report to R*.";
 			return;
 		}
 

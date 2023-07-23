@@ -23,7 +23,6 @@ namespace memory
 		{
 		}
 
-	private:
 		std::vector<std::optional<std::uint8_t>> m_bytes;
 	};
 }

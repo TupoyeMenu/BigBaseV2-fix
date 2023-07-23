@@ -16,6 +16,11 @@ namespace big
 				view::debug_demo();
 				ImGui::EndTabItem();
 			}
+			if (ImGui::BeginTabItem("Threads"))
+			{
+				view::debug_threads();
+				ImGui::EndTabItem();
+			}
 
 			ImGui::EndTabBar();
 		}

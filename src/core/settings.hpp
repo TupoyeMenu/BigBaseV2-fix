@@ -3,6 +3,7 @@
 
 #include <bitset>
 #include <cstdint>
+#include <string>
 
 class CNetGamePlayer;
 
@@ -39,7 +40,8 @@ namespace big
 			double demo_double = 1.0;
 			int demo_combo = 0;
 			int64_t demo_bitset = 62678480396171113;
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(demo, demo_bool, demo_int, demo_double, demo_combo, demo_bitset)
+			std::string demo_vehicle_model = "";
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(demo, demo_bool, demo_int, demo_double, demo_combo, demo_bitset, demo_vehicle_model)
 		} demo;
 
 		struct window

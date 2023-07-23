@@ -32,6 +32,7 @@ namespace big
 		});
 
 		main_batch.add("Native handlers", "48 8D 0D ? ? ? ? 48 8B 14 FA E8 ? ? ? ? 48 85 C0 75 0A", [this](memory::handle ptr) {
+			m_init_native_tables        = ptr.sub(37).as<PVOID>();
 			m_native_registration_table = ptr.add(3).rip().as<rage::scrNativeRegistrationTable*>();
 			m_get_native_handler        = ptr.add(12).rip().as<functions::get_native_handler_t>();
 		});
@@ -51,6 +52,10 @@ namespace big
 
 		main_batch.add("Script globals", "48 8D 15 ? ? ? ? 4C 8B C0 E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr) {
 			m_script_globals = ptr.add(3).rip().as<std::int64_t**>();
+		});
+
+		main_batch.add("Script VM", "E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr) {
+			m_script_vm = ptr.add(1).rip().as<functions::script_vm>();
 		});
 
 		main_batch.add("CGameScriptHandlerMgr", "48 8B 0D ? ? ? ? 4C 8B CE E8 ? ? ? ? 48 85 C0 74 05 40 32 FF", [this](memory::handle ptr) {

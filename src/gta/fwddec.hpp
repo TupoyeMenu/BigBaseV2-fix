@@ -51,6 +51,8 @@ namespace rage
 
 	class rlSessionInfo;
 	class rlSessionByGamerTaskResult;
+
+	enum class eThreadState : uint32_t;
 }
 
 class GtaThread;

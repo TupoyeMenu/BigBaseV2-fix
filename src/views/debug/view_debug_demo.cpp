@@ -27,9 +27,11 @@ namespace big
 		ImGui::Combo("Combo", &g.demo.demo_combo, demo_combo, sizeof(demo_combo) / sizeof(*demo_combo));
 		ImGui::Bitfield("Bitfield", &g.demo.demo_bitset);
 
+		components::input_text_with_hint("##Vehicle", "Vehicle model", &g.demo.demo_vehicle_model, ImGuiInputTextFlags_None);
+
 		// `components::button` has a fiber pool wraper inside it.
-		components::button("Spawn an Adder", [] {
-			constexpr auto hash = RAGE_JOAAT("adder");
+		components::button("Spawn", [] {
+			rage::joaat_t hash = rage::joaat(g.demo.demo_vehicle_model);
 			while (!STREAMING::HAS_MODEL_LOADED(hash))
 			{
 				STREAMING::REQUEST_MODEL(hash);
@@ -65,7 +67,5 @@ namespace big
 				*((PINT) nullptr) = 0xDEADBEEF;
 			});
 		}
-
-		ImGui::EndTabItem();
 	}
 }
