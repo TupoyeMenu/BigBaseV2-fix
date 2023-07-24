@@ -1,10 +1,10 @@
 #include "script_mgr.hpp"
 
-#include "common.hpp"
-#include "gta/tls_context.hpp"
 #include "gta_util.hpp"
 #include "invoker.hpp"
 #include "pointers.hpp"
+
+#include <script/tlsContext.hpp>
 
 namespace big
 {

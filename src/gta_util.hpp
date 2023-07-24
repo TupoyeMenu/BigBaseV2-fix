@@ -1,12 +1,10 @@
 #pragma once
-#include "common.hpp"
-
 #include "gta/script_thread.hpp"
-#include "gta/tls_context.hpp"
 #include "pointers.hpp"
 
 #include <network/CNetworkPlayerMgr.hpp>
 #include <ped/CPedFactory.hpp>
+#include <script/tlsContext.hpp>
 
 namespace big::gta_util
 {
@@ -19,6 +17,19 @@ namespace big::gta_util
 
 		return nullptr;
 	}
+
+	inline CVehicle* get_local_vehicle()
+	{
+		if (const auto ped = get_local_ped(); ped)
+		{
+			if (const auto veh = ped->m_vehicle; veh)
+			{
+				return veh;
+			}
+		}
+		return nullptr;
+	}
+
 
 	inline CPlayerInfo* get_local_playerinfo()
 	{
