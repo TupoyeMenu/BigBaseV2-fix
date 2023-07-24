@@ -28,6 +28,18 @@ jobs:
         - name: Build 64bit release DLL
           run: cmake --build build --config Release
 
+        - name: Rename DLL to BigBaseV2-dev-{GITHUB_SHA}.dll
+          run: |
+            rm BigBaseV2-dev-*.dll
+            mv BigBaseV2.dll BigBaseV2-dev-${{github.sha}}.dll
+          working-directory: build/
+
+        - name: Upload Artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: binary-MinGW
+            path: build/BigBaseV2-dev-*.dll
+
   ci_msvc:
     runs-on: windows-latest
     name: CI MSVC
@@ -52,3 +64,15 @@ jobs:
 
       - name: Build 64bit release DLL
         run: cmake --build build --config Release --target ALL_BUILD
+
+      - name: Rename DLL to BigBaseV2-dev-{GITHUB_SHA}.dll
+        run: |
+          del BigBaseV2-dev-*.dll
+          ren BigBaseV2.dll BigBaseV2-dev-${{github.sha}}.dll
+        working-directory: build/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: binary-MSVC
+          path: build/BigBaseV2-dev-*.dll
