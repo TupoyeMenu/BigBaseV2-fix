@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   ci_mingw:
       runs-on: ubuntu-latest
-      container: ghcr.io/yimmenu/yimmenu:latest
+        container: ghcr.io/tupoyemenu/yimmenu:latest
       name: CI MinGW
       steps:
         - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -15,30 +15,21 @@ jobs:
         - name: Check CMake version
           run: cmake --version
 
-        - name: Cache build/
-          id: cache-build
-          uses: actions/cache@v3
-          with:
-            path: build
-            key: ${{ runner.os }}-build
-
         - name: Generate CMake project
           run: cmake -DVERSION=1.3.4 -DCMAKE_BUILD_TYPE:STRING=Release -S. -Bbuild -DCROSSCOMPILE:BOOL=TRUE -DUSE_GCC:BOOL=TRUE -G Ninja
 
         - name: Build 64bit release DLL
           run: cmake --build build --config Release
 
-        - name: Rename DLL to BigBaseV2-dev-{GITHUB_SHA}.dll
-          run: |
-            rm BigBaseV2-dev-*.dll
-            mv BigBaseV2.dll BigBaseV2-dev-${{github.sha}}.dll
+        - name: Rename DLL to libBigBaseV2-dev-{GITHUB_SHA}.dll
+          run: mv libBigBaseV2.dll libBigBaseV2-dev-${{github.sha}}.dll
           working-directory: build/
 
         - name: Upload Artifact
           uses: actions/upload-artifact@v3
           with:
             name: binary-MinGW
-            path: build/BigBaseV2-dev-*.dll
+            path: build/libBigBaseV2-dev-*.dll
 
   ci_msvc:
     runs-on: windows-latest
@@ -52,13 +43,6 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1
 
-      - name: Cache build/
-        id: cache-build
-        uses: actions/cache@v3
-        with:
-          path: build
-          key: ${{ runner.os }}-build
-
       - name: Generate CMake project
         run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release
 
@@ -66,9 +50,7 @@ jobs:
         run: cmake --build build --config Release --target ALL_BUILD
 
       - name: Rename DLL to BigBaseV2-dev-{GITHUB_SHA}.dll
-        run: |
-          del BigBaseV2-dev-*.dll
-          ren BigBaseV2.dll BigBaseV2-dev-${{github.sha}}.dll
+        run: ren BigBaseV2.dll BigBaseV2-dev-${{github.sha}}.dll
         working-directory: build/
 
       - name: Upload Artifact
