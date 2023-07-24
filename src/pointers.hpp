@@ -32,6 +32,8 @@ namespace big
 		functions::run_script_threads_t m_run_script_threads{};
 		functions::register_file_t m_register_file{};
 		std::int64_t** m_script_globals{};
+		PVOID m_init_native_tables{};
+		functions::script_vm m_script_vm{};
 
 		GenericPool** m_ped_pool{};
 		GenericPool** m_prop_pool{};

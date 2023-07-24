@@ -2,7 +2,6 @@
 #include "common.hpp"
 #include "detour_hook.hpp"
 #include "gta/fwddec.hpp"
-#include "script_hook.hpp"
 #include "vmt_hook.hpp"
 
 #include <MinHook.h>
@@ -23,6 +22,8 @@ namespace big
 		static BOOL set_cursor_pos(int x, int y);
 
 		static void queue_dependency(void* dependency);
+		static bool init_native_tables(rage::scrProgram* program);
+		static rage::eThreadState script_vm(uint64_t* start_stack, uint64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
 	};
 
 	class minhook_keepalive

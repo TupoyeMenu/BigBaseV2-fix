@@ -6,13 +6,18 @@
  * @endcode
  * Look at YimMenu source if you need them.
  * https://github.com/YimMenu/YimMenu/blob/60d8269d3b201b7975c83180cc8496fa754e49d5/src/pointers.cpp#L348-L354
+ * 
+ * @copyright GNU General Public License Version 2.
+ * This file is part of YimMenu.
+ * YimMenu is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.
+ * YimMenu is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
 #pragma once
-#include "../pointers.hpp"
+#include "pointers.hpp"
 #include "enums.hpp"
-#include "node_list.hpp"
-#include "replay.hpp"
+#include "script/dataList.hpp"
 
 class CNetGamePlayer;
 
@@ -21,10 +26,10 @@ namespace rage
 	class CPlayerSyncTree
 	{
 	public:
-		char pad_0000[8];        //0x0000
-		netObject* player_object;//0x0008
-		char pad_0010[256];      //0x0010
-	};                           //Size: 0x0110
+		char pad_0000[8];         //0x0000
+		netObject* player_object; //0x0008
+		char pad_0010[256];       //0x0010
+	};                            //Size: 0x0110
 
 	class CNetworkSyncDataULBase
 	{
@@ -70,12 +75,12 @@ namespace rage
 		uint8_t ownerId;
 		uint8_t nextOwnerId;
 		uint8_t isRemote;
-		uint8_t wantsToDelete : 1;// netobj+76
+		uint8_t wantsToDelete : 1; // netobj+76
 		uint8_t unk1 : 1;
 		uint8_t shouldNotBeDeleted : 1;
 		uint8_t pad_4Dh[3];
 		uint8_t pad_50h[32];
-		uint32_t creationAckedPlayers;// netobj+112
+		uint32_t creationAckedPlayers; // netobj+112
 		uint32_t m64;
 		uint32_t m68;
 		uint32_t m6C;
@@ -125,14 +130,14 @@ namespace rage
 		virtual void _0x88()                         = 0;
 		virtual const char* _0x90(int)               = 0;
 
-		virtual bool HandleCloneCreate(CNetGamePlayer* source, CNetGamePlayer* target, eNetObjType object_type, std::uint16_t object_id, eNetObjectFlags object_flags, void*, std::uint32_t timestamp) = 0;
-		virtual void HandleCloneCreateAck(CNetGamePlayer* source, CNetGamePlayer* target, std::uint16_t object_flags, eAckCode ack_code) = 0;
+		virtual bool HandleCloneCreate(CNetGamePlayer* source, CNetGamePlayer* target, eNetObjType object_type, uint16_t object_id, eNetObjectFlags object_flags, void*, uint32_t timestamp) = 0;
+		virtual void HandleCloneCreateAck(CNetGamePlayer* source, CNetGamePlayer* target, uint16_t object_flags, eAckCode ack_code) = 0;
 
-		virtual int HandleCloneSync(CNetGamePlayer* source, CNetGamePlayer* target, eNetObjType object_type, std::uint16_t object_id, void*, std::uint16_t, std::uint32_t timestamp) = 0;
-		virtual void HandleCloneSyncAck(CNetGamePlayer* source, CNetGamePlayer* target, void*, std::uint16_t objectId, eAckCode ack_code) = 0;
+		virtual int HandleCloneSync(CNetGamePlayer* source, CNetGamePlayer* target, eNetObjType object_type, uint16_t object_id, void*, uint16_t, uint32_t timestamp) = 0;
+		virtual void HandleCloneSyncAck(CNetGamePlayer* source, CNetGamePlayer* target, void*, uint16_t objectId, eAckCode ack_code) = 0;
 
-		virtual void HandleCloneRemove(CNetGamePlayer* source, CNetGamePlayer* target, std::uint16_t object_id, int) = 0;
-		virtual void HandleCloneRemoveAck(CNetGamePlayer* source, CNetGamePlayer* target, std::uint16_t object_id, eAckCode ack_code) = 0;
+		virtual void HandleCloneRemove(CNetGamePlayer* source, CNetGamePlayer* target, uint16_t object_id, int) = 0;
+		virtual void HandleCloneRemoveAck(CNetGamePlayer* source, CNetGamePlayer* target, uint16_t object_id, eAckCode ack_code) = 0;
 
 		virtual void _0xC8() = 0;
 
@@ -144,7 +149,7 @@ namespace rage
 class CNetworkObjectMgr : public rage::netObjectMgrBase
 {
 public:
-	rage::netObject* find_object_by_id(std::uint16_t object_id, bool can_delete_be_pending)
+	rage::netObject* find_object_by_id(uint16_t object_id, bool can_delete_be_pending)
 	{
 		return big::g_pointers->m_get_net_object(this, object_id, can_delete_be_pending);
 	}

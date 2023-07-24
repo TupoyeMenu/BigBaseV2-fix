@@ -1,5 +1,7 @@
 #pragma once
 
+// clang-format off
+
 #include <sdkddkver.h>
 #include <windows.h>
 #include <d3d11.h>
@@ -24,6 +26,7 @@
 #include <memory>
 #include <new>
 
+#include <set>
 #include <sstream>
 #include <string>
 #include <string_view>
@@ -55,16 +58,25 @@
 #include <gta/natives.hpp>
 #include <ped/CPed.hpp>
 
+// clang-format on
+
 namespace big
 {
 	using namespace std::chrono_literals;
-	
-	template <typename T>
+
+	template<typename T>
 	using comptr = Microsoft::WRL::ComPtr<T>;
 
 	inline HMODULE g_hmodule{};
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};
-	inline std::atomic_bool g_running{ true };
-}
+	inline std::atomic_bool g_running{true};
 
+	namespace self
+	{
+		inline Ped ped;
+		inline Player id;
+		inline Vector3 pos;
+		inline Vehicle veh;
+	}
+}

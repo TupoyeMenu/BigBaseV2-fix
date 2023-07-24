@@ -32,6 +32,9 @@ namespace big
 		}
 
 		detour_hook_helper::add<hooks::run_script_threads>("Script hook", (void*)g_pointers->m_run_script_threads);
+		detour_hook_helper::add<hooks::queue_dependency>("Queue Dependency", (void*)g_pointers->m_queue_dependency);
+		detour_hook_helper::add<hooks::init_native_tables>("Init Native Tables", (void*)g_pointers->m_init_native_tables);
+		detour_hook_helper::add<hooks::script_vm>("Script VM", (void*)g_pointers->m_script_vm);
 
 		g_hooking = this;
 	}
@@ -53,8 +56,6 @@ namespace big
 		{
 			detour_hook_helper->m_detour_hook->enable();
 		}
-
-		detour_hook_helper::add<hooks::queue_dependency>("QD", g_pointers->m_queue_dependency);
 
 		MH_ApplyQueued();
 

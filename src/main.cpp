@@ -4,17 +4,19 @@
  */
 
 #include "asi_loader/asi_scripts.hpp"
+#include "backend/backend.hpp"
 #include "common.hpp"
-#include "features.hpp"
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
 #include "logger.hpp"
+#include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 #include "shv_runner.hpp"
+#include "services/script_patcher/script_patcher_service.hpp"
 #include "thread_pool.hpp"
 
 
@@ -30,22 +32,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		    nullptr,
 		    0,
 		    [](PVOID) -> DWORD {
-			    bool cant_find_window;
-#ifdef _MSC_VER // L
 			    while (!FindWindow("grcWindow", "Grand Theft Auto V"))
-			    {
-				    cant_find_window = true;
 				    std::this_thread::sleep_for(1s);
-			    }
-#else
-			    while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
-			    {
-				    cant_find_window = true;
-				    std::this_thread::sleep_for(1s);
-			    }
-#endif // _MSC_VER
-			    if (cant_find_window)
-				    std::this_thread::sleep_for(20s);
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "BigBaseV2";
@@ -73,6 +61,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    auto renderer_instance = std::make_unique<renderer>();
 				    LOG(INFO) << "Renderer initialized.";
+				    auto gui_instance = std::make_unique<gui>();
 
 				    auto fiber_pool_instance = std::make_unique<fiber_pool>(10);
 				    LOG(INFO) << "Fiber pool initialized.";
@@ -80,7 +69,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto hooking_instance = std::make_unique<hooking>();
 				    LOG(INFO) << "Hooking initialized.";
 
-				    g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
+				    auto script_patcher_service_instance = std::make_unique<script_patcher_service>();
+				    LOG(INFO) << "Script Patcher initialized.";
+
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::loop));
 				    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
 				    g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
 				    LOG(INFO) << "Scripts registered.";
@@ -88,7 +80,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_hooking->enable();
 				    LOG(INFO) << "Hooking enabled.";
 
-				    asi_loader::initialize();
+				    auto native_hooks_instance = std::make_unique<native_hooks>();
+				    LOG(INFO) << "Dynamic native hooker initialized.";
+
+					asi_loader::initialize();
 				    LOG(INFO) << "ASI Loader initialized.";
 
 				    while (g_running)
@@ -99,8 +94,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    g_hooking->disable();
 				    LOG(INFO) << "Hooking disabled.";
-
-				    std::this_thread::sleep_for(1000ms);
 
 				    g_script_mgr.remove_all_scripts();
 				    LOG(INFO) << "Scripts unregistered.";
@@ -113,8 +106,14 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    thread_pool_instance->destroy();
 				    LOG(INFO) << "Destroyed thread pool.";
 
+				    script_patcher_service_instance.reset();
+				    LOG(INFO) << "Script Patcher Service reset.";
+
 				    hooking_instance.reset();
 				    LOG(INFO) << "Hooking uninitialized.";
+
+				    native_hooks_instance.reset();
+				    LOG(INFO) << "Dynamic native hooker uninitialized.";
 
 				    fiber_pool_instance.reset();
 				    LOG(INFO) << "Fiber pool uninitialized.";
