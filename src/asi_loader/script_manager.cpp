@@ -21,7 +21,7 @@
 
 #define DLL_EXPORT __declspec(dllexport)
 
-void scriptWait(unsigned long wait_time)
+void DLL_EXPORT scriptWait(unsigned long wait_time)
 {
 	typedef std::chrono::duration<unsigned long long> my_duran_duran_duration;
 	big::script::get_current()->yield(std::chrono::duration_cast<my_duran_duran_duration>(std::chrono::milliseconds(wait_time)));
