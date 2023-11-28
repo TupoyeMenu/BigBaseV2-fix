@@ -78,7 +78,7 @@ namespace big
 			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
 		});
 
-		main_batch.add("Queue Dependency", "48 89 5C 24 ? 57 48 83 EC ? 0F B6 99", [this](memory::handle ptr) {
+		main_batch.add("Queue Dependency", "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 8B F2 49 8B F8", [this](memory::handle ptr) {
 			m_queue_dependency = ptr.as<PVOID>();
 		});
 

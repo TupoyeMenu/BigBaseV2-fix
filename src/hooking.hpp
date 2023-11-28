@@ -21,7 +21,7 @@ namespace big
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 		static BOOL set_cursor_pos(int x, int y);
 
-		static void queue_dependency(void* dependency);
+		static int queue_dependency(void* a1, int a2, void* dependency);
 		static bool init_native_tables(rage::scrProgram* program);
 		static rage::eThreadState script_vm(uint64_t* start_stack, uint64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
 	};
