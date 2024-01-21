@@ -51,6 +51,7 @@ namespace rage
 
 	class rlSessionInfo;
 	class rlSessionByGamerTaskResult;
+	struct game_skeleton;
 }
 
 class GtaThread;

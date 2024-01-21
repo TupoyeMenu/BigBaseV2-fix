@@ -1,7 +1,6 @@
 #pragma once
-#include "common.hpp"
 #include "gta/fwddec.hpp"
-#include "gta/natives.hpp"
+#include <script/scrNativeHandler.hpp>
 
 namespace big::functions
 {

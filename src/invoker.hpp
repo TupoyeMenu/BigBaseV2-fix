@@ -9,8 +9,7 @@
  */
 
 #pragma once
-#include "common.hpp"
-#include "gta/natives.hpp"
+#include <script/scrNativeHandler.hpp>
 
 namespace big
 {
@@ -47,9 +46,9 @@ namespace big
 			return *m_call_context.get_return_value<T>();
 		}
 
-		PVOID get_return_address()
+		void* get_return_address()
 		{
-			return m_call_context.get_return_pointer();
+			return m_call_context.m_return_value;
 		}
 
 	public:

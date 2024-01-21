@@ -4,11 +4,11 @@
  */
 
 #pragma once
-#include "gta/natives.hpp"
+#include <script/scrNativeHandler.hpp>
 
 namespace big
 {
-	inline constexpr const rage::scrNativeMapping g_crossmap[]
+	inline constexpr const rage::scrNativePair g_crossmap[]
 	{
 		{0x4EDE34FBADD967A6, 0x4EDE34FBADD967A6},
 		{0xE81651AD79516E48, 0xE81651AD79516E48},

@@ -10,8 +10,10 @@
 
 #pragma once
 #include "gta/joaat.hpp"
-#include "gta/script_thread.hpp"
 #include "vmt_hook.hpp"
+
+#include <script/scrNativeHandler.hpp>
+#include <script/scrProgram.hpp>
 
 namespace big
 {

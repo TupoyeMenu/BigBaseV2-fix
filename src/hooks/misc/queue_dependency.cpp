@@ -1,25 +1,17 @@
-/**
- * @file queue_dependency.cpp
- * 
- * @copyright GNU General Public License Version 2.
- * This file is part of YimMenu.
- * YimMenu is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.
- * YimMenu is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
- */
-
 #include "hooking.hpp"
 #include "pointers.hpp"
-
+#include "security/ObfVar.hpp"
 #include <psapi.h>
 
 namespace big
 {
-	bool inline is_address_in_game_region(uint64_t address)
+	bool inline is_address_in_game_region(int64_t address)
 	{
-		static uint64_t moduleBase = 0;
-		static uint64_t moduleSize = 0;
-		if ((!moduleBase) || (!moduleSize))
+		if(!address)
+			return false;
+		static int64_t moduleBase = 0;
+		static int64_t moduleSize = 0;
+		if (!moduleBase || !moduleSize)
 		{
 			MODULEINFO info;
 			if (!GetModuleInformation(GetCurrentProcess(), GetModuleHandle(0), &info, sizeof(info)))
@@ -29,31 +21,34 @@ namespace big
 			}
 			else
 			{
-				moduleBase = (uint64_t)GetModuleHandle(0);
-				moduleSize = (uint64_t)info.SizeOfImage;
+				moduleBase = (int64_t)GetModuleHandle(0);
+				moduleSize = (int64_t)info.SizeOfImage;
 			}
 		}
 		return address > moduleBase && address < (moduleBase + moduleSize);
 	}
 
-	bool is_jump(__int64 fptr)
+	struct ac_verifier
 	{
-		if (!is_address_in_game_region(fptr))
+		virtual ~ac_verifier() = 0;
+		virtual bool run() = 0;
+		rage::Obf32 m_last_time; // 0x8 
+		rage::Obf32 m_delay; // 0x18
+	};
+
+	bool is_unwanted_dependency(int64_t cb)
+	{
+		int64_t f1 = *reinterpret_cast<int64_t*>(cb + 0x60);
+		int64_t f2 = *reinterpret_cast<int64_t*>(cb + 0x100);
+		int64_t f3 = *reinterpret_cast<int64_t*>(cb + 0x1A0);
+
+		if (!is_address_in_game_region(f1) || !is_address_in_game_region(f2) || !is_address_in_game_region(f3))
 			return false;
 
-		auto value = *(uint8_t*)(fptr);
-		return value == 0xE9;
-	}
-
-	bool is_unwanted_dependency(__int64 cb)
-	{
-		auto f1 = *(__int64*)(cb + 0x60);
-		auto f2 = *(__int64*)(cb + 0x100);
-
-		if (!is_address_in_game_region(f1) || (f2 && !is_address_in_game_region(f2)))
+		if(*reinterpret_cast<uint8_t*>(f1) != 0xE9)
 			return false;
 
-		return is_jump(f1) || is_jump(f2);
+		return true;
 	}
 
 	static bool nullsub()
@@ -61,12 +56,16 @@ namespace big
 		return true; // returning false would cause the dependency to requeue
 	}
 
-	int hooks::queue_dependency(void* a1, int a2, void* dependency)
+	int hooks::queue_dependency(void* a1, int a2, int64_t dependency)
 	{
-		if (is_unwanted_dependency((__int64)dependency))
+		if (is_unwanted_dependency(dependency))
 		{
-			*(void**)((__int64)dependency + 0x60) = (void*)nullsub;
-			*(void**)((__int64)dependency + 0x100) = (void*)nullsub;
+			LOG(INFO) << "Blocking AC Verifier " << std::hex << *reinterpret_cast<int64_t*>(dependency + 0x60) - reinterpret_cast<int64_t>(GetModuleHandleA(0));
+			ac_verifier* verifier = reinterpret_cast<ac_verifier*>(dependency - 0x30);
+			verifier->m_delay = INT_MAX; // makes it so these won't queue in the future
+			*reinterpret_cast<void**>(dependency + 0x60) = (void*)nullsub;
+			*reinterpret_cast<void**>(dependency + 0x100) = (void*)nullsub;
+			*reinterpret_cast<void**>(dependency + 0x1A0) = (void*)nullsub;
 		}
 
 		return g_hooking->get_original<hooks::queue_dependency>()(a1, a2, dependency);

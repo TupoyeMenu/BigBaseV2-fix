@@ -81,6 +81,14 @@ namespace big
 		main_batch.add("Queue Dependency", "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 8B F2 49 8B F8", [this](memory::handle ptr) {
 			m_queue_dependency = ptr.as<PVOID>();
 		});
+		
+		main_batch.add("Game Skeleton", "48 8D 0D ? ? ? ? BA ? ? ? ? 74 05 BA ? ? ? ? E8 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8D 0D ? ? ? ? BA ? ? ? ? 84 DB 75 05 BA ? ? ? ? E8 ? ? ? ? 48 8B CD C6 05 ? ? ? ? ? E8 ? ? ? ? 84", [](memory::handle ptr) {
+			g_pointers->m_game_skeleton = ptr.add(3).rip().as<rage::game_skeleton*>();
+		});
+
+		main_batch.add("Nullsub", "90 C3", [](memory::handle ptr) {
+			g_pointers->m_nullsub = ptr.as<void (*)()>();
+		});
 
 		main_batch.run(memory::module(nullptr));
 
