@@ -87,7 +87,7 @@ namespace big
 
 		if (selected_thread)
 		{
-			ImGui::Combo("State", (int*)&selected_thread->m_context.m_state, "RUNNING\0WAITING\0KILLED\0PAUSED\0STATE_4");
+			ImGui::Combo("State", (int*)&selected_thread->m_context.m_state, "RUNNING\0WAITING\0KILLED\0PAUSED\0STATE_4\0");
 
 			if (CGameScriptHandlerNetComponent* net_component = (CGameScriptHandlerNetComponent*)selected_thread->m_net_component)
 				if (CScriptParticipant* host = net_component->m_host)
