@@ -7,6 +7,7 @@
 #include "common.hpp"
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
+#include "gta/joaat.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
 #include "logger/exception_handler.hpp"
@@ -16,6 +17,7 @@
 #include "script_mgr.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "thread_pool.hpp"
+
 #include <rage/gameSkeleton.hpp>
 
 namespace big
@@ -38,8 +40,7 @@ namespace big
 						continue;
 					patched = true;
 					//LOG(INFO) << "Patching problematic skeleton update";
-					reinterpret_cast<rage::game_skeleton_update_element*>(group_child_node)->m_function =
-					    g_pointers->m_nullsub;
+					reinterpret_cast<rage::game_skeleton_update_element*>(group_child_node)->m_function = g_pointers->m_nullsub;
 				}
 				break;
 			}
@@ -68,13 +69,16 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		    nullptr,
 		    0,
 		    [](PVOID) -> DWORD {
+			    auto handler = exception_handler();
+			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
+
 			    while (!FindWindow("grcWindow", "Grand Theft Auto V"))
 				    std::this_thread::sleep_for(1s);
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "BigBaseV2";
 			    g_file_manager.init(base_dir);
-				g_log.initialize("SkidMenu", g_file_manager.get_project_file("./cout.log"));
+			    g_log.initialize("BigBaseV2", g_file_manager.get_project_file("./cout.log"));
 			    try
 			    {
 				    LOG(INFO) << R"kek(
@@ -95,7 +99,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto pointers_instance = std::make_unique<pointers>();
 				    LOG(INFO) << "Pointers initialized.";
 
-					while (!disable_anticheat_skeleton())
+				    while (!disable_anticheat_skeleton())
 				    {
 					    LOG(WARNING) << "Failed patching anticheat gameskeleton (injected too early?). Waiting 500ms and trying again";
 					    std::this_thread::sleep_for(500ms);

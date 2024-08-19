@@ -14,8 +14,8 @@ namespace big
 	{
 		memory::pattern_batch main_batch;
 
-		main_batch.add("Game state", "83 3D ? ? ? ? ? 75 17 8B 43 20", [this](memory::handle ptr) {
-			m_game_state = ptr.add(2).rip().as<eGameState*>();
+		main_batch.add("Game state", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", [this](memory::handle ptr) {
+			m_game_state = ptr.add(2).rip().add(1).as<eGameState*>();
 		});
 
 		main_batch.add("Is session started", "40 38 35 ? ? ? ? 75 0E 4C 8B C3 49 8B D7 49 8B CE", [this](memory::handle ptr) {
@@ -81,12 +81,12 @@ namespace big
 			m_queue_dependency = ptr.as<PVOID>();
 		});
 		
-		main_batch.add("Game Skeleton", "48 8D 0D ? ? ? ? BA ? ? ? ? 74 05 BA ? ? ? ? E8 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8D 0D ? ? ? ? BA ? ? ? ? 84 DB 75 05 BA ? ? ? ? E8 ? ? ? ? 48 8B CD C6 05 ? ? ? ? ? E8 ? ? ? ? 84", [](memory::handle ptr) {
-			g_pointers->m_game_skeleton = ptr.add(3).rip().as<rage::game_skeleton*>();
+		main_batch.add("Game Skeleton", "48 8D 0D ? ? ? ? BA ? ? ? ? 74 05 BA ? ? ? ? E8 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8D 0D ? ? ? ? BA ? ? ? ? 84 DB 75 05 BA ? ? ? ? E8 ? ? ? ? 48 8B CD C6 05 ? ? ? ? ? E8 ? ? ? ? 84", [this](memory::handle ptr) {
+			m_game_skeleton = ptr.add(3).rip().as<rage::game_skeleton*>();
 		});
 
-		main_batch.add("Nullsub", "90 C3", [](memory::handle ptr) {
-			g_pointers->m_nullsub = ptr.as<void (*)()>();
+		main_batch.add("Nullsub", "90 C3 CC", [this](memory::handle ptr) {
+			m_nullsub = ptr.as<void (*)()>();
 		});
 
 		main_batch.run(memory::module(nullptr));

@@ -12,6 +12,7 @@
 #include "script.hpp"
 #include "views/view.hpp"
 #include "widgets/imgui_bitfield.h"
+#include <cstdint>
 
 namespace big
 {
@@ -57,7 +58,7 @@ namespace big
 
 		if (ImGui::Button("Test g3log crash within ImGui"))
 		{
-			*((PINT) nullptr) = 0xDEADBEEF;
+			*((uint64_t*)0) = 0xDEADBEEF;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Test g3log crash within GTA V Script"))
