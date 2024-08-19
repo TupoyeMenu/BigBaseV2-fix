@@ -22,13 +22,13 @@ namespace big
 	{
 		inline void SC_TRANSITION_NEWS_SHOW(rage::scrNativeCallContext* src)
 		{
-			LOG(G3LOG_DEBUG) << "SC_TRANSITION_NEWS_SHOW";
+			LOG(VERBOSE) << "SC_TRANSITION_NEWS_SHOW";
 			src->set_return_value<BOOL>(SOCIALCLUB::SC_TRANSITION_NEWS_SHOW(src->get_arg<Any>(0)));
 		}
 
 		inline void SC_TRANSITION_NEWS_SHOW_TIMED(rage::scrNativeCallContext* src)
 		{
-			LOG(G3LOG_DEBUG) << "SC_TRANSITION_NEWS_SHOW_TIMED";
+			LOG(VERBOSE) << "SC_TRANSITION_NEWS_SHOW_TIMED";
 			src->set_return_value<BOOL>(SOCIALCLUB::SC_TRANSITION_NEWS_SHOW_TIMED(src->get_arg<Any>(0), src->get_arg<Any>(0)));
 		}
 

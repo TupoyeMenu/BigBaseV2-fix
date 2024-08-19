@@ -71,6 +71,8 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, main, demo)
 		} window{};
 
+		bool in_script_vm = false;
+
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, demo, window, settings)
 	};
 

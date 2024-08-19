@@ -6,7 +6,6 @@
 #include "pointers.hpp"
 
 #include "common.hpp"
-#include "logger.hpp"
 #include "memory/all.hpp"
 
 namespace big

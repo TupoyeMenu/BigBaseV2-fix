@@ -67,7 +67,7 @@ namespace big
 			{
 				LOG(FATAL) << "Failed to find pattern for script " << m_script;
 				for(std::uint8_t byte : m_patch)
-					LOG(G3LOG_DEBUG) << HEX_TO_UPPER(byte);
+					LOG(VERBOSE) << HEX_TO_UPPER(byte);
 			}
 
 			m_ip = result.value() + m_offset;

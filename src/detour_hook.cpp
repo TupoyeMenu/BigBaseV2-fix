@@ -1,7 +1,6 @@
 #include "detour_hook.hpp"
 
 #include "common.hpp"
-#include "logger.hpp"
 #include "memory/handle.hpp"
 
 #include <MinHook.h>
@@ -34,7 +33,7 @@ namespace big
 
 		if (auto status = MH_CreateHook(m_target, m_detour, &m_original); status == MH_OK)
 		{
-			LOG(INFO_TO_FILE) << "Created hook '" << m_name << "'.";
+			LOG(INFO) << "Created hook '" << m_name << "'.";
 		}
 		else
 		{

@@ -9,7 +9,7 @@
 #include "file_manager.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
-#include "logger.hpp"
+#include "logger/exception_handler.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
@@ -74,10 +74,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "BigBaseV2";
 			    g_file_manager.init(base_dir);
-			    auto logger_instance = std::make_unique<logger>("BigBaseV2", g_file_manager.get_project_file("./cout.log"));
+				g_log.initialize("SkidMenu", g_file_manager.get_project_file("./cout.log"));
 			    try
 			    {
-				    LOG(RAW_GREEN_TO_CONSOLE) << R"kek(
+				    LOG(INFO) << R"kek(
  ______  _       ______                        ______  
 (____  \(_)     (____  \                      (_____ \
  ____)  )_  ____ ____)  ) ____  ___  ____ _   _ ____) )
@@ -167,7 +167,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    }
 
 			    LOG(INFO) << "Farewell!";
-			    logger_instance.reset();
+			    g_log.destroy();
 
 			    CloseHandle(g_main_thread);
 			    FreeLibraryAndExitThread(g_hmodule, 0);

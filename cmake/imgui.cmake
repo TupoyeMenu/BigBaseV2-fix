@@ -22,4 +22,4 @@ target_include_directories(imgui PRIVATE
     "${imgui_SOURCE_DIR}/backends"
     "${imgui_SOURCE_DIR}/misc/cpp"
 )
-set_property(TARGET imgui PROPERTY CXX_STANDARD 17)
+set_property(TARGET imgui PROPERTY CXX_STANDARD 20)

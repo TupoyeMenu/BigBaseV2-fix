@@ -29,7 +29,7 @@ namespace big
 	{
 		const std::uint32_t thread_count = std::thread::hardware_concurrency();
 
-		LOG(G3LOG_DEBUG) << "Allocating " << thread_count << " threads in thread pool.";
+		LOG(VERBOSE) << "Allocating " << thread_count << " threads in thread pool.";
 		this->m_thread_pool.reserve(thread_count);
 
 		m_available_thread_count = thread_count;
@@ -94,7 +94,7 @@ namespace big
 			try
 			{
 				const auto source_file = std::filesystem::path(job.m_source_location.file_name()).filename().string();
-				LOG(G3LOG_DEBUG) << "Thread " << std::this_thread::get_id() << " executing " << source_file << ":"
+				LOG(VERBOSE) << "Thread " << std::this_thread::get_id() << " executing " << source_file << ":"
 				             << job.m_source_location.line();
 
 				std::invoke(job.m_func);
@@ -107,6 +107,6 @@ namespace big
 			m_available_thread_count++;
 		}
 
-		LOG(G3LOG_DEBUG) << "Thread " << std::this_thread::get_id() << " exiting...";
+		LOG(VERBOSE) << "Thread " << std::this_thread::get_id() << " exiting...";
 	}
 }

@@ -10,7 +10,7 @@ set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 # Fetch modules
 message("\nFetching modules")
 include(cmake/minhook.cmake)
-include(cmake/g3log.cmake)
+include(cmake/async-logger.cmake)
 include(cmake/json.cmake)
 include(cmake/fmt.cmake)
 
@@ -42,10 +42,11 @@ target_include_directories(BigBaseV2 PRIVATE
     "${json_SOURCE_DIR}/single_include"
     "${gtav_classes_SOURCE_DIR}"
     "${imgui_SOURCE_DIR}"
+    "${minhook_SOURCE_DIR}/src/hde"
 )
 
 target_precompile_headers(BigBaseV2 PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(BigBaseV2 PRIVATE minhook g3log imgui fmt d3dcompiler dwmapi winmm psapi)
+target_link_libraries(BigBaseV2 PRIVATE minhook AsyncLogger dbghelp imgui fmt d3dcompiler dwmapi winmm psapi)
 
 add_compile_definitions(BigBaseV2 
     "_CRT_SECURE_NO_WARNINGS"
