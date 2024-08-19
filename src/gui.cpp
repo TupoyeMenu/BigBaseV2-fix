@@ -142,7 +142,7 @@ namespace big
 
 	void gui::dx_on_tick()
 	{
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
+		ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 		if (m_is_open)
 		{
 			view::root(); // frame bg

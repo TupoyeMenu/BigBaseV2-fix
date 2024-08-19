@@ -3,7 +3,7 @@ include(FetchContent)
 FetchContent_Declare(
     FMT
     GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-    GIT_TAG        fc07217d85e6dcec52878807d6bbd89a9d9156a5
+    GIT_TAG        1a79bbfa83b0942fca3f2794655b6b91bb682583
     GIT_PROGRESS TRUE
 )
 message("fmt")
