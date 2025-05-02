@@ -3,7 +3,7 @@ include(FetchContent)
 FetchContent_Declare(
     minhook
     GIT_REPOSITORY https://github.com/TsudaKageyu/minhook.git
-    GIT_TAG        c1a7c3843bd1a5fe3eb779b64c0d823bca3dc339
+    GIT_TAG        2b003bb063d66f016cc1aef7d63951350ce60f35
     GIT_PROGRESS TRUE
 )
 message("MinHook")
