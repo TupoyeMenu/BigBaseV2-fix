@@ -4,6 +4,7 @@
  */
 
 #include "backend/backend.hpp"
+#include "byte_patch_manager.hpp"
 #include "common.hpp"
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
@@ -33,7 +34,7 @@ namespace big
 					continue;
 				rage::game_skeleton_update_group* group = reinterpret_cast<rage::game_skeleton_update_group*>(update_node);
 				for (rage::game_skeleton_update_base* group_child_node = group->m_head; group_child_node;
-				     group_child_node                                  = group_child_node->m_next)
+				    group_child_node                                   = group_child_node->m_next)
 				{
 					// TamperActions is a leftover from the old AC, but still useful to block anyway
 					if (group_child_node->m_hash != 0xA0F39FB6 && group_child_node->m_hash != RAGE_JOAAT("TamperActions"))
@@ -106,6 +107,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    }
 				    LOG(INFO) << "Disabled anticheat gameskeleton.";
 
+				    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();
+				    LOG(INFO) << "Byte Patch Manager initialized.";
+
 				    auto renderer_instance = std::make_unique<renderer>();
 				    LOG(INFO) << "Renderer initialized.";
 				    auto gui_instance = std::make_unique<gui>();
@@ -160,6 +164,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    renderer_instance.reset();
 				    LOG(INFO) << "Renderer uninitialized.";
+
+				    byte_patch_manager_instance.reset();
+				    LOG(INFO) << "Byte Patch Manager uninitialized.";
 
 				    pointers_instance.reset();
 				    LOG(INFO) << "Pointers uninitialized.";
