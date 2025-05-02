@@ -1,3 +1,5 @@
+#ifdef ENABLE_EXCEPTION_HANDLER
+
 #include "exception_handler.hpp"
 
 #include "stack_trace.hpp"
@@ -117,3 +119,5 @@ namespace big
 		return EXCEPTION_CONTINUE_EXECUTION;
 	}
 }
+
+#endif

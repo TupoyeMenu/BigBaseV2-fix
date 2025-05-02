@@ -1,4 +1,7 @@
 #pragma once
+
+#ifdef ENABLE_EXCEPTION_HANDLER
+
 #include "common.hpp"
 
 namespace big
@@ -68,3 +71,5 @@ namespace big
 		return os;
 	}
 }
+
+#endif

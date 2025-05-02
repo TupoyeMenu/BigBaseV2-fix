@@ -10,6 +10,8 @@
 
 #pragma once
 
+#ifdef ENABLE_EXCEPTION_HANDLER
+
 namespace big
 {
 	class exception_handler final
@@ -25,3 +27,5 @@ namespace big
 
 	extern LONG vectored_exception_handler(EXCEPTION_POINTERS* exception_info);
 }
+
+#endif

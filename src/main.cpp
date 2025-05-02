@@ -10,13 +10,16 @@
 #include "file_manager.hpp"
 #include "gta/joaat.hpp"
 #include "hooking.hpp"
-#include "logger/exception_handler.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "script_mgr.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "thread_pool.hpp"
 
+
+#ifdef ENABLE_EXCEPTION_HANDLER
+#include "logger/exception_handler.hpp"
+#endif
 #ifdef ENABLE_GUI
 #include "gui.hpp"
 #include "renderer.hpp"
@@ -73,7 +76,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		    nullptr,
 		    0,
 		    [](PVOID) -> DWORD {
+#ifdef ENABLE_EXCEPTION_HANDLER
 			    auto handler = exception_handler();
+#endif
 			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
 
 			    while (!FindWindow("grcWindow", "Grand Theft Auto V"))
@@ -82,7 +87,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= PROJECT_NAME;
 			    g_file_manager.init(base_dir);
-			    g_log.initialize(PROJECT_NAME, g_file_manager.get_project_file("./cout.log"));
+			    g_log.initialize(
+					PROJECT_NAME,
+					g_file_manager.get_project_file("./cout.log")
+#ifndef ENABLE_GUI
+					,false // Disable log window when GUI is disabled.
+#endif
+				);
 			    try
 			    {
 				    LOG(INFO) << R"kek(

@@ -1,3 +1,5 @@
+#ifdef ENABLE_EXCEPTION_HANDLER
+
 #include "stack_trace.hpp"
 
 #include <dbghelp.h>
@@ -230,3 +232,5 @@ namespace big
 		return "UNKNOWN_EXCEPTION: CODE: " + std::to_string(code);
 	}
 }
+
+#endif
