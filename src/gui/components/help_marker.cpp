@@ -8,6 +8,8 @@
  * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifdef ENABLE_GUI
+
 #include "gui/components/components.hpp"
 
 namespace big
@@ -25,3 +27,5 @@ namespace big
         }
 	}
 } 
+
+#endif

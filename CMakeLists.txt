@@ -8,6 +8,9 @@ project(BigBaseV2 CXX ASM_MASM)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
+# Build options
+include(cmake/build_options.cmake)
+
 # Fetch modules
 message("\nFetching modules")
 include(cmake/minhook.cmake)
@@ -16,11 +19,10 @@ include(cmake/json.cmake)
 include(cmake/fmt.cmake)
 
 message("\nFetching custom modules")
-include(cmake/imgui.cmake)
+if(ENABLE_GUI)
+    include(cmake/imgui.cmake)
+endif()
 include(cmake/gtav-classes.cmake)
-
-# Build options
-include(cmake/build_options.cmake)
 
 # BigBaseV2
 message(STATUS ${CMAKE_PROJECT_NAME})
@@ -46,12 +48,11 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     "${SRC_DIR}"
     "${json_SOURCE_DIR}/single_include"
     "${gtav_classes_SOURCE_DIR}"
-    "${imgui_SOURCE_DIR}"
     "${minhook_SOURCE_DIR}/src/hde"
 )
 
 target_precompile_headers(${CMAKE_PROJECT_NAME} PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE minhook AsyncLogger dbghelp imgui fmt d3dcompiler dwmapi winmm psapi)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE minhook AsyncLogger dbghelp fmt d3dcompiler dwmapi winmm psapi)
 
 # Actually use build options
 include(cmake/build_options_impl.cmake)

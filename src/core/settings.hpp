@@ -5,8 +5,10 @@
 #include <cstdint>
 #include <string>
 
+#ifdef ENABLE_GUI
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui.h>
+#endif
 
 class CNetGamePlayer;
 
@@ -63,10 +65,12 @@ namespace big
 		{
 			bool main              = true;
 			bool demo              = false;
+#ifdef ENABLE_GUI
 			ImFont* font_title     = nullptr;
 			ImFont* font_sub_title = nullptr;
 			ImFont* font_small     = nullptr;
 			ImFont* font_icon      = nullptr;
+#endif
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, main, demo)
 		} window{};

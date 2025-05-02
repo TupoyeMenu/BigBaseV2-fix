@@ -1,4 +1,5 @@
 #pragma once
+#ifdef ENABLE_GUI
 
 #include <imgui.h>
 #include <string.h>
@@ -73,3 +74,5 @@ namespace ImGui
 		return ret_val;
 	}
 }
+
+#endif

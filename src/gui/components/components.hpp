@@ -11,6 +11,8 @@
 
 #pragma once
 
+#ifdef ENABLE_GUI
+
 #include "fiber_pool.hpp"
 #include <imgui.h>
 #include <misc/cpp/imgui_stdlib.h>
@@ -53,3 +55,5 @@ namespace big
 		}
 	};
 }
+
+#endif
