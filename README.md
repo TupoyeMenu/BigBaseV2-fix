@@ -11,6 +11,7 @@ Strictly for educational purposes.
 * Access to YSC script globals
 * scrProgram–based native hook
 * MinGW compilation support
+* Headless mode (set ENABLE_GUI=OFF when configuring)
 
 
 ## Building
