@@ -58,6 +58,8 @@
 #include <ped/CPed.hpp>
 #include <script/types.hpp>
 
+#include "config.hpp"
+
 // clang-format on
 
 namespace big

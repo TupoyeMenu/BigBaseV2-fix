@@ -1,0 +1,7 @@
+#include "config.hpp"
+
+namespace big
+{
+	const eGameBranch menu_build::branch = eGameBranch::@GAME_BRANCH@;
+	const int menu_build::version = @GAME_BUILD@;
+}
