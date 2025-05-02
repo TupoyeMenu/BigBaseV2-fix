@@ -1,3 +1,5 @@
+#ifdef ENABLE_GUI
+
 #include "hooking.hpp"
 #include "renderer.hpp"
 
@@ -13,3 +15,5 @@ namespace big
 		return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);
 	}
 }
+
+#endif

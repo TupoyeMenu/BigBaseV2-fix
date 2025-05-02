@@ -3,6 +3,8 @@
  * @brief Debug options tab bar.
  */
 
+#ifdef ENABLE_GUI
+
 #include "views/view.hpp"
 
 namespace big
@@ -26,3 +28,5 @@ namespace big
 		}
 	}
 }
+
+#endif

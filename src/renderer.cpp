@@ -9,6 +9,8 @@
  * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>. 
  */
 
+#ifdef ENABLE_GUI
+
 #include "renderer.hpp"
 
 #include "common.hpp"
@@ -429,3 +431,5 @@ void state_saver::release_saved_state()
 
 	m_savedState = false;
 }
+
+#endif

@@ -9,15 +9,18 @@
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
 #include "gta/joaat.hpp"
-#include "gui.hpp"
 #include "hooking.hpp"
 #include "logger/exception_handler.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
-#include "renderer.hpp"
 #include "script_mgr.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "thread_pool.hpp"
+
+#ifdef ENABLE_GUI
+#include "gui.hpp"
+#include "renderer.hpp"
+#endif
 
 #include <rage/gameSkeleton.hpp>
 
@@ -77,9 +80,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    std::this_thread::sleep_for(1s);
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
-			    base_dir /= "BigBaseV2";
+			    base_dir /= PROJECT_NAME;
 			    g_file_manager.init(base_dir);
-			    g_log.initialize("BigBaseV2", g_file_manager.get_project_file("./cout.log"));
+			    g_log.initialize(PROJECT_NAME, g_file_manager.get_project_file("./cout.log"));
 			    try
 			    {
 				    LOG(INFO) << R"kek(
@@ -110,9 +113,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();
 				    LOG(INFO) << "Byte Patch Manager initialized.";
 
+#ifdef ENABLE_GUI
 				    auto renderer_instance = std::make_unique<renderer>();
 				    LOG(INFO) << "Renderer initialized.";
 				    auto gui_instance = std::make_unique<gui>();
+#endif
 
 				    auto fiber_pool_instance = std::make_unique<fiber_pool>(10);
 				    LOG(INFO) << "Fiber pool initialized.";
@@ -124,7 +129,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    LOG(INFO) << "Script Patcher initialized.";
 
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::loop));
+#ifdef ENABLE_GUI
 				    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
+#endif
 				    LOG(INFO) << "Scripts registered.";
 
 				    g_hooking->enable();
@@ -162,8 +169,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    fiber_pool_instance.reset();
 				    LOG(INFO) << "Fiber pool uninitialized.";
 
+#ifdef ENABLE_GUI
 				    renderer_instance.reset();
 				    LOG(INFO) << "Renderer uninitialized.";
+#endif
 
 				    byte_patch_manager_instance.reset();
 				    LOG(INFO) << "Byte Patch Manager uninitialized.";

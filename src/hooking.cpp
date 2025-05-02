@@ -8,23 +8,30 @@
 #include "common.hpp"
 #include "function_types.hpp"
 #include "gta/script_thread.hpp"
-#include "gui.hpp"
 #include "memory/module.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "renderer.hpp"
 #include "script_mgr.hpp"
+
+#ifdef ENABLE_GUI
+#include "renderer.hpp"
+#include "gui.hpp"
+#endif
 
 #include <MinHook.h>
 #include <fibersapi.h>
 
 namespace big
 {
-	hooking::hooking() :
-	    m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
+	hooking::hooking()
+#ifdef ENABLE_GUI
+		: m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
+#endif
 	{
+#ifdef ENABLE_GUI
 		m_swapchain_hook.hook(hooks::swapchain_present_index, (void*)&hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, (void*)&hooks::swapchain_resizebuffers);
+#endif
 
 		// The only instances in that vector at this point should only be the "lazy" hooks
 		// aka the ones that still don't have their m_target assigned
@@ -51,8 +58,10 @@ namespace big
 
 	void hooking::enable()
 	{
+#ifdef ENABLE_GUI
 		m_swapchain_hook.enable();
 		m_og_wndproc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&hooks::wndproc)));
+#endif
 
 		for (const auto& detour_hook_helper : m_detour_hook_helpers)
 		{
@@ -73,8 +82,10 @@ namespace big
 			detour_hook_helper->m_detour_hook->disable();
 		}
 
+#ifdef ENABLE_GUI
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
+#endif
 
 		MH_ApplyQueued();
 

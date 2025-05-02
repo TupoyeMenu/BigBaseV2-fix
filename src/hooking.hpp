@@ -113,9 +113,11 @@ namespace big
 		bool m_enabled{};
 		minhook_keepalive m_minhook_keepalive;
 
+#ifdef ENABLE_GUI
 		vmt_hook m_swapchain_hook;
 
 		WNDPROC m_og_wndproc = nullptr;
+#endif
 
 		static inline std::vector<detour_hook_helper*> m_detour_hook_helpers;
 	};

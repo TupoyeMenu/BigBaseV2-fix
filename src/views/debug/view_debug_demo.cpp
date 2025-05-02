@@ -4,6 +4,8 @@
  * Used to demonstrate basic ImGui functionality.
  */
 
+#ifdef ENABLE_GUI
+
 #include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
 #include "gui/components/components.hpp"
@@ -70,3 +72,5 @@ namespace big
 		}
 	}
 }
+
+#endif

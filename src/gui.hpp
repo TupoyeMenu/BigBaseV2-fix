@@ -10,6 +10,8 @@
 
 #pragma once
 
+#ifdef ENABLE_GUI
+
 namespace big
 {
 	class gui
@@ -67,3 +69,5 @@ namespace big
 
 	inline gui* g_gui;
 }
+
+#endif

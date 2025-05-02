@@ -8,6 +8,8 @@
  * You should have received a copy of the GNU General Public License along with TupoyeMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifdef ENABLE_GUI
+
 #include "fiber_pool.hpp"
 #include "gui/components/components.hpp"
 #include "natives.hpp"
@@ -71,3 +73,5 @@ namespace big
 		}
 	}
 }
+
+#endif

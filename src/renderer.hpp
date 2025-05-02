@@ -10,6 +10,8 @@
 
 #pragma once
 
+#ifdef ENABLE_GUI
+
 typedef void (*PresentCallback)(void*);
 
 
@@ -132,3 +134,5 @@ namespace big
 
 	inline renderer* g_renderer{};
 }
+
+#endif

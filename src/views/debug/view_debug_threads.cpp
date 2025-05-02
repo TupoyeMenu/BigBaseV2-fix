@@ -9,6 +9,8 @@
  * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifdef ENABLE_GUI
+
 #include "core/data/all_script_names.hpp"
 #include "core/data/stack_sizes.hpp"
 #include "fiber_pool.hpp"
@@ -191,3 +193,5 @@ namespace big
 		}
 	}
 }
+
+#endif

@@ -3,6 +3,8 @@
  * @brief Main window you can add new tabs - tab bars here.
  */
 
+#ifdef ENABLE_GUI
+
 #include "pointers.hpp"
 #include "views/view.hpp"
 
@@ -26,3 +28,5 @@ namespace big
 		ImGui::End();
 	}
 }
+
+#endif

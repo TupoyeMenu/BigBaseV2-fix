@@ -10,6 +10,9 @@
  */
 
 #pragma once
+
+#ifdef ENABLE_GUI
+
 #include <imgui.h>
 
 namespace big
@@ -26,3 +29,5 @@ namespace big
 		static void debug_threads();
 	};
 }
+
+#endif

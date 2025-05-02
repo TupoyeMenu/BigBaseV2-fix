@@ -1,3 +1,5 @@
+#ifdef ENABLE_GUI
+
 #include "hooking.hpp"
 #include "renderer.hpp"
 
@@ -22,3 +24,5 @@ namespace big
 		return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)(this_, buffer_count, width, height, new_format, swapchain_flags);
 	}
 }
+
+#endif
