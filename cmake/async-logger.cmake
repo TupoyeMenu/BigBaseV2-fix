@@ -1,7 +1,5 @@
 include(FetchContent)
 
-set(USE_FMT ON)
-
 message("AsyncLogger")
 FetchContent_Declare(
     AsyncLogger
@@ -12,3 +10,4 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(AsyncLogger)
 
 set_property(TARGET AsyncLogger PROPERTY CXX_STANDARD 20)
+target_compile_definitions(AsyncLogger PRIVATE CXX_FORMAT_SUPPORT)

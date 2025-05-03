@@ -35,7 +35,7 @@ Now, you will be able to open the solution, and simply build it in Visual Studio
 ### GNU/Linux
 To build BigBaseV2 you need:
 
-* MinGW 14 or higher
+* MinGW 13 or higher
 * CMake
 * Ninja? Didn't test make.
 
