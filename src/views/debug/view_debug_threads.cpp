@@ -30,7 +30,7 @@ static GtaThread* selected_thread;
 
 static int selected_stack_size             = 128;
 static int free_stacks                     = -1;
-static const char* selected_stack_size_str = "MULTIPLAYER_MISSION";
+static std::string selected_stack_size_str = "MULTIPLAYER_MISSION";
 static const char* selected_script         = "<SELECT>";
 
 static std::chrono::high_resolution_clock::time_point last_stack_update_time{};
@@ -131,13 +131,13 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		if (ImGui::BeginCombo("Stack Size", selected_stack_size_str))
+		if (ImGui::BeginCombo("Stack Size", selected_stack_size_str.c_str()))
 		{
 			for (auto& p : stack_sizes)
 			{
 				if (ImGui::Selectable(std::format("{} ({})", p.first, p.second).data(), selected_stack_size == p.second))
 				{
-					selected_stack_size_str = std::format("{} ({})", p.first, p.second).data();
+					selected_stack_size_str = std::format("{} ({})", p.first, p.second);
 					selected_stack_size     = p.second;
 
 					g_fiber_pool->queue_job([] {
