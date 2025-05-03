@@ -2,6 +2,9 @@
 
 namespace big
 {
+	/**
+	 * @brief Hooks vtable functions for all class instances.
+	 */
 	class vtable_hook
 	{
 	public:

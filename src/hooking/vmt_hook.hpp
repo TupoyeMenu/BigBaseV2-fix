@@ -2,6 +2,9 @@
 
 namespace big
 {
+	/**
+	 * @brief Hooks vtable functions for a single class instance.
+	 */
 	class vmt_hook
 	{
 	public:
