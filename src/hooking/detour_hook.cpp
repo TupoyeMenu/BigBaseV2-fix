@@ -37,7 +37,7 @@ namespace big
 		}
 		else
 		{
-			throw std::runtime_error(fmt::format("Failed to create hook '{}' at 0x{:X} (error: {})", m_name, reinterpret_cast<std::uintptr_t>(m_target), MH_StatusToString(status)));
+			throw std::runtime_error(std::format("Failed to create hook '{}' at 0x{:X} (error: {})", m_name, reinterpret_cast<std::uintptr_t>(m_target), MH_StatusToString(status)));
 		}
 	}
 
@@ -54,7 +54,7 @@ namespace big
 	void detour_hook::enable()
 	{
 		if (auto status = MH_QueueEnableHook(m_target); status != MH_OK)
-			throw std::runtime_error(fmt::format("Failed to enable hook 0x{:X} ({})", uintptr_t(m_target), MH_StatusToString(status)));
+			throw std::runtime_error(std::format("Failed to enable hook 0x{:X} ({})", uintptr_t(m_target), MH_StatusToString(status)));
 	}
 
 	void detour_hook::disable()

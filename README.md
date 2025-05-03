@@ -35,7 +35,7 @@ Now, you will be able to open the solution, and simply build it in Visual Studio
 ### GNU/Linux
 To build BigBaseV2 you need:
 
-* MinGW 12 or higher
+* MinGW 14 or higher
 * CMake
 * Ninja? Didn't test make.
 
@@ -44,7 +44,7 @@ To set up the build environment, run the following commands in a terminal:
 git clone https://github.com/TupoyeMenu/BigBaseV2-fix.git
 cd BigBaseV2-fix
 mkdir build && cd build
-cmake .. -DCROSSCOMPILE:BOOL=TRUE -DUSE_GCC:BOOL=TRUE -G Ninja
+cmake .. -DCROSSCOMPILE=ON -DUSE_GCC=ON -G Ninja
 ninja
 ```
 

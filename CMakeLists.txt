@@ -16,7 +16,6 @@ message("\nFetching modules")
 include(cmake/minhook.cmake)
 include(cmake/async-logger.cmake)
 include(cmake/json.cmake)
-include(cmake/fmt.cmake)
 
 message("\nFetching custom modules")
 if(ENABLE_GUI)
