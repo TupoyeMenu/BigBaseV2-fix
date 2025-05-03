@@ -11,7 +11,7 @@
 #pragma once
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "native_hooks.hpp"
 #include "natives.hpp"
 #include "util/scripts.hpp"

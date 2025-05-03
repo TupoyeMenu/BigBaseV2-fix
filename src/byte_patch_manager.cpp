@@ -10,7 +10,7 @@
 
 #include "byte_patch_manager.hpp"
 
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
 

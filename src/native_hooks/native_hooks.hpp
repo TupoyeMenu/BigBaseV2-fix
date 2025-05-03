@@ -10,7 +10,7 @@
 
 #pragma once
 #include "gta/joaat.hpp"
-#include "vmt_hook.hpp"
+#include "hooking/vmt_hook.hpp"
 
 #include <script/scrNativeHandler.hpp>
 #include <script/scrProgram.hpp>

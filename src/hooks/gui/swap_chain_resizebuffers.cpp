@@ -1,6 +1,6 @@
 #ifdef ENABLE_GUI
 
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "renderer.hpp"
 
 namespace big

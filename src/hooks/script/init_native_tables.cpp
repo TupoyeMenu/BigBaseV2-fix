@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with YimMenu. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
 

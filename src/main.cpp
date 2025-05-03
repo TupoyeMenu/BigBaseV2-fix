@@ -9,7 +9,7 @@
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
 #include "gta/joaat.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "script_mgr.hpp"
