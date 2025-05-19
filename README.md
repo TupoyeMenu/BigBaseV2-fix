@@ -12,6 +12,7 @@ Strictly for educational purposes.
 * scrProgram–based native hook
 * MinGW compilation support
 * Headless mode (set ENABLE_GUI=OFF when configuring)
+* Support for both legacy and enhanced in a single binary
 
 
 ## Building
@@ -49,12 +50,13 @@ ninja
 ```
 
 ## Credits
-| Credits                                                    |                                                                        |
-| ---------------------------------------------------------- | ---------------------------------------------------------------------- |
-| Pocakking                                                  | [BigBaseV2](https://github.com/Pocakking/BigBaseV2)                    |
-| spankerincrease(gir489)                                    | [BigBaseV2-fix](https://bitbucket.org/gir489/bigbasev2-fix)            |
-| [YimMenu](https://github.com/YimMenu/YimMenu) contributors | Updates for newer GTA V versions, most of the code is stolen from them |
-| tupoy-ya                                                   | Being stupid                                                           |
+| Credits                                                      |                                                                           |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| Pocakking                                                    | [BigBaseV2](https://github.com/Pocakking/BigBaseV2)                       |
+| spankerincrease(gir489)                                      | [BigBaseV2-fix](https://bitbucket.org/gir489/bigbasev2-fix)               |
+| [YimMenu](https://github.com/YimMenu/YimMenu) contributors   | Updates for newer GTA V versions, most of the code is stolen from them    |
+| [YimMenu](https://github.com/YimMenu/YimMenuV2) contributors | Updates for GTA V Enhanced versions, a lot of code is stolen from them    |
+| tupoy-ya                                                     | Being stupid                                                              |
 
 ## License
 This project is licensed under [GNU GENERAL PUBLIC LICENSE Version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt) because i stole a lot of code from YimMenu.
