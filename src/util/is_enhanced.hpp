@@ -38,9 +38,8 @@ namespace big
 			PdbInfo* pdb_info = (PdbInfo*)(base_pointer + dbg_dir->AddressOfRawData);
 			if (0 == memcmp(&pdb_info->Signature, "RSDS", 4))
 			{
-				printf("PDB path: %s\n", pdb_info->PdbFileName);
+				return strstr(pdb_info->PdbFileName, "llvm.pdb") != 0;
 			}
-			return strstr(pdb_info->PdbFileName, "llvm.pdb") != 0;
 		}
 		return false;
 	}

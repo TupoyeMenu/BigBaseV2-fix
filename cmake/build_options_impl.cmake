@@ -1,6 +1,6 @@
 if(ENABLE_GUI)
 	target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE ENABLE_GUI)
-	target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE imgui d3dcompiler dwmapi winmm)
+	target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE imgui d3dcompiler dwmapi winmm dxgi)
 	target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR})
 endif()
 
