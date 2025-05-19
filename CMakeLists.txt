@@ -51,7 +51,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 target_precompile_headers(${CMAKE_PROJECT_NAME} PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE minhook AsyncLogger dbghelp psapi)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE minhook AsyncLogger dbghelp psapi dxgi)
 
 # Actually use build options
 include(cmake/build_options_impl.cmake)

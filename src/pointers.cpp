@@ -15,6 +15,16 @@ namespace big
 	{
 		memory::pattern_batch main_batch;
 
+		main_batch.add("Screen Resolution", "66 0F 6E 0D ? ? ? ? 0F B7 3D", -1, -1, eGameBranch::LEGACY, [this](memory::handle ptr) {
+			m_resolution_x = ptr.sub(4).rip().as<uint32_t*>();
+			m_resolution_y = ptr.add(4).rip().as<uint32_t*>();
+		});
+		main_batch.add("Screen Resolution", "75 39 0F 57 C0 F3 0F 2A 05", -1, -1, eGameBranch::ENCHANCED, [this](memory::handle ptr) {
+			m_resolution_x = ptr.add(0x5).add(4).rip().as<uint32_t*>();
+			m_resolution_y = ptr.add(0x1E).add(4).rip().as<uint32_t*>();
+		});
+
+
 		main_batch.add("Game state", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", -1, -1, eGameBranch::LEGACY, [this](memory::handle ptr) {
 			m_game_state = ptr.add(2).rip().add(1).as<eGameState*>();
 		});
@@ -84,6 +94,10 @@ namespace big
 
 		main_batch.add("Swapchain", "48 8B 0D ? ? ? ? 48 8B 01 44 8D 43 01 33 D2 FF 50 40 8B C8", -1, -1, eGameBranch::LEGACY, [this](memory::handle ptr) {
 			m_swapchain = ptr.add(3).rip().as<IDXGISwapChain**>();
+		});
+		main_batch.add("Swapchain", "72 C7 EB 02 31 C0 8B 0D", -1, -1, eGameBranch::ENCHANCED, [this](memory::handle ptr) {
+			m_command_queue = ptr.add(0x1A).add(3).rip().as<ID3D12CommandQueue**>();
+			m_swapchain = ptr.add(0x21).add(3).rip().as<IDXGISwapChain**>();
 		});
 
 		main_batch.add("Model Spawn Bypass", "48 8B C8 FF 52 30 84 C0 74 05 48", -1, -1, eGameBranch::LEGACY, [this](memory::handle ptr) {

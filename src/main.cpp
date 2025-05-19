@@ -12,6 +12,8 @@
 #include "hooking/hooking.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
+#include "renderer/renderer_dx11.hpp"
+#include "renderer/renderer_dx12.hpp"
 #include "script_mgr.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "thread_pool.hpp"
@@ -23,7 +25,7 @@
 #endif
 #ifdef ENABLE_GUI
 	#include "gui.hpp"
-	#include "renderer.hpp"
+	#include "renderer/renderer.hpp"
 #endif
 
 #include <rage/gameSkeleton.hpp>
@@ -132,7 +134,21 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    LOG(INFO) << "Byte Patch Manager initialized.";
 
 #ifdef ENABLE_GUI
-				    auto renderer_instance = std::make_unique<renderer>();
+				    std::unique_ptr<renderer_dx11> dx11_renderer_instance;
+				    std::unique_ptr<renderer_dx12> dx12_renderer_instance;
+				    if (g_is_enhanced)
+				    {
+					    while (!*g_pointers->m_resolution_x)
+					    {
+						    std::this_thread::sleep_for(1s);
+					    }
+					    dx12_renderer_instance = std::make_unique<renderer_dx12>();
+				    }
+				    else
+				    {
+					    dx11_renderer_instance = std::make_unique<renderer_dx11>();
+				    }
+
 				    LOG(INFO) << "Renderer initialized.";
 				    auto gui_instance = std::make_unique<gui>();
 #endif
@@ -188,7 +204,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    LOG(INFO) << "Fiber pool uninitialized.";
 
 #ifdef ENABLE_GUI
-				    renderer_instance.reset();
+				    if (g_is_enhanced)
+					    dx12_renderer_instance.reset();
+				    else
+					    dx11_renderer_instance.reset();
 				    LOG(INFO) << "Renderer uninitialized.";
 #endif
 

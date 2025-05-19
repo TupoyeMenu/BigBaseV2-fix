@@ -38,6 +38,10 @@ namespace big
 		CGameScriptHandlerMgr** m_script_handler_mgr{};
 
 		IDXGISwapChain** m_swapchain{};
+		ID3D12CommandQueue** m_command_queue;
+
+		uint32_t* m_resolution_x;
+		uint32_t* m_resolution_y;
 
 		PVOID m_model_spawn_bypass;
 
