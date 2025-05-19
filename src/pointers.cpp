@@ -56,7 +56,7 @@ namespace big
 			m_init_native_tables        = ptr.sub(37).as<PVOID>();
 			m_native_registration_table = ptr.add(3).rip().as<rage::scrNativeRegistrationTable*>();
 		});
-		main_batch.add("Init Native Tables", "EB 2A 0F 1F 40 00 48 8B 54 17 10", -1, -1, eGameBranch::Enhanced, [this](memory::handle ptr) {
+		main_batch.add("Native handlers", "EB 2A 0F 1F 40 00 48 8B 54 17 10", -1, -1, eGameBranch::Enhanced, [this](memory::handle ptr) {
 			m_init_native_tables        = ptr.sub(0x2A).as<PVOID>();
 			m_native_registration_table = ptr.sub(0xE).rip().as<rage::scrNativeRegistrationTable*>();
 		});

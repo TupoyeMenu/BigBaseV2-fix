@@ -10,7 +10,6 @@
 
 #include "byte_patch_manager.hpp"
 
-#include "hooking/hooking.hpp"
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
 
@@ -18,9 +17,9 @@ namespace big
 {
 	static void init()
 	{
-		/**
-		 * @todo Add some example patches 
-		 */
+		// Patch script network check
+		if (!g_is_enhanced) // YimMenuV2 also has this patch, but doesn't apply it for some reason.
+			memory::byte_patch::make(g_pointers->m_model_spawn_bypass, std::vector{0x90, 0x90})->apply(); // this is no longer integrity checked
 	}
 
 	byte_patch_manager::byte_patch_manager()

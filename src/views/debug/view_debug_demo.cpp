@@ -41,9 +41,7 @@ namespace big
 				script::get_current()->yield();
 			}
 
-			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
 			Vehicle vehicle = VEHICLE::CREATE_VEHICLE(hash, self::pos.x, self::pos.y, self::pos.z, 0.f, TRUE, FALSE, FALSE);
-			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574; //By writing the "old" bypass to the function, running CREATE_VEHICLE, then restoring it, the anti-cheat does not have enough time to catch the function in a dirty state.
 
 			script::get_current()->yield();
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
@@ -60,14 +58,14 @@ namespace big
 
 		if (ImGui::Button("Test g3log crash within ImGui"))
 		{
-			*((uint64_t*)0) = 0xDEADBEEF;
+			*((volatile uint64_t*)0) = 0xDEADBEEF;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Test g3log crash within GTA V Script"))
 		{
 			g_fiber_pool->queue_job([] {
 				//PED::SPAWNPOINTS_GET_SEARCH_RESULT_FLAGS(PLAYER::PLAYER_PED_ID(), nullptr); //This causes a crash at GTA5.exe+5845356 and nothing of value was in the log in the stack dump because of the context switch to GTA 5's memory. If you encounter something similar, you will have to figure out where the crash occured in the GTA 5 exe, and trace back that native, and figure out which function is calling the native that is crashing.
-				*((PINT) nullptr) = 0xDEADBEEF;
+				*((volatile uint64_t*) nullptr) = 0xDEADBEEF;
 			});
 		}
 	}

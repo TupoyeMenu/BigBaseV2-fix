@@ -6,10 +6,6 @@
 #include "renderer/renderer.hpp"
 #ifdef ENABLE_GUI
 
-	#include "common.hpp"
-	#include "file_manager.hpp"
-	#include "fonts/fonts.hpp"
-	#include "gui.hpp"
 	#include "pointers.hpp"
 	#include "renderer_dx12.hpp"
 

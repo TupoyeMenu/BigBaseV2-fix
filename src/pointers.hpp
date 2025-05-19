@@ -2,6 +2,7 @@
 #include "function_types.hpp"
 #include "gta/enums.hpp"
 #include "gta/fwddec.hpp"
+#include "script/scrThread.hpp"
 
 #include <memory/handle.hpp>
 #include <player/CPlayerInfo.hpp>
@@ -28,7 +29,7 @@ namespace big
 
 		rage::scrNativeRegistrationTable* m_native_registration_table{};
 
-		rage::atArray<GtaThread*>* m_script_threads{};
+		rage::atArray<rage::scrThread*>* m_script_threads{};
 		rage::scrProgramTable* m_script_program_table{};
 		functions::run_script_threads_t m_run_script_threads{};
 		std::int64_t** m_script_globals{};
