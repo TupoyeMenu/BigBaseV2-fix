@@ -1,6 +1,5 @@
 #pragma once
 #include "common.hpp"
-#include "config.hpp"
 
 namespace big
 {
@@ -48,7 +47,7 @@ namespace big
 
 	inline eGameBranch get_game_branch()
 	{
-		return g_is_enhanced ? eGameBranch::ENCHANCED : eGameBranch::LEGACY;
+		return g_is_enhanced ? eGameBranch::Enhanced : eGameBranch::Legacy;
 	}
 
 }

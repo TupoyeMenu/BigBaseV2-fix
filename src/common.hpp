@@ -60,9 +60,15 @@
 #include <ped/CPed.hpp>
 #include <script/types.hpp>
 
-#include "config.hpp"
-
 // clang-format on
+
+enum class eGameBranch
+{
+	Legacy,
+	Enhanced,
+
+	DontCare
+};
 
 namespace big
 {
@@ -76,6 +82,7 @@ namespace big
 	inline DWORD g_main_thread_id{};
 	inline std::atomic_bool g_running{true};
 	inline std::atomic_bool g_is_enhanced{false};
+	inline uint32_t g_game_version{false};
 
 	namespace self
 	{

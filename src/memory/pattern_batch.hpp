@@ -31,7 +31,7 @@ namespace memory
 			    m_callback(std::move(callback)),
 				m_min_version(-1),
 				m_max_version(-1),
-				m_game_branch(eGameBranch::DONTCARE)
+				m_game_branch(eGameBranch::DontCare)
 			{
 			}
 

@@ -1,7 +1,6 @@
 #include "pattern_batch.hpp"
 
 #include "common.hpp"
-#include "config.hpp"
 #include "range.hpp"
 #include "util/is_enhanced.hpp"
 
@@ -21,15 +20,15 @@ namespace memory
 		bool all_found = true;
 		for (auto& entry : m_entries)
 		{
-			if(entry.m_game_branch != eGameBranch::DONTCARE && entry.m_game_branch != big::get_game_branch())
+			if(entry.m_game_branch != eGameBranch::DontCare && entry.m_game_branch != big::get_game_branch())
 			{
 				continue;
 			}
-			if(entry.m_min_version != -1 && entry.m_min_version > big::menu_build::version)
+			if(entry.m_min_version != -1 && entry.m_min_version > big::g_game_version) // g_game_version is not implemented
 			{
 				continue;
 			}
-			if(entry.m_max_version != -1 && entry.m_max_version < big::menu_build::version)
+			if(entry.m_max_version != -1 && entry.m_max_version < big::g_game_version)
 			{
 				continue;
 			}
