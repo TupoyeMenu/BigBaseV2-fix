@@ -80,9 +80,6 @@ namespace big
 	private:
 		bool m_Resizing;
 
-		// Shared
-		ImFontAtlas m_FontAtlas;
-
 		//DX12
 		std::vector<FrameContext> m_FrameContext;
 

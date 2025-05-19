@@ -169,8 +169,8 @@ namespace big
 
 		m_HeapAllocator.Create(m_Device, m_DescriptorHeap);
 
-		// never returns false, useless to check return
-		ImGui::CreateContext(&m_FontAtlas);
+		init_imgui_config();
+
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
 		ImGui_ImplDX12_InitInfo init_info = {};
@@ -190,7 +190,7 @@ namespace big
 		};
 		ImGui_ImplDX12_Init(&init_info);
 
-		ImGui::StyleColorsDark();
+		init_imgui_fonts();
 
 		LOG(INFO) << "DirectX 12 renderer has finished initializing.";
 	}
