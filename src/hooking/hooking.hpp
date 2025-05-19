@@ -21,7 +21,8 @@ namespace big
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 		static BOOL set_cursor_pos(int x, int y);
 
-		static int queue_dependency(void* a1, int a2, int64_t dependency);
+		static int queue_dependency_legacy(void* a1, int a2, int64_t dependency);
+		static void queue_dependency_enhanced(intptr_t a1);
 		static bool init_native_tables(rage::scrProgram* program);
 		static rage::eThreadState script_vm(uint64_t* start_stack, uint64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
 	};
@@ -114,8 +115,6 @@ namespace big
 		minhook_keepalive m_minhook_keepalive;
 
 #ifdef ENABLE_GUI
-		vmt_hook m_swapchain_hook;
-
 		WNDPROC m_og_wndproc = nullptr;
 #endif
 
