@@ -3,6 +3,7 @@
 #include "common.hpp"
 #include "config.hpp"
 #include "range.hpp"
+#include "util/is_enhanced.hpp"
 
 namespace memory
 {
@@ -20,7 +21,7 @@ namespace memory
 		bool all_found = true;
 		for (auto& entry : m_entries)
 		{
-			if(entry.m_game_branch != eGameBranch::DONTCARE && entry.m_game_branch != big::menu_build::branch)
+			if(entry.m_game_branch != eGameBranch::DONTCARE && entry.m_game_branch != big::get_game_branch())
 			{
 				continue;
 			}

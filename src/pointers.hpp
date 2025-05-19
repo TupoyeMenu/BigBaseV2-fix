@@ -27,8 +27,6 @@ namespace big
 		CNetworkPlayerMgr** m_network_player_mgr{};
 
 		rage::scrNativeRegistrationTable* m_native_registration_table{};
-		functions::get_native_handler_t m_get_native_handler{};
-		functions::fix_vectors_t m_fix_vectors{};
 
 		rage::atArray<GtaThread*>* m_script_threads{};
 		rage::scrProgramTable* m_script_program_table{};
@@ -47,6 +45,7 @@ namespace big
 		functions::handle_to_ptr m_handle_to_ptr{};
 
 		PVOID m_queue_dependency;
+		PVOID m_sig_scan_memory;
 	};
 
 	inline pointers* g_pointers{};

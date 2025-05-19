@@ -15,14 +15,15 @@
 #include "script_mgr.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "thread_pool.hpp"
+#include "util/is_enhanced.hpp"
 
 
 #ifdef ENABLE_EXCEPTION_HANDLER
-#include "logger/exception_handler.hpp"
+	#include "logger/exception_handler.hpp"
 #endif
 #ifdef ENABLE_GUI
-#include "gui.hpp"
-#include "renderer.hpp"
+	#include "gui.hpp"
+	#include "renderer.hpp"
 #endif
 
 #include <rage/gameSkeleton.hpp>
@@ -71,6 +72,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 	{
 		DisableThreadLibraryCalls(hmod);
 
+		g_is_enhanced = big::is_enhanced();
+
 		g_hmodule     = hmod;
 		g_main_thread = CreateThread(
 		    nullptr,
@@ -81,19 +84,20 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 #endif
 			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
 
-			    while (!FindWindow("grcWindow", "Grand Theft Auto V"))
+			    LPCSTR lpClassName = g_is_enhanced ? "sgaWindow" : "grcWindow";
+			    while (!FindWindow(lpClassName, nullptr))
 				    std::this_thread::sleep_for(1s);
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= PROJECT_NAME;
 			    g_file_manager.init(base_dir);
-			    g_log.initialize(
-					PROJECT_NAME,
-					g_file_manager.get_project_file("./cout.log")
+			    g_log.initialize(PROJECT_NAME,
+			        g_file_manager.get_project_file("./cout.log")
 #ifndef ENABLE_GUI
-					,false // Disable log window when GUI is disabled.
+			            ,
+			        false // Disable log window when GUI is disabled.
 #endif
-				);
+			    );
 			    try
 			    {
 				    LOG(INFO) << R"kek(
@@ -114,12 +118,15 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto pointers_instance = std::make_unique<pointers>();
 				    LOG(INFO) << "Pointers initialized.";
 
-				    while (!disable_anticheat_skeleton())
+				    if (!g_is_enhanced)
 				    {
-					    LOG(WARNING) << "Failed patching anticheat gameskeleton (injected too early?). Waiting 500ms and trying again";
-					    std::this_thread::sleep_for(500ms);
+					    while (!disable_anticheat_skeleton())
+					    {
+						    LOG(WARNING) << "Failed patching anticheat gameskeleton (injected too early?). Waiting 500ms and trying again";
+						    std::this_thread::sleep_for(500ms);
+					    }
+					    LOG(INFO) << "Disabled anticheat gameskeleton.";
 				    }
-				    LOG(INFO) << "Disabled anticheat gameskeleton.";
 
 				    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();
 				    LOG(INFO) << "Byte Patch Manager initialized.";
