@@ -2,6 +2,7 @@
 #include "function_types.hpp"
 #include "gta/enums.hpp"
 #include "gta/fwddec.hpp"
+#include "memory/byte_patch.hpp"
 #include "script/scrThread.hpp"
 
 #include <memory/handle.hpp>
@@ -44,7 +45,7 @@ namespace big
 		uint32_t* m_resolution_x;
 		uint32_t* m_resolution_y;
 
-		PVOID m_model_spawn_bypass;
+		memory::byte_patch* m_model_spawn_bypass;
 
 		functions::ptr_to_handle m_ptr_to_handle{};
 		functions::handle_to_ptr m_handle_to_ptr{};

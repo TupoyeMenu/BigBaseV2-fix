@@ -18,8 +18,7 @@ namespace big
 	static void init()
 	{
 		// Patch script network check
-		if (!g_is_enhanced) // YimMenuV2 also has this patch, but doesn't apply it for some reason.
-			memory::byte_patch::make(g_pointers->m_model_spawn_bypass, std::vector{0x90, 0x90})->apply(); // this is no longer integrity checked
+		g_pointers->m_model_spawn_bypass->apply();
 	}
 
 	byte_patch_manager::byte_patch_manager()

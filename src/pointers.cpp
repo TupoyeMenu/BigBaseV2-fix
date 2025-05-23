@@ -96,11 +96,16 @@ namespace big
 		});
 		main_batch.add("Swapchain", "72 C7 EB 02 31 C0 8B 0D", -1, -1, eGameBranch::Enhanced, [this](memory::handle ptr) {
 			m_command_queue = ptr.add(0x1A).add(3).rip().as<ID3D12CommandQueue**>();
-			m_swapchain = ptr.add(0x21).add(3).rip().as<IDXGISwapChain**>();
+			m_swapchain     = ptr.add(0x21).add(3).rip().as<IDXGISwapChain**>();
 		});
 
-		main_batch.add("Model Spawn Bypass", "48 8B C8 FF 52 30 84 C0 74 05 48", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
-			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
+		main_batch.add("Model Spawn Bypass", "48 8B C8 FF 52 30 84 C0 ? 05 48", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
+			m_model_spawn_bypass =
+			    memory::byte_patch::make(ptr.add(8).as<PVOID>(), std::to_array<uint8_t>({0x90, 0x90})).get();
+		});
+		main_batch.add("Model Spawn Bypass", "E8 ? ? ? ? 48 8B 78 48", -1, -1, eGameBranch::Enhanced, [this](memory::handle ptr) {
+			m_model_spawn_bypass =
+			    memory::byte_patch::make(ptr.add(1).rip().add(0x2B).as<uint8_t*>(), 0xEB).get();
 		});
 
 		main_batch.add("Ptr To Handle", "48 8B F9 48 83 C1 10 33 DB", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
@@ -119,7 +124,7 @@ namespace big
 		});
 		main_batch.add("Queue Dependency", "0F 29 46 50 48 8D 05", -1, -1, eGameBranch::Enhanced, [this](memory::handle ptr) {
 			m_queue_dependency = ptr.add(0x71).add(1).rip().as<PVOID>();
-			m_sig_scan_memory = ptr.add(4).add(3).rip().as<PVOID>();
+			m_sig_scan_memory  = ptr.add(4).add(3).rip().as<PVOID>();
 		});
 
 		main_batch.add("Game Skeleton", "48 8D 0D ? ? ? ? BA ? ? ? ? 74 05 BA ? ? ? ? E8 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8D 0D ? ? ? ? BA ? ? ? ? 84 DB 75 05 BA ? ? ? ? E8 ? ? ? ? 48 8B CD C6 05 ? ? ? ? ? E8 ? ? ? ? 84", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
@@ -133,7 +138,7 @@ namespace big
 		main_batch.run(memory::module(nullptr));
 
 		LPCWSTR lpClassName = g_is_enhanced ? L"sgaWindow" : L"grcWindow";
-		m_hwnd = FindWindowW(lpClassName, nullptr);
+		m_hwnd              = FindWindowW(lpClassName, nullptr);
 		if (!m_hwnd)
 			throw std::runtime_error("Failed to find the game's window.");
 
