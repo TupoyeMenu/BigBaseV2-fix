@@ -141,6 +141,14 @@ namespace big
 			m_game_skeleton_update = ptr.as<PVOID*>();
 		});
 
+		main_batch.add("Game Skeleton", "0F B6 C0 8D 14 00 83 C2 02", -1, -1, eGameBranch::Enhanced, [this](memory::handle ptr) {
+			m_game_skeleton = ptr.add(9).add(3).rip().as<rage::game_skeleton*>();
+		});
+
+		main_batch.add("Nullsub", "90 C3 CC", [this](memory::handle ptr) {
+			m_nullsub = ptr.as<void (*)()>();
+		});
+
 		main_batch.add("Anticheat Initialized Hash", "48 83 EC 20 48 8B D9 48 8B 0D ? ? ? ? 48 85 C9 0F 84", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
 			m_anticheat_initialized_hash     = ptr.add(10).rip().as<rage::Obf32**>();
 			m_get_anticheat_initialized_hash = ptr.add(24).rip().add(1).rip().as<PVOID>();
