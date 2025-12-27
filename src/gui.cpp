@@ -37,6 +37,8 @@ namespace big
 		dx_init();
 
 		g_gui = this;
+
+		g_renderer->set_safe_to_render();
 	}
 
 	gui::~gui()
