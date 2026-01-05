@@ -12,7 +12,7 @@ namespace big
 {
 	pointers::pointers()
 	{
-		memory::pattern_batch early_batch;
+		memory::batch early_batch;
 
 		early_batch.add("Game Version", "8B C3 33 D2 C6 44 24 20", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
 			g_game_version = std::stoi(ptr.add(0x24).rip().as<const char*>());
@@ -23,7 +23,7 @@ namespace big
 
 		early_batch.run(memory::module(nullptr));
 
-		memory::pattern_batch main_batch;
+		memory::batch main_batch;
 
 		main_batch.add("Screen Resolution", "66 0F 6E 0D ? ? ? ? 0F B7 3D", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
 			m_resolution_x = ptr.sub(4).rip().as<uint32_t*>();
