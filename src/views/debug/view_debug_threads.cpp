@@ -160,7 +160,7 @@ namespace big
 				script::get_current()->yield();
 			}
 
-			SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(hash, selected_stack_size);
+			BUILTIN::START_NEW_SCRIPT_WITH_NAME_HASH(hash, selected_stack_size);
 
 			SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(hash);
 

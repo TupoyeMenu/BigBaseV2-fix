@@ -39,14 +39,14 @@ namespace big::scripts
 
 	inline int start_script_with_args(int hash, int* args, int arg_count, int stack_size)
 	{
-		int thread_id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(hash, args, arg_count, stack_size);
+		int thread_id = BUILTIN::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(hash, args, arg_count, stack_size);
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(hash);
 		return thread_id;
 	}
 
 	inline int start_script(int hash, int stack_size)
 	{
-		int thread_id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(hash, stack_size);
+		int thread_id = BUILTIN::START_NEW_SCRIPT_WITH_NAME_HASH(hash, stack_size);
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(hash);
 		return thread_id;
 	}
