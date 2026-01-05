@@ -136,12 +136,14 @@ namespace big
 
 			{
 				ImFontConfig fnt_cfg{};
-				fnt_cfg.FontDataOwnedByAtlas = false;
+				// Set this to true, as this code was written when ImGui was always setting it to true and ignoring your preference, which caused a crash when ImGui fixed this bug.
+				fnt_cfg.FontDataOwnedByAtlas = true;
 				strcpy(fnt_cfg.Name, "Fnt20px");
 				
 				io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_rubik), sizeof(font_rubik), 20.f, &fnt_cfg);
 				fnt_cfg.MergeMode = true;
-				io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg);
+				void* font_data_copy = ImMemdup(font_data.get(), font_data_size);
+				io.Fonts->AddFontFromMemoryTTF(font_data_copy, font_data_size, 20.f, &fnt_cfg);
 			}
 
 			set_fonts_updated();

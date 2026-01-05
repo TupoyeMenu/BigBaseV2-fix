@@ -2,7 +2,7 @@ include(FetchContent)
 FetchContent_Declare(
     imgui
     GIT_REPOSITORY https://github.com/TupoyeMenu/imgui.git
-    GIT_TAG        c60e2d62325d488275d453af3bf21832d551e778
+    GIT_TAG        8712585f7a7237c4f9517c77003f4de921f9c36f
     GIT_PROGRESS TRUE
 )
 message("ImGui")
