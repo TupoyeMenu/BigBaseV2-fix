@@ -7,7 +7,7 @@ namespace rage_enhanced
 	class tlsContext
 	{
 	public:
-		char m_Pad1[0x7A8];
+		char m_Pad1[0x7A0];
 		rage::scrThread* m_script_thread;
 		bool m_is_script_thread_active;
 
@@ -17,5 +17,5 @@ namespace rage_enhanced
 			return *reinterpret_cast<tlsContext**>(__readgsqword(0x58) + TlsIndex);
 		}
 	};
-	static_assert(sizeof(tlsContext) == 0x7B8);
+	static_assert(sizeof(tlsContext) == 0x7B0);
 }
