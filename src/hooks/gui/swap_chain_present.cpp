@@ -7,7 +7,7 @@ namespace big
 {
 	HRESULT hooks::swapchain_present(IDXGISwapChain* this_, UINT sync_interval, UINT flags)
 	{
-		if (g_running && !g_renderer->is_resizing())
+		if (g_running && !g_renderer->is_resizing() && ((flags & (UINT)DXGI_PRESENT_TEST) != (UINT)DXGI_PRESENT_TEST))
 		{
 			g_renderer->on_present();
 		}
