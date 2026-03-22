@@ -40,7 +40,6 @@ namespace big
 		});
 		main_batch.add("Game state", "81 39 5D 6D FF AF 75 20", 3788, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
 			m_game_state = ptr.add(10).rip().add(1).as<eGameState*>();
-			LOG(INFO) << "wtf";
 		});
 		main_batch.add("Game state", "83 3D ? ? ? ? ? 0F 85 ? ? ? ? BA ? 00", -1, -1, eGameBranch::Enhanced, [this](memory::handle ptr) {
 			m_game_state = ptr.add(2).rip().add(1).as<eGameState*>();
