@@ -35,8 +35,12 @@ namespace big
 		});
 
 
-		main_batch.add("Game state", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
+		main_batch.add("Game state", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", -1, 3751, eGameBranch::Legacy, [this](memory::handle ptr) {
 			m_game_state = ptr.add(2).rip().add(1).as<eGameState*>();
+		});
+		main_batch.add("Game state", "81 39 5D 6D FF AF 75 20", 3788, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
+			m_game_state = ptr.add(10).rip().add(1).as<eGameState*>();
+			LOG(INFO) << "wtf";
 		});
 		main_batch.add("Game state", "83 3D ? ? ? ? ? 0F 85 ? ? ? ? BA ? 00", -1, -1, eGameBranch::Enhanced, [this](memory::handle ptr) {
 			m_game_state = ptr.add(2).rip().add(1).as<eGameState*>();
@@ -121,7 +125,10 @@ namespace big
 		main_batch.add("Ptr To Handle", "48 8B F9 48 83 C1 10 33 DB", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});
-		main_batch.add("Handle To Ptr", "83 F9 FF 74 31 4C 8B 0D", -1, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
+		main_batch.add("Handle To Ptr", "83 F9 FF 74 31 4C 8B 0D", -1, 3751, eGameBranch::Legacy, [this](memory::handle ptr) {
+			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
+		});
+		main_batch.add("Handle To Ptr", "83 F9 FF 74 37 8B D1", 3788, -1, eGameBranch::Legacy, [this](memory::handle ptr) {
 			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
 		});
 		main_batch.add("HandlesAndPtrs", "0F 1F 84 00 00 00 00 00 89 F8 0F 28 FE 41", -1, -1, eGameBranch::Enhanced, [this](memory::handle ptr) {

@@ -49,7 +49,7 @@ namespace memory
 			{
 				continue;
 			}
-			if (entry.m_min_version != -1 && entry.m_min_version > big::g_game_version) // g_game_version is not implemented
+			if (entry.m_min_version != -1 && entry.m_min_version > big::g_game_version)
 			{
 				continue;
 			}
